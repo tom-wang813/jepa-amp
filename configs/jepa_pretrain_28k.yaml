@@ -1,0 +1,35 @@
+data:
+  fasta_paths:
+    - data/processed/amp_corpus.fasta
+  max_len: 50
+  val_ratio: 0.1
+  block_size: 4
+  num_target_blocks: 2
+
+model:
+  d_model: 384
+  nhead: 8
+  num_layers: 8
+  dim_feedforward: 1536
+  dropout: 0.1
+  max_seq_len: 52
+  predictor_depth: 2
+  ema_decay: 0.996
+
+train:
+  epochs: 120
+  batch_size: 1536
+  lr: 2.5e-4
+  weight_decay: 0.05
+  warmup_steps: 500
+  fp16: true
+  num_workers: 8
+  val_num_workers: 4
+  persistent_workers: true
+  prefetch_factor: 4
+  save_dir: checkpoints/jepa_pretrain_28k
+
+wandb:
+  enabled: false
+  project: jepa-amp
+  run_name: jepa_pretrain_28k_d384

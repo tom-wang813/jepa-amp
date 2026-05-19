@@ -1,0 +1,30 @@
+task: amp
+pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+
+data:
+  pos_fasta: data/processed/amp_corpus.fasta
+  neg:
+    fasta: data/benchmarks/shuffled_neg.fasta   # 50k shuffled-AMP negatives (standard approach)
+  use_pos_weight: true    # pos_weight = 50000/868724 ≈ 0.058
+  val_ratio: 0.1
+
+head:
+  head_type: mlp
+  hidden: 256
+  dropout: 0.4
+  adapter_bottleneck: 64
+  nhead: 4
+  num_layers: 2
+  dim_feedforward: 512
+
+train:
+  freeze_encoder: true
+  epochs: 30
+  batch_size: 1024
+  lr: 3.0e-4
+  weight_decay: 0.1
+  fp16: true
+  num_workers: 8
+  save_dir: checkpoints/amp_classifier_868k_v5
+  patience: 8
+  save_every: 5

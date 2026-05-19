@@ -1,0 +1,35 @@
+task: amp
+pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+
+data:
+  pos_fasta: data/processed/amp_corpus_noleak.fasta  # 867943 pos, AMPlify test excluded
+  neg:
+    fastas:
+      - data/benchmarks/amplify_train_neg.fasta        # 3338 AMPlify curated non-AMP
+      - data/benchmarks/shuffled_neg.fasta             # 868k shuffled (1:1 with pos)
+  use_pos_weight: false   # balanced 1:1, no weighting needed
+  balance: true           # subsample pos to match neg count (≈868k each)
+  val_ratio: 0.05
+
+head:
+  head_type: mlp
+  hidden: 512
+  dropout: 0.3
+  adapter_bottleneck: 128
+  nhead: 4
+  num_layers: 2
+  dim_feedforward: 512
+
+train:
+  freeze_encoder: false
+  epochs: 80
+  batch_size: 512
+  lr: 2.0e-4
+  lr_encoder: 5.0e-6
+  weight_decay: 0.05
+  label_smoothing: 0.05
+  fp16: true
+  num_workers: 8
+  save_dir: checkpoints/amp_classifier_v6
+  patience: 20
+  save_every: 5

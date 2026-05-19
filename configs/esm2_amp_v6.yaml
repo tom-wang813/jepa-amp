@@ -1,0 +1,32 @@
+task: amp
+esm_model: esm2_t12_35M
+
+# Large-scale training: same setup as JEPA-v6 (no data leakage)
+data:
+  pos_fasta: data/processed/amp_corpus_noleak.fasta  # 867943 pos
+  neg:
+    fastas:
+      - data/benchmarks/amplify_train_neg.fasta        # 3338 curated non-AMP
+      - data/benchmarks/shuffled_neg.fasta             # 868k shuffled negatives
+  balance: true     # subsample to 1:1
+  val_ratio: 0.05
+  max_len: 200
+
+head:
+  head_type: mlp
+  hidden: 512
+  dropout: 0.3
+
+train:
+  freeze_encoder: false
+  epochs: 20
+  batch_size: 256
+  lr: 2.0e-4
+  lr_encoder: 2.0e-6
+  weight_decay: 0.05
+  label_smoothing: 0.05
+  fp16: true
+  num_workers: 8
+  save_dir: checkpoints/esm2_amp_v6
+  patience: 8
+  save_every: 5

@@ -1,0 +1,105 @@
+# -----------------------------
+# Generic caches / build artifacts
+# -----------------------------
+__pycache__/
+*.py[co]
+*.py[cod]
+build/
+dist/
+wheels/
+*.egg-info/
+*.egg
+.eggs/
+
+# Python tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.env
+.envrc
+.claude
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Editor / OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+
+# -----------------------------
+# Project data, models, logs, results (do not commit large artifacts)
+# -----------------------------
+# Raw / processed dataset directories
+data/
+data/*
+# If there are small necessary files in data/ that must be tracked,
+# add explicit negated patterns (e.g. '!data/README.md') below.
+
+# Checkpoints / model weights
+checkpoints/
+checkpoints/*
+checkpoints/**
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.model
+
+# Evaluation outputs and temporary test results
+eval_results/
+eval_results/*
+logs/
+logs/*
+runs/                # tensorboard default
+tb_logs/
+
+# Generator / outputs
+output/
+outputs/
+generated/
+
+# Temporary or intermediate experiment folders
+temp/
+tmp/
+*.tmp
+
+# LaTeX / paper build artifacts (keep source .tex and figures)
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.toc
+paper/*.out
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.log
+paper/*.pdf
+
+# Notebook checkpoints and exports
+*.nbconvert.ipynb
+
+# Package / distribution
+dist/
+build/
+
+# Misc
+*.log
+*.sql
+*.sqlite
+*.db
+
+# Keep minimal tracked files: if you want to keep a specific file
+# inside an ignored directory, add an explicit negation here, e.g.
+# !data/keep_this.csv
+
+

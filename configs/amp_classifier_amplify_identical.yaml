@@ -1,0 +1,34 @@
+task: amp
+pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+
+# Exact same training data as AMPlify paper
+data:
+  pos_fasta: data/benchmarks/amplify_train_pos.fasta   # 3338 AMPlify curated AMP
+  neg:
+    fasta: data/benchmarks/amplify_train_neg.fasta     # 3338 AMPlify curated non-AMP
+  use_pos_weight: false
+  balance: false    # already 1:1
+  val_ratio: 0.1
+
+head:
+  head_type: mlp
+  hidden: 512
+  dropout: 0.3
+  adapter_bottleneck: 128
+  nhead: 4
+  num_layers: 2
+  dim_feedforward: 512
+
+train:
+  freeze_encoder: false
+  epochs: 60              # small dataset, train longer
+  batch_size: 64          # small dataset, small batch
+  lr: 3.0e-4
+  lr_encoder: 5.0e-6      # very small encoder lr, only 3338 samples - careful
+  weight_decay: 0.05
+  label_smoothing: 0.05
+  fp16: true
+  num_workers: 4
+  save_dir: checkpoints/amp_classifier_amplify_identical
+  patience: 15
+  save_every: 10

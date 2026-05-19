@@ -1,0 +1,43 @@
+[project]
+name = "jepa-amp"
+version = "0.1.0"
+description = "JEPA-based representation learning and conditional generation for antimicrobial peptides"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "torch==2.3.1",
+    "numpy>=1.26",
+    "biopython>=1.83",
+    "pyyaml>=6.0",
+    "tqdm>=4.66",
+    "wandb>=0.17",
+    "scikit-learn>=1.4",
+    "matplotlib>=3.8",
+    "pandas>=2.2",
+    "requests>=2.31",
+    "macrel>=1.2",
+    "fair-esm>=2.0",
+    "amplify>=1.5.0",
+    "transformers>=5.5.4",
+]
+
+[tool.uv]
+index-strategy = "unsafe-best-match"
+
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu121" }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]

@@ -1,0 +1,25 @@
+\begin{abstract}
+Antimicrobial peptides (AMPs) are promising candidates for next-generation antibiotics,
+but systematic discovery and optimisation remain challenging.
+We present \textbf{JEPA-AMP}, a unified framework based on a
+Joint-Embedding Predictive Architecture (JEPA) pre-trained on \textbf{868{,}724} AMP sequences.
+The pre-trained encoder is fine-tuned for three downstream tasks:
+\begin{enumerate}[noitemsep]
+  \item \textbf{AMP classification}: AUROC~\textbf{0.958} and MCC~\textbf{0.802}
+        on the AMPlify benchmark test set using identical training data to AMPlify
+        (AUROC~0.984), demonstrating that AMP-specific pre-training at scale is competitive
+        with supervised BiLSTM ensembles.
+  \item \textbf{MIC prediction} across 20 bacterial species:
+        Pearson~$r=\mathbf{0.678}$ and RMSE~\textbf{0.450} on the GRAMPA test set,
+        outperforming ESM-2 (35M) by $+0.149$ in correlation;
+        MC-Dropout ensemble inference further reduces RMSE by \textbf{5.4\%}
+        with well-calibrated uncertainty ($r=0.44$ between uncertainty and error).
+  \item \textbf{Controlled generation} via an AdaLN conditional decoder with
+        physicochemical auxiliary loss: charge targeting $R^2=\mathbf{0.98}$
+        (vs.\ $R^2<0.01$ for unconditioned baselines),
+        and MIC-conditioned generation with global activity control
+        ($\Delta\log_2\text{MIC}=\mathbf{+1.04}$ for inactivation,
+        $\mathbf{-0.42}$ for broad-spectrum potentiation).
+\end{enumerate}
+All code and checkpoints are released at \url{https://github.com/[repo]}.
+\end{abstract}

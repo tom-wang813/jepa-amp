@@ -1,0 +1,30 @@
+task: mic
+pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+
+data:
+  grampa_csv: data/grampa.csv
+  val_ratio: 0.1
+  test_ratio: 0.1
+  label_noise_std: 0.3
+
+head:
+  head_type: transformer
+  bacteria_dim: 64
+  hidden: 256
+  dropout: 0.4
+  adapter_bottleneck: 64
+  nhead: 4
+  num_layers: 2
+  dim_feedforward: 512
+
+train:
+  freeze_encoder: true
+  epochs: 50
+  batch_size: 512
+  lr: 3.0e-4
+  weight_decay: 0.1
+  fp16: true
+  num_workers: 4
+  save_dir: checkpoints/mic_868k_transformer
+  patience: 10
+  save_every: 10

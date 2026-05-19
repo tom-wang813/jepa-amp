@@ -1,0 +1,46 @@
+pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+generator_version: grampa_v5
+
+data:
+  grampa_csv: data/grampa.csv
+  # Train on GRAMPA real MIC labels only (cleanest signal)
+  # Set fasta_paths to mix in 868k pseudo-label sequences for diversity
+  max_len: 50
+  val_ratio: 0.10
+  prefix_ratio: 0.5
+  min_prefix_len: 3
+  random_drop_prob: 0.10    # randomly drop some real MIC labels (augmentation)
+
+generator:
+  adapter_bottleneck: 128
+  decoder_layers: 4
+  decoder_nhead: 8
+  decoder_ff: 1536
+  dropout: 0.15
+  max_seq_len: 52
+  d_cond: 128
+  cond_dropout: 0.40        # higher dropout → stronger CFG at inference
+  context_dropout: 0.20
+  n_bacteria: 20
+
+train:
+  freeze_encoder: true
+  epochs: 200
+  batch_size: 256
+  lr: 1.5e-4
+  weight_decay: 0.02
+  fp16: true
+  num_workers: 8
+  save_dir: checkpoints/generator_grampa_v5
+  patience: 30
+  save_every: 10
+  physchem_loss_weight: 0.20
+  # MIC oracle aux loss (non-differentiable, logged but not backpropped through)
+  mic_oracle_loss_weight: 0.0
+  mic_oracle_cfg: configs/mic_868k_transformer.yaml
+  mic_oracle_ckpt: checkpoints/mic_868k_transformer/best_model.pt
+
+wandb:
+  enabled: false
+  project: jepa-amp
+  run_name: finetune_grampa_v5

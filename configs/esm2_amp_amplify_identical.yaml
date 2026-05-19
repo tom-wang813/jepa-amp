@@ -1,0 +1,30 @@
+task: amp
+esm_model: esm2_t12_35M   # 35M params — comparable to AMPlify
+
+# Same training data as AMPlify paper (apple-to-apple comparison)
+data:
+  pos_fasta: data/benchmarks/amplify_train_pos.fasta   # 3338 AMPlify curated AMP
+  neg:
+    fasta: data/benchmarks/amplify_train_neg.fasta     # 3338 AMPlify curated non-AMP
+  balance: false   # already 1:1
+  val_ratio: 0.1
+  max_len: 200
+
+head:
+  head_type: mlp
+  hidden: 512
+  dropout: 0.3
+
+train:
+  freeze_encoder: false
+  epochs: 60
+  batch_size: 64
+  lr: 3.0e-4
+  lr_encoder: 5.0e-6
+  weight_decay: 0.05
+  label_smoothing: 0.05
+  fp16: true
+  num_workers: 4
+  save_dir: checkpoints/esm2_amp_amplify_identical
+  patience: 15
+  save_every: 10

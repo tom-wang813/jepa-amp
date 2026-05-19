@@ -1,0 +1,75 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds,
+                calc, decorations.pathreplacing}
+\usepackage{subcaption}
+\usepackage{natbib}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\definecolor{jepaBlue}{RGB}{41,98,255}
+\definecolor{jepaGreen}{RGB}{0,150,136}
+\definecolor{jepaOrange}{RGB}{255,109,0}
+\definecolor{jepaPurple}{RGB}{103,58,183}
+\definecolor{jepaRed}{RGB}{211,47,47}
+
+\title{\textbf{JEPA-AMP: A Joint-Embedding Predictive Architecture\\
+for Antimicrobial Peptide Discovery, Property Prediction,\\
+and MIC-Conditioned Generation}}
+
+\author{Ziwei~[Author]\\
+\small Department of [Institution]\\
+\small \texttt{ziweijp813@gmail.com}}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+%% ── Abstract ─────────────────────────────────────────────────────────────────
+\input{sections/abstract}
+
+%% ── Introduction ─────────────────────────────────────────────────────────────
+\input{sections/introduction}
+
+%% ── Methods ──────────────────────────────────────────────────────────────────
+\input{sections/methods}
+
+%% ── Architecture Figure ──────────────────────────────────────────────────────
+\section{Architecture Overview}
+\label{sec:arch_fig}
+
+\begin{figure}[h]
+\centering
+\input{figures/architecture.tex}
+\caption{JEPA-AMP framework.
+\textbf{(A)}~Pre-training: context encoder $f_\theta$ processes observed tokens (blue);
+target encoder $\bar{f}_\theta$ (EMA) encodes masked tokens (orange);
+predictor $g_\phi$ minimises $\ell_2$ loss in representation space---not token space.
+\textbf{(B)}~Fine-tuning: a shared bottleneck adapter (green) is attached to the
+frozen encoder. Three task-specific heads share this backbone:
+AMP classifier (top), MIC predictor with FiLM species conditioning (middle),
+and conditional generator with AdaLN decoder (bottom).
+\textbf{(C)}~Conditional generator detail: condition vector $\mathbf{c}$ is processed
+by a shared condition MLP and injected both as a cross-attention memory token and via
+per-layer AdaLN scale/shift, providing dual gradient pathways that prevent posterior collapse.}
+\label{fig:arch}
+\end{figure}
+
+%% ── Results ──────────────────────────────────────────────────────────────────
+\input{sections/results}
+
+%% ── Discussion & Conclusion ──────────────────────────────────────────────────
+\input{sections/discussion}
+
+\end{document}

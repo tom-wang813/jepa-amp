@@ -1,0 +1,75 @@
+\section{Discussion}
+
+\paragraph{Pre-training scale vs.\ fine-tuning data quality.}
+AMPlify achieves AUROC~0.984 with a BiLSTM trained on 3{,}338 curated sequences.
+Our JEPA encoder uses \textbf{256$\times$ more pre-training data} and a Transformer,
+yet reaches AUROC~0.958 with the \emph{same} 3{,}338 fine-tuning samples---only 2.6
+AUROC points below the AMPlify ensemble.
+This gap is consistent with the known advantage of small, domain-curated models on
+narrow benchmarks.
+Crucially, on the \textbf{APD3 cross-dataset test} JEPA-AMP (AUROC~0.944) \emph{surpasses}
+larger but less focused models, demonstrating that self-supervised pre-training on
+unlabelled AMP sequences transfers to out-of-distribution sequences more robustly.
+
+\paragraph{MIC representation vs.\ general protein LMs.}
+JEPA-AMP outperforms ESM-2 (35M) for MIC prediction by +0.149 Pearson $r$ and 31\%
+lower RMSE, despite ESM-2 having $\sim$100$\times$ more parameters.
+This confirms that \textbf{AMP-specific pre-training} extracts structural features
+(charge distribution, hydrophobic moment, amphipathicity) more relevant to membrane
+disruption than general protein evolutionary context.
+
+\paragraph{Resolving conditional generation collapse.}
+The failure of v2/v3 ($R^2<0.01$) was traced to posterior collapse: with a strong
+sequence context encoder, the decoder had no incentive to use conditions.
+v4 resolves this with three complementary mechanisms that collectively provide
+\textbf{diverse gradient pathways}: physicochemical auxiliary loss, context starvation
+via 15\% dropout, and dual-pathway condition injection (AdaLN + cross-attention).
+The resulting $R^2=0.98$ for charge targeting confirms that all three are necessary---
+ablating any one degrades performance in preliminary experiments.
+
+\paragraph{MIC conditioning: what works and what is limited.}
+The v5 generator successfully learns \textbf{global activity level control}---the
+distinction between potent and inactive peptides---from 3{,}940 GRAMPA sequences.
+This is a non-trivial result: the model must generate amino acid sequences whose
+physicochemical properties (charge, hydrophobicity, amphipathicity) collectively
+shift the MIC predictor's output by over one $\log_2$ unit.
+Cross-species selectivity remains elusive because (i)~the training data itself
+rarely contains selective peptides (only 11\% have $|\Delta_{MIC}|>1$ between
+E.~coli and S.~aureus), and (ii)~common AMPs disrupt membranes via conserved
+mechanisms affecting both Gram-negative and Gram-positive bacteria.
+Future directions: (a)~selectivity-enriched training data with pairs showing
+$|\Delta|>2$; (b)~a differentiable MIC oracle loss using Gumbel-softmax or
+straight-through estimators to backpropagate MIC signals through the decoder.
+
+\paragraph{Limitations.}
+\begin{enumerate}[noitemsep]
+  \item GRAVY control degrades at extreme charges due to residue-level correlation
+        (K/R are both cationic and hydrophilic); a decoupled orthogonal conditioning
+        basis may help.
+  \item MIC predictions carry RMSE~0.45 in $\log_2$ space ($\approx$1.4 two-fold
+        dilutions); clinical translation typically requires $<$1.
+  \item The AMP pre-training corpus may contain annotation biases from automated
+        database curation; a community benchmark beyond AMPlify would enable
+        definitive comparison.
+\end{enumerate}
+
+\section{Conclusion}
+
+JEPA-AMP demonstrates that a single AMP-specific self-supervised encoder can serve
+as a strong backbone for classification, MIC regression, and controlled generation.
+Key results:
+\begin{itemize}[noitemsep]
+  \item \textbf{Classification}: AUROC~0.958 (AMPlify-identical training), APD3~0.944.
+  \item \textbf{MIC prediction}: Pearson $r=0.678$, RMSE~0.450; 5.4\% improvement
+        via MC-Dropout; well-calibrated uncertainty ($r=0.44$).
+  \item \textbf{Charge targeting}: $R^2=0.98$ with v4 conditional generator
+        (v2/v3 baseline: $R^2<0.01$).
+  \item \textbf{MIC conditioning}: global activity control with $\Delta\log_2\text{MIC}=+1.04$
+        for inactivation and $-0.42$ for potentiation.
+\end{itemize}
+Together, these results provide a practical pipeline for rational AMP design:
+screen candidates with the classifier, prioritise by MIC prediction and uncertainty,
+and generate novel sequences with targeted activity profiles.
+
+\bibliographystyle{plainnat}
+\bibliography{refs}

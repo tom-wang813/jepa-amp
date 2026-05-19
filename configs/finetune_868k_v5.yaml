@@ -1,0 +1,43 @@
+pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+generator_version: v5
+
+data:
+  fasta_paths:
+    - data/processed/amp_corpus.fasta
+  max_len: 50
+  val_ratio: 0.05
+  prefix_ratio: 0.5
+  min_prefix_len: 3
+  mic_pseudolabel_npy:  data/processed/mic_pseudolabels.npy
+  mic_pseudolabel_seqs: data/processed/mic_pseudolabels_seqs.txt
+  mic_mask_prob: 0.30   # each bacterium MIC revealed with 30% probability
+
+generator:
+  adapter_bottleneck: 128
+  decoder_layers: 4
+  decoder_nhead: 8
+  decoder_ff: 1536
+  dropout: 0.1
+  max_seq_len: 52
+  d_cond: 128
+  cond_dropout: 0.30
+  context_dropout: 0.15
+  n_bacteria: 20
+
+train:
+  freeze_encoder: true
+  epochs: 80
+  batch_size: 1024
+  lr: 4.0e-4
+  weight_decay: 0.01
+  fp16: true
+  num_workers: 8
+  save_dir: checkpoints/generator_868k_v5
+  patience: 20
+  save_every: 5
+  physchem_loss_weight: 0.20   # keep physicochemical loss, lighter weight
+
+wandb:
+  enabled: false
+  project: jepa-amp
+  run_name: finetune_868k_v5_mic

@@ -1,0 +1,35 @@
+task: amp
+pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+
+data:
+  pos_fasta: data/processed/amp_corpus_noleak.fasta
+  neg:
+    fastas:
+      - data/benchmarks/amplify_train_neg.fasta   # 3338 curated non-AMP
+      - data/benchmarks/uniprot_neg_50k.fasta     # ~8413 real UniProt non-AMP
+  use_pos_weight: false
+  balance: true        # subsample pos to match ~11751 neg → harder, real negatives only
+  val_ratio: 0.05
+
+head:
+  head_type: mlp
+  hidden: 512
+  dropout: 0.35
+  adapter_bottleneck: 128
+  nhead: 4
+  num_layers: 2
+  dim_feedforward: 512
+
+train:
+  freeze_encoder: false
+  epochs: 100
+  batch_size: 256
+  lr: 1.5e-4
+  lr_encoder: 3.0e-6
+  weight_decay: 0.08
+  label_smoothing: 0.08
+  fp16: true
+  num_workers: 8
+  save_dir: checkpoints/amp_classifier_v7
+  patience: 25
+  save_every: 5

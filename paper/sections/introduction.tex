@@ -1,0 +1,33 @@
+\section{Introduction}
+
+Antimicrobial resistance (AMR) is one of the most urgent threats to global health,
+with the WHO projecting 10 million annual deaths annually by 2050~\citep{who2019}.
+Antimicrobial peptides (AMPs)---short (typically 10--50 residue) cationic amphipathic
+sequences---disrupt bacterial membranes through mechanisms orthogonal to conventional
+antibiotics, making them prime candidates for novel therapeutics.
+
+Computational AMP discovery has progressed from hand-crafted physicochemical
+features~\citep{iamppred} through deep sequence models~\citep{amplify,ampscanner}
+to Transformer-based approaches~\citep{esm2}.
+Despite this progress, three gaps remain:
+(i)~existing classifiers are trained on small curated sets and do not benefit from the
+large unlabelled AMP sequence databases;
+(ii)~MIC prediction models are limited to a single species or lack uncertainty estimates;
+(iii)~sequence generators either ignore physicochemical constraints entirely or
+do not support targeting specific antimicrobial potency profiles.
+
+We address all three gaps with \textbf{JEPA-AMP}, which makes four contributions:
+\begin{enumerate}
+  \item A \emph{self-supervised JEPA pre-training} scheme on 868k AMP sequences,
+        learning rich contextual representations without sequence-level labels.
+  \item A \emph{lightweight adapter fine-tuning} protocol for AMP classification
+        and multi-species MIC regression, achieving competitive performance
+        while retaining pre-trained representations.
+  \item A \emph{conditional autoregressive generator} (v4) with dual-pathway
+        conditioning (AdaLN per-layer + cross-attention condition token) and a
+        differentiable physicochemical auxiliary loss, enabling reliable charge
+        and hydrophobicity targeting with $R^2=0.98$.
+  \item An \emph{MIC-conditioned generator} (v5) trained on real experimental
+        measurements from GRAMPA~\citep{grampa}, demonstrating global activity
+        control via a 43-dimensional condition vector specifying per-species MIC targets.
+\end{enumerate}
