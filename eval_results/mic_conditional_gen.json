@@ -1,0 +1,371 @@
+{
+  "Unconditioned (no MIC)": {
+    "physchem": [
+      0.3,
+      0.0,
+      0.0
+    ],
+    "mic_targets": {},
+    "n_seqs": 200,
+    "predicted_mic": {
+      "E.coli": {
+        "target": null,
+        "actual_mean": 1.898951416015625,
+        "actual_std": 0.7714207120862553
+      },
+      "S.aureus": {
+        "target": null,
+        "actual_mean": 1.823507080078125,
+        "actual_std": 0.75044554451431
+      },
+      "P.aeru": {
+        "target": null,
+        "actual_mean": 1.9459637451171874,
+        "actual_std": 0.7290060952418806
+      },
+      "C.albicans": {
+        "target": null,
+        "actual_mean": 1.8266473388671876,
+        "actual_std": 0.6608491583100489
+      }
+    },
+    "mean_charge": 3.145,
+    "mean_gravy": -0.405235099494276,
+    "mean_len": 15.07,
+    "samples": [
+      "AMGYMNFNMKKFC",
+      "AEELFPETNNKIMEC",
+      "AKKKIKNKKIVKKKKKENRIVKSKWMKMSVYKHVYKKKEK",
+      "ASLIGSHLEWPGNILKWPKVKKKNKKFKPEIYFC",
+      "ALMPKKPNC"
+    ]
+  },
+  "Broad-spectrum (E.coli + S.aureus + P.aeru potent)": {
+    "physchem": [
+      0.3,
+      0.76,
+      0.3
+    ],
+    "mic_targets": {
+      "0": -1.0,
+      "1": -1.0,
+      "2": -1.0
+    },
+    "n_seqs": 200,
+    "predicted_mic": {
+      "E.coli": {
+        "target": -1.0,
+        "actual_mean": 1.4793806457519532,
+        "actual_std": 0.7264479901627394
+      },
+      "S.aureus": {
+        "target": -1.0,
+        "actual_mean": 1.4123532104492187,
+        "actual_std": 0.6676251930693349
+      },
+      "P.aeru": {
+        "target": -1.0,
+        "actual_mean": 1.549456329345703,
+        "actual_std": 0.6863585009328169
+      },
+      "C.albicans": {
+        "target": null,
+        "actual_mean": 1.53712158203125,
+        "actual_std": 0.5805312079434591
+      }
+    },
+    "mean_charge": 5.675,
+    "mean_gravy": -0.3964771522224554,
+    "mean_len": 17.46,
+    "samples": [
+      "ANNIENKIENKKIKPYYKC",
+      "AMKKKWKMNRMVTVRKKC",
+      "AIINVKKKVLMKNIKVRMFKC",
+      "AIKPNKPNKPIKWPPRC",
+      "AKMPKNMIKNC"
+    ]
+  },
+  "E.coli-selective (strong E.coli, weak S.aureus)": {
+    "physchem": [
+      0.3,
+      0.76,
+      0.3
+    ],
+    "mic_targets": {
+      "0": -1.5,
+      "1": 3.0
+    },
+    "n_seqs": 200,
+    "predicted_mic": {
+      "E.coli": {
+        "target": -1.5,
+        "actual_mean": 1.811578369140625,
+        "actual_std": 0.7534433524750163
+      },
+      "S.aureus": {
+        "target": 3.0,
+        "actual_mean": 1.7393798828125,
+        "actual_std": 0.7457310231237159
+      },
+      "P.aeru": {
+        "target": null,
+        "actual_mean": 1.84868408203125,
+        "actual_std": 0.7258146648249874
+      },
+      "C.albicans": {
+        "target": null,
+        "actual_mean": 1.8146923828125,
+        "actual_std": 0.6412823221452283
+      }
+    },
+    "mean_charge": 4.6,
+    "mean_gravy": -0.447290464656535,
+    "mean_len": 13.715,
+    "samples": [
+      "AKKRPKIC",
+      "AKKIKKKIKC",
+      "AKFYKVMKVNMKFVPKFKWKYVC",
+      "AIIKVPKKPIKNMIKKC",
+      "AVKKKC"
+    ]
+  },
+  "S.aureus-selective (strong S.aureus, weak E.coli)": {
+    "physchem": [
+      0.3,
+      0.76,
+      0.3
+    ],
+    "mic_targets": {
+      "1": -1.5,
+      "0": 3.0
+    },
+    "n_seqs": 200,
+    "predicted_mic": {
+      "E.coli": {
+        "target": 3.0,
+        "actual_mean": 1.8296142578125,
+        "actual_std": 0.7393601896684243
+      },
+      "S.aureus": {
+        "target": -1.5,
+        "actual_mean": 1.7369696044921874,
+        "actual_std": 0.7181384066721263
+      },
+      "P.aeru": {
+        "target": null,
+        "actual_mean": 1.8656689453125,
+        "actual_std": 0.7017193825548371
+      },
+      "C.albicans": {
+        "target": null,
+        "actual_mean": 1.82982666015625,
+        "actual_std": 0.6253482324884592
+      }
+    },
+    "mean_charge": 4.14,
+    "mean_gravy": -0.27984624507655065,
+    "mean_len": 13.055,
+    "samples": [
+      "AKKKKIPMKKIVC",
+      "AKPKKPKKPIC",
+      "AKVVKKVKC",
+      "AIKKC",
+      "AKNLMIFVKINKNLMKKIPVRFC"
+    ]
+  },
+  "Gram-neg only (E.coli + P.aeru strong, S.aureus weak)": {
+    "physchem": [
+      0.3,
+      0.76,
+      0.3
+    ],
+    "mic_targets": {
+      "0": -1.5,
+      "2": -1.5,
+      "1": 3.0
+    },
+    "n_seqs": 200,
+    "predicted_mic": {
+      "E.coli": {
+        "target": -1.5,
+        "actual_mean": 1.5193539428710938,
+        "actual_std": 0.7564524166470804
+      },
+      "S.aureus": {
+        "target": 3.0,
+        "actual_mean": 1.496335220336914,
+        "actual_std": 0.6923819854618358
+      },
+      "P.aeru": {
+        "target": -1.5,
+        "actual_mean": 1.593449320793152,
+        "actual_std": 0.7159164844497184
+      },
+      "C.albicans": {
+        "target": null,
+        "actual_mean": 1.6120500183105468,
+        "actual_std": 0.5934220961491133
+      }
+    },
+    "mean_charge": 5.775,
+    "mean_gravy": -0.5946551397765394,
+    "mean_len": 17.25,
+    "samples": [
+      "AMRRLTC",
+      "AVKKKPFVKIKIFKVC",
+      "AKKVRMVVKMVKKPRVMNKKC",
+      "ALNKNLFKWVLFFC",
+      "AVKKVKKVKMFPVVC"
+    ]
+  },
+  "Antifungal-selective (C.albicans strong, bacteria weak)": {
+    "physchem": [
+      0.3,
+      0.76,
+      0.3
+    ],
+    "mic_targets": {
+      "3": -1.5,
+      "0": 3.0,
+      "1": 3.0
+    },
+    "n_seqs": 200,
+    "predicted_mic": {
+      "E.coli": {
+        "target": 3.0,
+        "actual_mean": 1.9562646484375,
+        "actual_std": 0.7672694898717172
+      },
+      "S.aureus": {
+        "target": 3.0,
+        "actual_mean": 1.87807861328125,
+        "actual_std": 0.7608389525429714
+      },
+      "P.aeru": {
+        "target": null,
+        "actual_mean": 1.9904443359375,
+        "actual_std": 0.7403991676989751
+      },
+      "C.albicans": {
+        "target": -1.5,
+        "actual_mean": 1.92869873046875,
+        "actual_std": 0.6586672368574626
+      }
+    },
+    "mean_charge": 4.39,
+    "mean_gravy": -0.5159858059550909,
+    "mean_len": 12.19,
+    "samples": [
+      "AKKKIINKKKIC",
+      "AKPIKVIC",
+      "AKKKPPRNMNFNMYKFC",
+      "AKIKKC",
+      "AKKPIVNKC"
+    ]
+  },
+  "High-potency E.coli (MIC = 0.25 \u00b5g/mL)": {
+    "physchem": [
+      0.3,
+      0.76,
+      0.3
+    ],
+    "mic_targets": {
+      "0": -2.0
+    },
+    "n_seqs": 200,
+    "predicted_mic": {
+      "E.coli": {
+        "target": -2.0,
+        "actual_mean": 1.6965672302246093,
+        "actual_std": 0.7430882871207038
+      },
+      "S.aureus": {
+        "target": null,
+        "actual_mean": 1.669954833984375,
+        "actual_std": 0.7019797351094211
+      },
+      "P.aeru": {
+        "target": null,
+        "actual_mean": 1.7510430908203125,
+        "actual_std": 0.7058415507019894
+      },
+      "C.albicans": {
+        "target": null,
+        "actual_mean": 1.731339111328125,
+        "actual_std": 0.6004625015953621
+      }
+    },
+    "mean_charge": 4.89,
+    "mean_gravy": -0.4319703367727831,
+    "mean_len": 14.82,
+    "samples": [
+      "AVVMPKKINC",
+      "AKNYMKNMLKNYMLVPYKC",
+      "AMLNPMVKC",
+      "AKKFC",
+      "AKFC"
+    ]
+  },
+  "Inactive against all (high MIC everywhere)": {
+    "physchem": [
+      0.3,
+      0.0,
+      0.0
+    ],
+    "mic_targets": {
+      "0": 3.0,
+      "1": 3.0,
+      "2": 3.0,
+      "3": 3.0,
+      "4": 3.0,
+      "5": 3.0,
+      "6": 3.0,
+      "7": 3.0,
+      "8": 3.0,
+      "9": 3.0,
+      "10": 3.0,
+      "11": 3.0,
+      "12": 3.0,
+      "13": 3.0,
+      "14": 3.0,
+      "15": 3.0,
+      "16": 3.0,
+      "17": 3.0,
+      "18": 3.0,
+      "19": 3.0
+    },
+    "n_seqs": 200,
+    "predicted_mic": {
+      "E.coli": {
+        "target": 3.0,
+        "actual_mean": 2.9356201171875,
+        "actual_std": 0.5814931458366919
+      },
+      "S.aureus": {
+        "target": 3.0,
+        "actual_mean": 2.9312939453125,
+        "actual_std": 0.5368231739036048
+      },
+      "P.aeru": {
+        "target": 3.0,
+        "actual_mean": 2.9373193359375,
+        "actual_std": 0.5542357253041823
+      },
+      "C.albicans": {
+        "target": 3.0,
+        "actual_mean": 2.7929296875,
+        "actual_std": 0.5086720381103591
+      }
+    },
+    "mean_charge": 2.985,
+    "mean_gravy": -0.49085520498345303,
+    "mean_len": 6.825,
+    "samples": [
+      "AKKC",
+      "AHC",
+      "AKKKKC",
+      "AKKLKKKKKVKKPKHHC",
+      "AVKKC"
+    ]
+  }
+}

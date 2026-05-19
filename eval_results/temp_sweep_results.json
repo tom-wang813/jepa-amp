@@ -1,0 +1,324 @@
+{
+  "T0.5_p0.9": {
+    "temperature": 0.5,
+    "top_p": 0.9,
+    "n": 300,
+    "mean_length": 17.996666666666666,
+    "std_length": 4.047631680652554,
+    "min_length": 3,
+    "max_length": 26,
+    "length_hist": {
+      "counts": [
+        3,
+        9,
+        61,
+        134,
+        91,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bin_edges": [
+        1,
+        6,
+        11,
+        16,
+        21,
+        26,
+        31,
+        36,
+        41,
+        46,
+        51
+      ]
+    },
+    "uniqueness": 1.0,
+    "amp_mean": 0.1986924558877945,
+    "amp_frac_gt05": 0.17333333333333334,
+    "samples": [
+      "AKKYEVPNGESIKVKWKEWKEWC",
+      "AWWNMWVKPEGEEVPKEC",
+      "AMVVC",
+      "AEWISVSVWWEEVWEYYEEYWEEC",
+      "ANKKVKYKKKNKKNKEC"
+    ]
+  },
+  "T0.7_p0.9": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "n": 300,
+    "mean_length": 17.956666666666667,
+    "std_length": 3.9591399178216586,
+    "min_length": 3,
+    "max_length": 27,
+    "length_hist": {
+      "counts": [
+        3,
+        12,
+        62,
+        142,
+        79,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bin_edges": [
+        1,
+        6,
+        11,
+        16,
+        21,
+        26,
+        31,
+        36,
+        41,
+        46,
+        51
+      ]
+    },
+    "uniqueness": 1.0,
+    "amp_mean": 0.21064060926437378,
+    "amp_frac_gt05": 0.2,
+    "samples": [
+      "AWPWNKPWENEMMKC",
+      "AVNENMTNPIETMHKGMKNRRC",
+      "AIEPHNYKYKVIEKNYWENEEC",
+      "ANIHGPEGNPRSPNINNC",
+      "AKMITRMMKVKEC"
+    ]
+  },
+  "T0.9_p0.9": {
+    "temperature": 0.9,
+    "top_p": 0.9,
+    "n": 300,
+    "mean_length": 17.79,
+    "std_length": 3.7039483437722684,
+    "min_length": 6,
+    "max_length": 26,
+    "length_hist": {
+      "counts": [
+        0,
+        9,
+        68,
+        152,
+        69,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bin_edges": [
+        1,
+        6,
+        11,
+        16,
+        21,
+        26,
+        31,
+        36,
+        41,
+        46,
+        51
+      ]
+    },
+    "uniqueness": 1.0,
+    "amp_mean": 0.23278772830963135,
+    "amp_frac_gt05": 0.22,
+    "samples": [
+      "AKEQVWSNEEYWKVC",
+      "AVINIPRRMPNMVEQC",
+      "ARVPVNIKVIEEKC",
+      "AQPEPPPESNRESPC",
+      "AIPELIIIIKKIVTKIPTKPVKC"
+    ]
+  },
+  "T1.0_p0.9": {
+    "temperature": 1.0,
+    "top_p": 0.9,
+    "n": 300,
+    "mean_length": 17.276666666666667,
+    "std_length": 3.8781596437256454,
+    "min_length": 6,
+    "max_length": 27,
+    "length_hist": {
+      "counts": [
+        0,
+        13,
+        80,
+        144,
+        59,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bin_edges": [
+        1,
+        6,
+        11,
+        16,
+        21,
+        26,
+        31,
+        36,
+        41,
+        46,
+        51
+      ]
+    },
+    "uniqueness": 1.0,
+    "amp_mean": 0.20691746473312378,
+    "amp_frac_gt05": 0.18,
+    "samples": [
+      "AEPKMRYKHMWYLLC",
+      "ARVINKMLKWKRNLC",
+      "AVHMGEPPGGEVNVPGVVC",
+      "ARPKWNNC",
+      "AVKKVKVIVKTYTVEITWPYPC"
+    ]
+  },
+  "T1.2_p0.9": {
+    "temperature": 1.2,
+    "top_p": 0.9,
+    "n": 300,
+    "mean_length": 17.296666666666667,
+    "std_length": 3.853395328221017,
+    "min_length": 6,
+    "max_length": 27,
+    "length_hist": {
+      "counts": [
+        0,
+        12,
+        84,
+        132,
+        71,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bin_edges": [
+        1,
+        6,
+        11,
+        16,
+        21,
+        26,
+        31,
+        36,
+        41,
+        46,
+        51
+      ]
+    },
+    "uniqueness": 1.0,
+    "amp_mean": 0.20316754281520844,
+    "amp_frac_gt05": 0.17666666666666667,
+    "samples": [
+      "APWNEKNNGPKYEMEMMC",
+      "APTVIYVKQPKWNKC",
+      "ANTEVNEWNYVEESGKNSSKSC",
+      "ASWVRQYNEESSWERKWVC",
+      "AEQQQQNSKNWKFVSWKMHKQPWLC"
+    ]
+  },
+  "T1.0_p0.7": {
+    "temperature": 1.0,
+    "top_p": 0.7,
+    "n": 300,
+    "mean_length": 17.983333333333334,
+    "std_length": 3.771346650144422,
+    "min_length": 4,
+    "max_length": 27,
+    "length_hist": {
+      "counts": [
+        1,
+        7,
+        67,
+        141,
+        80,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bin_edges": [
+        1,
+        6,
+        11,
+        16,
+        21,
+        26,
+        31,
+        36,
+        41,
+        46,
+        51
+      ]
+    },
+    "uniqueness": 1.0,
+    "amp_mean": 0.2080642133951187,
+    "amp_frac_gt05": 0.19333333333333333,
+    "samples": [
+      "ANRMMNMRMNKRC",
+      "ANWNIKNIKWPGEKRKIC",
+      "AEPMVVVNNENNRNRETEC",
+      "APNPNQSKPYTKKQNC",
+      "APKEKMKLYVHVKPKLYC"
+    ]
+  },
+  "T1.0_p0.95": {
+    "temperature": 1.0,
+    "top_p": 0.95,
+    "n": 300,
+    "mean_length": 17.8,
+    "std_length": 4.0091561871961705,
+    "min_length": 5,
+    "max_length": 27,
+    "length_hist": {
+      "counts": [
+        1,
+        12,
+        66,
+        138,
+        79,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bin_edges": [
+        1,
+        6,
+        11,
+        16,
+        21,
+        26,
+        31,
+        36,
+        41,
+        46,
+        51
+      ]
+    },
+    "uniqueness": 1.0,
+    "amp_mean": 0.2441454529762268,
+    "amp_frac_gt05": 0.23666666666666666,
+    "samples": [
+      "AKGIMYNPPTGKYMNINEINNC",
+      "AVRRRESQPSEPWWEYNEQEYVC",
+      "AHMVNRMMMEWPSC",
+      "AEERVYKMWPKKSPETPEENC",
+      "APNMGYEGMYLKMNPPEEC"
+    ]
+  }
+}

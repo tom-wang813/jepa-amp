@@ -1,0 +1,162 @@
+{
+  "amplify_test": {
+    "ours": {
+      "JEPA-v2 (balanced 3k)": {
+        "ROC-AUC": 0.8559,
+        "Accuracy": 0.724,
+        "Precision": 0.8912,
+        "Recall": 0.5102,
+        "F1": 0.6489,
+        "MCC": 0.4955
+      },
+      "JEPA-v3 (pos_weight 868k+3k neg)": {
+        "ROC-AUC": 0.8855,
+        "Accuracy": 0.7629,
+        "Precision": 0.9149,
+        "Recall": 0.5796,
+        "F1": 0.7097,
+        "MCC": 0.5651
+      },
+      "JEPA-v4 (pos_weight 868k+8.7k neg)": {
+        "ROC-AUC": 0.8757,
+        "Accuracy": 0.694,
+        "Precision": 0.9551,
+        "Recall": 0.4072,
+        "F1": 0.5709,
+        "MCC": 0.4737
+      },
+      "JEPA-v5 (pos_weight 868k+50k shuffled)": {
+        "ROC-AUC": 0.8373,
+        "Accuracy": 0.7479,
+        "Precision": 0.7581,
+        "Recall": 0.7281,
+        "F1": 0.7428,
+        "MCC": 0.4962
+      },
+      "JEPA-v6 (868k balanced, noleak)": {
+        "ROC-AUC": 0.8877,
+        "Accuracy": 0.8144,
+        "Precision": 0.8661,
+        "Recall": 0.7437,
+        "F1": 0.8003,
+        "MCC": 0.6351
+      },
+      "JEPA-v7 (UniProt+curated neg, noleak)": {
+        "ROC-AUC": 0.8694,
+        "Accuracy": 0.706,
+        "Precision": 0.9674,
+        "Recall": 0.4263,
+        "F1": 0.5919,
+        "MCC": 0.497
+      },
+      "JEPA-AMPlify-identical (3k, apple-to-apple)": {
+        "ROC-AUC": 0.9584,
+        "Accuracy": 0.9006,
+        "Precision": 0.9145,
+        "Recall": 0.8838,
+        "F1": 0.8989,
+        "MCC": 0.8016
+      }
+    },
+    "esm": {
+      "ESM2-AMPlify-identical (3k)": {
+        "ROC-AUC": 0.9631,
+        "Accuracy": 0.9126,
+        "Precision": 0.9445,
+        "Recall": 0.8766,
+        "F1": 0.9093,
+        "MCC": 0.8273
+      }
+    },
+    "published": {
+      "AMPlify ensemble": {
+        "ROC-AUC": 0.9837,
+        "Accuracy": 0.9371,
+        "Recall": 0.9293,
+        "F1": 0.9366
+      },
+      "AMPlify single (best)": {
+        "ROC-AUC": 0.9798,
+        "Accuracy": 0.9257,
+        "Recall": 0.9257,
+        "F1": 0.9257
+      },
+      "AMPlify single (worst)": {
+        "ROC-AUC": 0.9727,
+        "Accuracy": 0.921,
+        "Recall": 0.909,
+        "F1": 0.92
+      },
+      "AMP Scanner (re-trained)": {
+        "ROC-AUC": 0.974,
+        "Accuracy": 0.9066,
+        "Recall": 0.9114,
+        "F1": 0.907
+      },
+      "iAMPpred (original)": {
+        "ROC-AUC": 0.807,
+        "Accuracy": 0.7401,
+        "Recall": 0.879,
+        "F1": 0.7718
+      }
+    }
+  },
+  "apd3_independent": {
+    "JEPA-v2 (balanced 3k)": {
+      "ROC-AUC": 0.8637,
+      "Accuracy": 0.7656,
+      "Precision": 0.8443,
+      "Recall": 0.5072,
+      "F1": 0.6337,
+      "MCC": 0.5102
+    },
+    "JEPA-v3 (pos_weight 868k+3k neg)": {
+      "ROC-AUC": 0.8956,
+      "Accuracy": 0.8131,
+      "Precision": 0.8834,
+      "Recall": 0.6133,
+      "F1": 0.724,
+      "MCC": 0.612
+    },
+    "JEPA-v4 (pos_weight 868k+8.7k neg)": {
+      "ROC-AUC": 0.9132,
+      "Accuracy": 0.8045,
+      "Precision": 0.9494,
+      "Recall": 0.5396,
+      "F1": 0.6881,
+      "MCC": 0.6084
+    },
+    "JEPA-v5 (pos_weight 868k+50k shuffled)": {
+      "ROC-AUC": 0.7751,
+      "Accuracy": 0.7024,
+      "Precision": 0.634,
+      "Recall": 0.6043,
+      "F1": 0.6188,
+      "MCC": 0.3752
+    },
+    "JEPA-v6 (868k balanced, noleak)": {
+      "ROC-AUC": 0.8798,
+      "Accuracy": 0.8325,
+      "Precision": 0.8136,
+      "Recall": 0.7536,
+      "F1": 0.7824,
+      "MCC": 0.6478
+    },
+    "JEPA-v7 (UniProt+curated neg, noleak)": {
+      "ROC-AUC": 0.8967,
+      "Accuracy": 0.803,
+      "Precision": 0.9608,
+      "Recall": 0.5288,
+      "F1": 0.6821,
+      "MCC": 0.6083
+    },
+    "JEPA-AMPlify-identical (3k, apple-to-apple)": {
+      "ROC-AUC": 0.9444,
+      "Accuracy": 0.8843,
+      "Precision": 0.8705,
+      "Recall": 0.8345,
+      "F1": 0.8522,
+      "MCC": 0.7576
+    }
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "AMP-like (+charge, hydrophob)": {
+    "target": {
+      "charge": 4.981075411725516,
+      "gravy": 0.30951960420311175,
+      "len": 20.0
+    },
+    "actual": {
+      "charge": 7.03,
+      "gravy": -0.6880872331551317,
+      "len": 13.47
+    },
+    "frac_amp": 0.355,
+    "diversity": 0.43495211680773177,
+    "novelty": 1.0,
+    "mean_amp_score": 0.40492141723632813,
+    "samples": [
+      "ARVRKVKKKKVVC",
+      "AIKKKKKKMKKKKC",
+      "AKKKIIVKVVVKC",
+      "AKKKKVKKKVKKKC",
+      "AKKIVKNKKVKKKKC"
+    ]
+  },
+  "High +charge, short": {
+    "target": {
+      "charge": 9.158904115324113,
+      "gravy": 0.0,
+      "len": 10.0
+    },
+    "actual": {
+      "charge": 12.72,
+      "gravy": -2.4089811425309664,
+      "len": 16.23
+    },
+    "frac_amp": 0.535,
+    "diversity": 0.24163228834417866,
+    "novelty": 1.0,
+    "mean_amp_score": 0.5086126708984375,
+    "samples": [
+      "AKKKKKKKKKKKKKKKKKKKC",
+      "AVKKKKKKKKKKKKKKC",
+      "AKKKKKKKKKKKKKC",
+      "AKKKKKKVKKKKC",
+      "AKKVKKKVKKKVKKKKKKKKKVKC"
+    ]
+  },
+  "Very high +charge": {
+    "target": {
+      "charge": 13.233262061811228,
+      "gravy": 0.0,
+      "len": 20.0
+    },
+    "actual": {
+      "charge": 13.885,
+      "gravy": -2.264860751277632,
+      "len": 18.09
+    },
+    "frac_amp": 0.575,
+    "diversity": 0.25068156693853916,
+    "novelty": 1.0,
+    "mean_amp_score": 0.5471220397949219,
+    "samples": [
+      "AKKKVKVKKKKKKKKVKC",
+      "AKKKVVKKKKKVKKKKKC",
+      "AKKKKKKKKKKKKKKVC",
+      "AKKKKKKKKKKIKKKIC",
+      "AKKKKKVKKVKKKC"
+    ]
+  },
+  "Neutral, hydrophobic": {
+    "target": {
+      "charge": 0.0,
+      "gravy": 0.8673005276940531,
+      "len": 15.0
+    },
+    "actual": {
+      "charge": 0.715,
+      "gravy": 1.059836542761504,
+      "len": 12.475
+    },
+    "frac_amp": 0.22,
+    "diversity": 0.6718647967863655,
+    "novelty": 1.0,
+    "mean_amp_score": 0.37055282592773436,
+    "samples": [
+      "AHRTIIPVIIIC",
+      "APIIIKPGPPC",
+      "ALWIKGEYEFPKC",
+      "AIIVILLKMMIC",
+      "AKKPEIEKIIKIIC"
+    ]
+  },
+  "Strongly hydrophobic": {
+    "target": {
+      "charge": 0.0,
+      "gravy": 1.4722194895832204,
+      "len": 15.0
+    },
+    "actual": {
+      "charge": 0.62,
+      "gravy": 2.0810805209603775,
+      "len": 12.665
+    },
+    "frac_amp": 0.165,
+    "diversity": 0.5757311451600315,
+    "novelty": 1.0,
+    "mean_amp_score": 0.3458514404296875,
+    "samples": [
+      "AIMHPIC",
+      "AIIIMIIIMMVIINMPIC",
+      "AIPGVIPFMSSKIMKMMKMC",
+      "AIKPWIPILIIPIIC",
+      "AMPPHMMIMIC"
+    ]
+  },
+  "Anionic (\u2212charge)": {
+    "target": {
+      "charge": -4.981075411725516,
+      "gravy": 0.0,
+      "len": 15.0
+    },
+    "actual": {
+      "charge": -7.65,
+      "gravy": -0.5741763746933247,
+      "len": 18.355
+    },
+    "frac_amp": 0.215,
+    "diversity": 0.5590011334695641,
+    "novelty": 1.0,
+    "mean_amp_score": 0.39484405517578125,
+    "samples": [
+      "AEMEEEEIIGEHHEIEHIIEC",
+      "AEEEEHIEHEIGC",
+      "AHWGEEKHEIEHSHWEEEEWSWC",
+      "AILEEEGFFEEEIIHEFEC",
+      "AEEEGEEEIEEC"
+    ]
+  },
+  "Strong anionic": {
+    "target": {
+      "charge": -9.158904115324113,
+      "gravy": 0.0,
+      "len": 20.0
+    },
+    "actual": {
+      "charge": -9.3,
+      "gravy": -0.9178858032744389,
+      "len": 18.785
+    },
+    "frac_amp": 0.25,
+    "diversity": 0.47949557280497984,
+    "novelty": 1.0,
+    "mean_amp_score": 0.4289816284179688,
+    "samples": [
+      "AFEEEEHEHEGEC",
+      "AEIGEEELEMGHEMEEC",
+      "AEEGIIGGGEGMIEGEEHEC",
+      "AGHEEEIEEEHIGEIIEIEC",
+      "AEEEIMEEIMGC"
+    ]
+  },
+  "Long, neutral, hydrophilic": {
+    "target": {
+      "charge": 0.0,
+      "gravy": -0.6931471805599453,
+      "len": 30.0
+    },
+    "actual": {
+      "charge": 0.1,
+      "gravy": -0.7449427978883861,
+      "len": 15.805
+    },
+    "frac_amp": 0.265,
+    "diversity": 0.7524362407744761,
+    "novelty": 1.0,
+    "mean_amp_score": 0.4289996337890625,
+    "samples": [
+      "AGEVREGKYRVYTC",
+      "ASSKHSSETGRSC",
+      "AWLEKSELIGYSIWHWC",
+      "AGVLKEWSRLHRGGGTC",
+      "AVEGVNHNRNHGNGHC"
+    ]
+  },
+  "Cationic + hydrophobic (AMP)": {
+    "target": {
+      "charge": 4.981075411725516,
+      "gravy": 0.6931471805599453,
+      "len": 15.0
+    },
+    "actual": {
+      "charge": 8.21,
+      "gravy": -1.0887528814086669,
+      "len": 13.7
+    },
+    "frac_amp": 0.425,
+    "diversity": 0.35343686225638093,
+    "novelty": 1.0,
+    "mean_amp_score": 0.4667724609375,
+    "samples": [
+      "AKVKKVKVVKKKC",
+      "AIKVVPKMKKKC",
+      "AKKKVKKVKKKKKVC",
+      "AVKMKKKVKKKKC",
+      "AKKVVVKKMKKKC"
+    ]
+  },
+  "Anionic + hydrophilic": {
+    "target": {
+      "charge": -3.4657359027997265,
+      "gravy": -0.6931471805599453,
+      "len": 20.0
+    },
+    "actual": {
+      "charge": -5.075,
+      "gravy": -0.9761427017538518,
+      "len": 16.8
+    },
+    "frac_amp": 0.265,
+    "diversity": 0.6306709749424658,
+    "novelty": 1.0,
+    "mean_amp_score": 0.422078857421875,
+    "samples": [
+      "AEHEGGMGMHEC",
+      "AFHEEHGEHVTEHEHEELGEC",
+      "AEGGIGESSSSTHGTESETC",
+      "AEWGHEGEHEYIWGFYSGEEWGHC",
+      "AHPGMGEHEMVGC"
+    ]
+  }
+}

@@ -46,7 +46,7 @@ data/*
 # If there are small necessary files in data/ that must be tracked,
 # add explicit negated patterns (e.g. '!data/README.md') below.
 
-# Checkpoints / model weights
+# Checkpoints / model weights (IGNORE ALL WEIGHTS)
 checkpoints/
 checkpoints/*
 checkpoints/**
@@ -56,9 +56,22 @@ checkpoints/**
 *.bin
 *.model
 
-# Evaluation outputs and temporary test results
-eval_results/
+# Evaluation outputs (KEEP results for remote AI to understand)
+# Allow JSON, CSV, and image results; ignore tensorboard/temporary files
 eval_results/*
+!eval_results/*.json
+!eval_results/*.csv
+!eval_results/*.png
+!eval_results/*.jpg
+!eval_results/*.pdf
+!eval_results/README.md
+eval_results/**/*
+!eval_results/**/*.json
+!eval_results/**/*.csv
+!eval_results/**/*.png
+!eval_results/**/*.jpg
+!eval_results/**/*.pdf
+
 logs/
 logs/*
 runs/                # tensorboard default
