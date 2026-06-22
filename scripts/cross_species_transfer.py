@@ -140,12 +140,13 @@ class JEPAEmbedder(nn.Module):
 
 
 class ESM2Embedder(nn.Module):
-    def __init__(self, device):
+    def __init__(self, device, model_key: str = "esm2_t12_35M"):
         super().__init__()
-        from src.models.esm_head import load_esm2
-        self.esm, self.alphabet, _ = load_esm2("esm2_t12_35M")
+        from src.models.esm_head import load_esm2, _ESM2_MODELS
+        self.esm, self.alphabet, d = load_esm2(model_key)
         self.bc = self.alphabet.get_batch_converter()
-        self.d_model = 480
+        self.d_model = d
+        self.num_layers = self.esm.num_layers
         for p in self.esm.parameters():
             p.requires_grad_(False)
 
@@ -154,8 +155,8 @@ class ESM2Embedder(nn.Module):
         _, _, tokens = self.bc(data)
         tokens = tokens.to(device)
         with torch.no_grad():
-            out = self.esm(tokens, repr_layers=[12], return_contacts=False)
-        h = out["representations"][12]
+            out = self.esm(tokens, repr_layers=[self.num_layers], return_contacts=False)
+        h = out["representations"][self.num_layers]
         pad = tokens == self.alphabet.padding_idx
         h = h.masked_fill(pad.unsqueeze(-1), 0.0)
         lengths = (~pad).sum(1, keepdim=True).float().clamp(min=1)
@@ -260,7 +261,9 @@ def main():
     if existing.exists():
         results = json.loads(existing.read_text())
 
-    for model_name, EmbClass in [("jepa", JEPAEmbedder), ("esm2", ESM2Embedder)]:
+    esm_650m_factory = lambda dev: ESM2Embedder(dev, model_key="esm2_t33_650M")
+    for model_name, EmbClass in [("jepa", JEPAEmbedder), ("esm2", ESM2Embedder),
+                                  ("esm2_650m", esm_650m_factory)]:
         print(f"\n{'='*60}\n{model_name.upper()}\n{'='*60}")
         embedder = EmbClass(device).to(device).eval()
         d = embedder.d_model

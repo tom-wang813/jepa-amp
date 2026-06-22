@@ -1,5 +1,5 @@
 # Research State — JEPA-AMP
-_Last updated: 2026-06-12 | Session: 5_
+_Last updated: 2026-06-22 | Session: 6_
 
 ## Central Research Question
 Can a JEPA-pretrained AMP encoder serve as a unified backbone for classification,
@@ -82,6 +82,8 @@ using stale summaries that no longer match the latest machine-readable artifacts
 | RQ4: Diffusion paradigm | Best new paradigm; perfect length control in this eval | ✅ DONE | `eval_results/generation_control_diffusion/SUMMARY.md` — Charge R² 0.702, Length R² 1.000 |
 | RQ4: v6 7-dim cond | Partial extra control only | ✅ DONE | `eval_results/generation_control_v6/SUMMARY.md` — Helix R² 0.533, pI R² 0.330, AMP R² 0.237 |
 | MC-Dropout | **NEGATIVE**: no improvement from formal ckpt | ✅ LOCKED (negative) | `eval_results/mc_dropout_formal/metrics.json` — Δ=+0.0028 |
+| ESM-2 650M cross-species | zero-shot mean Pearson 0.442 (5 pairs, 3 seeds) | ✅ NEW | `eval_results/cross_species_transfer/metrics.json` key `esm2_650m` |
+| ESM-2 650M blind-2026 | Pearson 0.596 ± 0.017 (frozen+head, GRAMPA E.coli train) | ✅ NEW | `eval_results/external_elife2025_supp2_mic.json` key `ESM-2 650M (frozen+head)` |
 | TTT benchmark suite | Metrics computed; summary write crashed | ⚠ PARTIAL | `eval_results/ttt_benchmarks/metrics.json` exists; `logs/ttt_benchmarks.log` ends with formatting `ValueError` |
 | TTT transfer | Results exist but summary and metrics are out of sync | ⚠ VERIFY | `eval_results/ttt_transfer/SUMMARY.md` (2026-06-11) vs `metrics.json` (2026-06-12) |
 | V7 / MLM comparison | New comparison pack finished | ✅ DONE | `eval_results/comparison_formal/metrics.json` + `SUMMARY.md` |
@@ -106,6 +108,12 @@ using stale summaries that no longer match the latest machine-readable artifacts
 | Charge R² (no_dropout ablation) | 0.805 | generation_control_ablation/metrics.json |
 | Frozen JEPA k-NN MIC (k=5) | Pearson 0.598 | embedding_quality/metrics.json |
 | Frozen ESM2 k-NN MIC (k=5) | Pearson 0.618 | embedding_quality/metrics.json |
+| Cross-species zero-shot (JEPA) | mean 0.523 (5 pairs, 3 seeds) | cross_species_transfer/metrics.json |
+| Cross-species zero-shot (ESM-2 35M) | mean 0.423 | cross_species_transfer/metrics.json |
+| Cross-species zero-shot (ESM-2 650M) | mean 0.442 | cross_species_transfer/metrics.json key `esm2_650m` |
+| Blind-2026 temporal (JEPA) | Pearson 0.552 | external_elife2025_supp2_mic.json |
+| Blind-2026 temporal (ESM-2 35M) | Pearson 0.321 | external_elife2025_supp2_mic.json |
+| Blind-2026 temporal (ESM-2 650M) | Pearson 0.596 ± 0.017 | external_elife2025_supp2_mic.json |
 
 ## Agreed Next Step
 1. Treat all queued experiments as finished unless a specific missing artifact is identified.

@@ -2,6 +2,43 @@
 _Append-only. Most recent entry first._
 
 ---
+## Session 6 — 2026-06-22
+**Phase**: Baseline extension
+
+### Decisions made
+- ESM-2 650M added as additional comparison baseline (instead of RAMPMLM, which has no existing checkpoint)
+- Cross-species and blind-2026 evaluations run with frozen 650M + MLP head (same protocol as cross_species_transfer.py)
+
+### What changed
+- `scripts/cross_species_transfer.py` — `ESM2Embedder` made configurable by model_key; 650M added to evaluation loop as `esm2_650m`
+- `scripts/eval_esm2_650m_blind2026.py` — new script: frozen 650M + MLP head trained on GRAMPA E.coli, evaluated on 104-sequence supp2 blind set
+- `eval_results/cross_species_transfer/metrics.json` — new key `esm2_650m` (5 species pairs × 3 seeds)
+- `eval_results/external_elife2025_supp2_mic.json` — new metric key `ESM-2 650M (frozen+head)`
+
+### Evidence used
+| Model | Cross-species zero-shot | Blind-2026 |
+|---|---|---|
+| JEPA-AMP | mean 0.523 | 0.552 |
+| ESM-2 35M | mean 0.423 | 0.321 |
+| ESM-2 650M | mean 0.442 | 0.596 ± 0.017 |
+
+### Interpretation
+- JEPA still leads ESM-2 35M on both benchmarks
+- ESM-2 650M surpasses JEPA on blind-2026 (0.596 vs 0.552) but not on cross-species (0.442 vs 0.523)
+- ⚠️ This is a paper risk: a larger frozen ESM-2 can beat JEPA on the temporal held-out test. Needs careful framing — JEPA is 14M vs 650M (46×), and the blind-2026 advantage of 650M disappears on cross-species generalization.
+- Protocol note: blind-2026 ESM-2 650M uses frozen embeddings + MLP head (consistent with cross-species protocol), whereas the existing JEPA/35M blind-2026 numbers use fine-tuned checkpoints. This protocol difference should be disclosed if cited together.
+
+### Next session starts with
+Decide how to present the 650M comparison in the paper — whether to add it as a supplementary comparison or use it to strengthen JEPA's efficiency argument (14M JEPA ≈ 650M ESM-2 on generalization, better on cross-species).
+
+### Agent handoff
+Current tool: Claude (FleetView)
+Source of truth: `note/RESEARCH_STATE.md`, `eval_results/cross_species_transfer/metrics.json`, `eval_results/external_elife2025_supp2_mic.json`
+Safe next command: `python3 -c "import json; d=json.load(open('eval_results/external_elife2025_supp2_mic.json')); print(d['metrics'])"`
+Do not do: re-run blind-2026 with fine-tuned 650M (no checkpoint exists); claim JEPA beats 650M on blind-2026
+Open decision: paper framing of 650M comparison (efficiency argument vs. honest failure mode)
+
+---
 ## Session 5 — 2026-06-12
 **Phase**: State synchronization + unfinished-work audit
 
