@@ -1,0 +1,32 @@
+% ── methods/gen_diffusion.tex ─────────────────────────────────────────────────
+\subsection{Conditional Generation: Masked Diffusion Decoder}
+\label{sec:methods_diffusion}
+
+The \textbf{masked diffusion} decoder follows the MDLM absorbing-state
+framework~\citep{sahoo2024mdlm,austin2021d3pm}.
+
+\paragraph{Forward process.}
+At diffusion time $t \in [0,1]$, each amino acid token is independently
+masked (absorbed) with probability $t$.
+Special tokens (PAD, BOS, EOS) are never masked.
+
+\paragraph{Backward process.}
+A bidirectional 6-layer denoising transformer is trained to predict $x_0$ at
+masked positions given the noisy sequence $x_t$ and the conditioning signal:
+\begin{equation}
+  \mathcal{L}_\text{diffusion} =
+  \mathbb{E}_{t, x_0, x_t}
+  \bigl[-\log p_\theta(x_0 \mid x_t,\,\mathbf{c}_\text{emb},\,\tau(t),
+  \,h_\text{ctx})\bigr]_{x_t \text{ is masked}},
+\end{equation}
+where $\tau(t)$ is a sinusoidal timestep embedding
+($d_\tau=128$) injected via AdaLN alongside $\mathbf{c}_\text{emb}$.
+This is equivalent to a per-position BERT MLM loss with mask rate
+proportional to $t$.
+
+\paragraph{Inference.}
+Starting from all-\textsc{mask}, the denoiser unmasks
+$\lfloor L/T \rfloor$ highest-confidence positions per step for $T_\text{infer}$
+steps (default $T_\text{infer}=50$).
+
+Results are reported in Table~\ref{tab:gen_comparison}.

@@ -1,0 +1,23 @@
+% ── methods/gen_mic.tex ───────────────────────────────────────────────────────
+\subsection{MIC-Conditioned Generation}
+\label{sec:mic_gen}
+
+\paragraph{Extended condition vector.}
+The AR v4 decoder is extended to a 43-dimensional condition vector:
+\begin{equation}
+  \mathbf{c} =
+  \underbrace{[\ell/50,\;\tanh(q/5),\;\tanh(h)]}_{\text{physchem }(3)}
+  \;\|\;
+  \underbrace{[m_1,\ldots,m_{20}]}_{\text{MIC values }(20)}
+  \;\|\;
+  \underbrace{[\mu_1,\ldots,\mu_{20}]}_{\text{MIC mask }(20)},
+\end{equation}
+where $m_i$ is the target $\log_2\text{MIC}$ and $\mu_i \in \{0,1\}$
+indicates whether species $i$ is constrained.
+Per-bacterium CFG dropout is applied during training.
+
+\paragraph{Evaluation.}
+Generated sequences are evaluated only through computational MIC scorers
+(JEPA oracle and independently trained ESM-2 scorer) and
+physicochemical filters; no wet-lab MIC, hemolysis, or cytotoxicity data
+are claimed in this study.

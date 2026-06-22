@@ -1,0 +1,14 @@
+% ── methods/embedding_analysis.tex ────────────────────────────────────────────
+\subsection{Representation Quality Analysis}
+\label{sec:methods_emb}
+
+To compare JEPA and ESM-2 (35M), we evaluate frozen mean-pooled embeddings on
+two tasks without any fine-tuning:
+(i) $k$-nearest-neighbour MIC prediction on the GRAMPA test set
+($k \in \{5, 10, 20\}$, cosine distance); and
+(ii) linear probe AMP/non-AMP AUROC on the AMPlify evidence set
+(70/30 random split for probe training vs.\ evaluation).
+We additionally compute silhouette score (cosine) for AMP vs.\ non-AMP
+cluster separation.
+All encodings use mean pooling over non-padding positions; ESM-2 is loaded
+via \texttt{fair-esm}.

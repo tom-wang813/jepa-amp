@@ -1,0 +1,69 @@
+experiment_id: mic_conditioned_generation_formal
+research_decision: "Test whether MIC-conditioned generation changes predicted global activity beyond physicochemical conditioning, and whether the effect survives an independent ESM2 MIC scorer."
+seed: 42
+device: cuda
+gpu: 1
+output_dir: eval_results/mic_conditioned_generation_formal
+
+generator:
+  checkpoint: checkpoints/generator_grampa_v5/best_generator.pt
+  fallback_checkpoint: checkpoints/generator_868k_v5/best_generator.pt
+  pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+  grampa_config: configs/finetune_grampa_v5.yaml
+  fallback_config: configs/finetune_868k_v5.yaml
+
+scorers:
+  jepa_oracle:
+    config: configs/mic_868k_transformer_formal.yaml
+    checkpoint: checkpoints/formal_mic_868k_transformer/best_model.pt
+  esm2_independent:
+    config: configs/esm2_mic_formal.yaml
+    checkpoint: checkpoints/formal_esm2_mic/best_model.pt
+
+data:
+  pretrain_config: configs/jepa_pretrain_868k.yaml
+  context_batch_size: 64
+  max_context_batches: 16
+
+generation:
+  n_per_scenario: 200
+  max_new_tokens: 50
+  temperature: 0.9
+  top_p: 0.9
+  cfg_scale: 0.0
+
+evaluation:
+  batch_size: 128
+  bacteria_indices: [0, 1, 2, 3]
+
+scenarios:
+  - key: neutral_context_control
+    label: "neutral context control"
+    physchem: [0.30, 0.0, 0.0]
+    mic_targets: {}
+    control_key: null
+  - key: amp_physchem_control
+    label: "AMP-like physchem control"
+    physchem: [0.30, 0.76, 0.30]
+    mic_targets: {}
+    control_key: neutral_context_control
+  - key: broad_spectrum_potent
+    label: "broad-spectrum potent target"
+    physchem: [0.30, 0.76, 0.30]
+    mic_targets: {0: -1.0, 1: -1.0, 2: -1.0}
+    control_key: amp_physchem_control
+  - key: ecoli_selective
+    label: "E. coli selective target"
+    physchem: [0.30, 0.76, 0.30]
+    mic_targets: {0: -1.5, 1: 3.0}
+    control_key: amp_physchem_control
+  - key: saureus_selective
+    label: "S. aureus selective target"
+    physchem: [0.30, 0.76, 0.30]
+    mic_targets: {1: -1.5, 0: 3.0}
+    control_key: amp_physchem_control
+  - key: inactive_all
+    label: "inactive target"
+    physchem: [0.30, 0.0, 0.0]
+    mic_targets: {0: 3.0, 1: 3.0, 2: 3.0, 3: 3.0}
+    control_key: neutral_context_control

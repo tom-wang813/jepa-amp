@@ -1,0 +1,92 @@
+experiment_id: generation_control_v7
+research_decision: "Evaluate whether V7 (charge_w=0.5, gravy_w=2.5, HC50 oracle) improves GRAVY and HC50 control vs V4 baseline."
+seed: 42
+device: cuda
+gpu: 0
+output_dir: eval_results/generation_control_v7
+
+data:
+  pretrain_config: configs/jepa_pretrain_868k.yaml
+  max_context_batches: 64
+  batch_size: 64
+
+hc50_oracle_ckpt: eval_results/qmap_jepa_hc50_head_finetune_seed42/split_0/best_model.pt
+
+generation:
+  n_per_condition: 200
+  temperature: 0.9
+  top_p: 0.9
+  max_new_tokens: 50
+  cfg_scale: 0.0
+
+variants:
+  - key: v4_baseline
+    implementation: v4
+    num_conditions: 3
+    checkpoint: checkpoints/generator_868k_v4/best_generator.pt
+    config: configs/finetune_868k_v4.yaml
+  - key: v7_gravy_hc50
+    implementation: v7
+    num_conditions: 4
+    checkpoint: checkpoints/generator_868k_v7/best_generator.pt
+    config: configs/finetune_868k_v7.yaml
+
+# Targets sweep: vary each property independently while holding others fixed
+targets:
+  # --- Charge sweep (primary axis) ---
+  - key: high_charge
+    length: 18
+    charge: 9.0
+    gravy: 0.0
+    hc50_log10: 2.3
+  - key: low_charge
+    length: 18
+    charge: -5.0
+    gravy: 0.0
+    hc50_log10: 2.3
+
+  # --- GRAVY sweep (primary axis: was broken in V4) ---
+  - key: hydrophobic_mild
+    length: 18
+    charge: 2.0
+    gravy: 0.70
+    hc50_log10: 2.3
+  - key: hydrophobic_strong
+    length: 18
+    charge: 2.0
+    gravy: 1.40
+    hc50_log10: 2.3
+  - key: hydrophilic
+    length: 18
+    charge: 2.0
+    gravy: -0.80
+    hc50_log10: 2.3
+  - key: strongly_hydrophilic
+    length: 18
+    charge: 2.0
+    gravy: -1.50
+    hc50_log10: 2.3
+
+  # --- HC50 sweep (new axis) ---
+  - key: low_hemolysis
+    length: 18
+    charge: 4.0
+    gravy: 0.30
+    hc50_log10: 3.0     # high HC50 = low hemolytic risk (>1000 µg/mL)
+  - key: high_hemolysis
+    length: 18
+    charge: 4.0
+    gravy: 0.30
+    hc50_log10: 1.0     # low HC50 = high hemolytic risk (10 µg/mL)
+
+  # --- AMP-like combined ---
+  - key: amp_safe
+    length: 20
+    charge: 5.0
+    gravy: 0.31
+    hc50_log10: 2.8
+  - key: amp_potent_risky
+    length: 20
+    charge: 7.0
+    gravy: 0.80
+    hc50_log10: 1.5

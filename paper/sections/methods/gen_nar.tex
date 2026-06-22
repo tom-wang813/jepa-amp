@@ -1,0 +1,24 @@
+% ── methods/gen_nar.tex ───────────────────────────────────────────────────────
+\subsection{Conditional Generation: Non-Autoregressive Decoder}
+\label{sec:methods_nar}
+
+The \textbf{NAR} decoder replaces autoregressive token generation with
+a single bidirectional forward pass.
+It shares the same frozen JEPA encoder and adapter as the AR decoder.
+
+\paragraph{Architecture.}
+A bidirectional 4-layer Transformer decoder with AdaLN conditioning receives
+all-\textsc{mask} tokens of length $L$ and predicts all amino acid positions
+simultaneously.
+A length prediction head---an MLP applied to mean-pooled $h_\text{ctx}$ and
+$\mathbf{c}_\text{emb}$---predicts the target sequence length.
+
+\paragraph{Inference with iterative refinement.}
+Starting from all-\textsc{mask} of predicted length, the decoder
+(i) predicts all positions in one pass, (ii) re-masks the lowest-confidence
+fraction $\rho \cdot L \cdot (1 - s/S)$ of positions, and (iii) repeats for
+$S$ refinement steps (default $S=3$, $\rho=0.5$).
+This retains the global coherence of bidirectional attention while allowing
+iterative improvement of uncertain positions.
+
+Results are reported in Table~\ref{tab:gen_comparison}.

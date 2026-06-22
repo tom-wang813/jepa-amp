@@ -1,0 +1,34 @@
+experiment_id: generated_peptide_plausibility_smoke
+research_decision: "Smoke test generated-peptide plausibility analysis on a small subset."
+seed: 42
+device: cuda
+gpu: 1
+output_dir: eval_results/generated_peptide_plausibility_smoke
+
+inputs:
+  generated_predictions: eval_results/mic_conditioned_generation_formal/predictions.jsonl
+  reference_grampa_csv: data/grampa.csv
+  max_generated: 40
+
+nearest_neighbor:
+  kmer_size: 3
+  prefilter_top_k: 40
+
+hc50_proxy:
+  enabled: true
+  checkpoint_root: eval_results/qmap_jepa_hc50_head_finetune_seed42
+  splits: [0]
+  pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+  batch_size: 128
+  hidden: 512
+  dropout: 0.25
+
+candidate_selection:
+  scenario_key: broad_spectrum_potent
+  top_k: 10
+  max_identity: 0.80
+  min_hc50_log10: 2.0
+  min_length: 8
+  max_length: 40
+  max_abs_charge: 15
+  max_cationic_fraction: 0.60

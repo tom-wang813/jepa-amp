@@ -1,0 +1,38 @@
+{
+  "reg_val_rmse": 0.24865906929603004,
+  "reg_val_spearman": 0.8981155451316444,
+  "n_mic": 868724,
+  "n_gen": 60,
+  "ks": {
+    "1": {
+      "EF@k": 1.0,
+      "Precision@k": 1.0,
+      "EF@k_knn_proxy": 1.0,
+      "Precision@k_knn_proxy": 1.0
+    },
+    "5": {
+      "EF@k": 1.0,
+      "Precision@k": 1.0,
+      "EF@k_knn_proxy": 1.0,
+      "Precision@k_knn_proxy": 1.0
+    },
+    "10": {
+      "EF@k": 1.0,
+      "Precision@k": 1.0,
+      "EF@k_knn_proxy": 1.0,
+      "Precision@k_knn_proxy": 1.0
+    },
+    "50": {
+      "EF@k": 1.0,
+      "Precision@k": 1.0,
+      "EF@k_knn_proxy": 1.0,
+      "Precision@k_knn_proxy": 1.0
+    },
+    "100": {
+      "EF@k": 1.0,
+      "Precision@k": 1.0,
+      "EF@k_knn_proxy": 0.6,
+      "Precision@k_knn_proxy": 0.6
+    }
+  }
+}

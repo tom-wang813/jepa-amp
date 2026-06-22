@@ -1,0 +1,36 @@
+% ── results/classification.tex ────────────────────────────────────────────────
+\subsection{AMP Classification}
+\label{sec:res_amp}
+
+\begin{table}[h]
+\centering
+\small
+\caption{AMP classification on the AMPlify benchmark test set (835 AMP,
+  835 non-AMP).
+  \textsuperscript{$\dagger$}Trained on identical data (3{,}338 pos + 3{,}338 neg).
+  \textsuperscript{$\ddagger$}Published numbers.
+  Bootstrap 95\% CIs for JEPA-AMP: AUROC $[0.949, 0.967]$, F1 $[0.883, 0.914]$,
+  MCC $[0.771, 0.830]$.}
+\label{tab:amp_bench}
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Model} & \textbf{Type} & \textbf{AUROC} & \textbf{Acc.} & \textbf{F1} & \textbf{MCC} \\
+\midrule
+AMPlify ensemble\textsuperscript{$\ddagger$}     & BiLSTM$\times$5  & 0.984 & 0.937 & 0.937 & --- \\
+AMP Scanner\textsuperscript{$\ddagger$}          & CNN              & 0.974 & 0.907 & 0.907 & --- \\
+ESM-2 (35M)\textsuperscript{$\dagger$}           & Protein LM       & 0.963 & 0.913 & 0.909 & 0.827 \\
+\textbf{JEPA-AMP}\textsuperscript{$\dagger$}     & AMP JEPA         & \textbf{0.958} & \textbf{0.901} & \textbf{0.899} & \textbf{0.802} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+JEPA-AMP achieves AUROC~\textbf{0.958} and MCC~\textbf{0.802}, approaching but
+not surpassing the AMPlify ensemble (AUROC~0.984) or ESM-2 (AUROC~0.963) when
+trained on identical data.
+On the APD3 independent transfer set (556 sequences), JEPA-AMP achieves
+AUROC~\textbf{0.944} and MCC~\textbf{0.758} (CIs $[0.931, 0.957]$ and
+$[0.724, 0.793]$), above the larger balanced-data probe (AUROC~0.880).
+
+\finding{AMP-specific JEPA pre-training produces a useful compact backbone for
+classification without surpassing the specialised AMPlify ensemble or ESM-2.
+This result supports representation \emph{usability}, not model superiority.}

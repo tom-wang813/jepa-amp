@@ -1,0 +1,32 @@
+task: cancer_ic50
+
+pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+
+data:
+  cancer_ic50_csv: data/processed/cancer_ic50_multitask.csv
+  val_ratio: 0.15
+  test_ratio: 0.15
+  seed: 42
+  label_noise_std: 0.1   # small noise given already-noisy IC50 measurements
+
+head:
+  head_type: transformer
+  bacteria_dim: 32        # cancer-type embedding dim (smaller than MIC since only 6 types)
+  hidden: 128
+  dropout: 0.3
+  adapter_bottleneck: 32
+  nhead: 4
+  num_layers: 2
+  dim_feedforward: 256
+
+train:
+  freeze_encoder: true
+  epochs: 100
+  batch_size: 16          # small dataset, small batch
+  lr: 3.0e-4
+  weight_decay: 1.0e-4
+  fp16: true
+  num_workers: 2
+  patience: 20
+  save_every: 10
+  save_dir: checkpoints/cancer_ic50_jepa

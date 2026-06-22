@@ -1,0 +1,33 @@
+% ── results/mic.tex ───────────────────────────────────────────────────────────
+\subsection{MIC Prediction}
+\label{sec:res_mic}
+
+\begin{table}[h]
+\centering
+\caption{Formal MIC prediction on GRAMPA test set
+  ($\log_2(\text{MIC}/[\mu\text{g\,mL}^{-1}])$ space).
+  JEPA runs: $n{=}2{,}057$; ESM-2: $n{=}2{,}059$.
+  All artifacts locked in \texttt{checkpoints/formal\_mic\_*}.}
+\label{tab:mic}
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Model} & \textbf{Head} & \textbf{Pearson~$r$} & \textbf{RMSE} & \textbf{MAE} & \textbf{Spearman~$\rho$} \\
+\midrule
+ESM-2 (35M)           & FiLM-MLP         & 0.554 & 0.635 & 0.495 & 0.530 \\
+JEPA-AMP              & FiLM-MLP         & 0.622 & \textbf{0.619} & 0.489 & 0.553 \\
+\textbf{JEPA-AMP}     & \textbf{Transformer} & \textbf{0.640} & 0.627 & \textbf{0.488} & \textbf{0.561} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The JEPA Transformer head gives the highest Pearson correlation
+($r=\mathbf{0.640}$), and the JEPA FiLM-MLP gives the lowest RMSE
+(\textbf{0.619}).
+Both heads improve over the ESM-2 baseline by $+0.086$ and $+0.068$
+Pearson, respectively.
+The RMSE of 0.619--0.627 corresponds to roughly a half-doubling-dilution error
+in log$_2$ MIC space.
+
+\finding{AMP-domain JEPA pre-training transfers to MIC prediction, improving over a
+general-purpose ESM-2 baseline in correlation and slightly in error.
+The gain is moderate and should not be read as assay-ready MIC accuracy.}

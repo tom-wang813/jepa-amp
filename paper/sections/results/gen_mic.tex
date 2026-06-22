@@ -1,0 +1,48 @@
+% ── results/gen_mic.tex ───────────────────────────────────────────────────────
+\subsection{MIC-Conditioned Generation}
+\label{sec:res_mic_gen}
+
+\begin{table}[h]
+\centering
+\caption{MIC-conditioned generation with matched controls.
+  Values are mean predicted $\log_2\text{MIC}$ (E.~coli); $\Delta$ is relative to
+  the AMP-like physicochemical control.
+  ESM-2 scorer is independent from the JEPA training oracle.
+  95\% bootstrap CIs are archived in
+  \texttt{eval\_results/generated\_evidence\_bootstrap}.}
+\label{tab:mic_gen}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrr}
+\toprule
+\textbf{Scenario} & \textbf{JEPA E.c.} & \textbf{JEPA $\Delta$}
+  & \textbf{ESM2 E.c.} & \textbf{ESM2 $\Delta$}
+  & \textbf{JEPA S.a.} & \textbf{Unique} \\
+\midrule
+Neutral context control          & 1.831 & ---              & 1.557 & ---              & 1.822 & 0.950 \\
+AMP-like physchem control        & 1.676 & ---              & 1.370 & ---              & 1.641 & 0.950 \\
+\midrule
+Broad-spectrum potent            & \textbf{1.426} & $\mathbf{-0.250}$ & \textbf{1.079} & $\mathbf{-0.291}$ & 1.446 & 1.000 \\
+E.~coli selective                & 1.588 & $-0.088$         & 1.234 & $-0.136$         & 1.593 & 0.955 \\
+S.~aureus selective              & 1.627 & $-0.049$         & 1.319 & $-0.051$         & 1.623 & 0.970 \\
+Inactive all species             & \textbf{2.346} & $\mathbf{+0.515}$ & \textbf{2.000} & $\mathbf{+0.443}$ & 2.268 & 0.825 \\
+\midrule
+\multicolumn{7}{l}{\textit{Selectivity}: E.c./S.a. separation intervals include zero under both scorers.} \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+Global activity shifts persist beyond physicochemical conditioning and are
+reproduced by the independent ESM-2 scorer (broad-spectrum: $\Delta{=}{-}0.250$
+JEPA, $-0.291$ ESM-2; inactivation: $+0.515$ JEPA, $+0.443$ ESM-2).
+Species-selective control fails: E.~coli and S.~aureus predicted MIC shift
+together under both selective scenarios, and 95\% bootstrap CIs for species
+separation include zero.
+Generated peptides have 100\% exact-match novelty vs.\ a combined 11{,}299-sequence
+AMP reference panel; median nearest-neighbour identity is 0.526.
+
+\finding{MIC conditioning steers global model-predicted activity but cannot separate
+species responses.
+Both global shifts are reproduced by an independent scorer, reducing single-oracle
+circularity; species selectivity is a data limitation (sparse GRAMPA supervision
+with dominantly broad-spectrum measurements).}

@@ -1,0 +1,55 @@
+% ── results/homology.tex ──────────────────────────────────────────────────────
+\subsection{Homology Leakage Audit}
+\label{sec:res_homology}
+
+A common confound in AMP benchmarks is high sequence identity between training
+and test sets: a model that memorises training peptides can appear to
+``transfer'' while merely recalling near-duplicates.
+We audit this by filtering each cross-species test set to retain only
+peptides with $<80\,\%$ (and separately $<70\,\%$) sequence identity to any
+training peptide, using CD-HIT with word size 3.
+
+\begin{table}[h]
+\centering
+\caption{JEPA-AMP zero-shot Pearson $r$ before and after CD-HIT homology
+  filtering.
+  Values are means over three seeds.
+  $n_{\text{filt}}$ reports the mean filtered test-set size.}
+\label{tab:homology}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Route}
+  & \textbf{Unfiltered}
+  & \multicolumn{2}{c}{\textbf{After filtering}}
+  & $n_{\text{filt}}$ ($<$80\,\%) \\
+\cmidrule(lr){3-4}
+  & & $<$80\,\% ID & $<$70\,\% ID & \\
+\midrule
+E.~coli $\to$ S.~aureus       & 0.553 & 0.414 & 0.424 & 137 / 722 \\
+E.~coli $\to$ P.~aeruginosa   & 0.657 & 0.501 & 0.514 & 82 / 402  \\
+S.~aureus $\to$ E.~coli       & 0.384 & 0.324 & 0.299 & 211 / 796 \\
+S.~aureus $\to$ P.~aeruginosa & 0.484 & 0.156 & 0.175 & 62 / 402  \\
+P.~aeruginosa $\to$ E.~coli   & 0.536 & 0.395 & 0.391 & 355 / 796 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+After filtering, JEPA-AMP retains positive correlation on four of five routes,
+confirming that performance is not solely driven by near-duplicate leakage.
+The S.~aureus $\to$ P.~aeruginosa route drops to $r = 0.156$ at $<80\,\%$
+cutoff (from 0.484 unfiltered), which indicates that the high-identity subset
+carries a disproportionate share of the signal on this route and should be
+interpreted cautiously.
+
+Filtering to $<70\,\%$ produces results within noise of the $<80\,\%$ values
+on four routes (absolute $\Delta \leq 0.021$), suggesting that the
+$80\,\%$ threshold already removes the bulk of homologous pairs and tighter
+cutoffs reduce $n$ without meaningfully changing conclusions.
+Full pairwise BLAST identity matrices are archived in
+\texttt{eval\_results/supplementary\_abcd/D\_homology\_leakage/}.
+
+\finding{JEPA-AMP cross-species transfer is partially, but not entirely,
+explained by sequence-level homology.
+Positive correlations persist at $<80\,\%$ identity on four of five routes;
+the S.~aureus $\to$ P.~aeruginosa route is the primary leakage risk and
+should be held out from main-text claims.}

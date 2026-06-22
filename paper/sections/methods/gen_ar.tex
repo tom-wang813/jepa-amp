@@ -1,0 +1,56 @@
+% ── methods/gen_ar.tex ────────────────────────────────────────────────────────
+\subsection{Conditional Generation: Autoregressive Dual-Pathway Decoder}
+\label{sec:methods_gen}
+
+\paragraph{Architecture.}
+The autoregressive (AR) generator (\textbf{v4}) attaches a frozen JEPA
+encoder $f_\theta$ to a lightweight bottleneck adapter $A_\psi$ and an
+autoregressive decoder with \emph{dual-pathway} conditioning
+(Figure~\ref{fig:arch}C):
+\begin{enumerate}[noitemsep]
+  \item \textbf{Cross-attention pathway}: the condition vector $\mathbf{c}$
+        is projected to a memory token prepended to the encoder output,
+        so every decoder layer can attend to the condition.
+  \item \textbf{AdaLN pathway}: per-layer adaptive LayerNorm scale and shift
+        $(\boldsymbol{\gamma}_l, \boldsymbol{\beta}_l) =
+        \text{Linear}(\mathbf{c}_\text{emb})$
+        modulate each of the three sub-blocks (self-attention, cross-attention,
+        FFN) independently.
+\end{enumerate}
+AdaLN weights are zero-initialised so training starts from an unconditioned
+model.
+The decoder has 4 layers ($d=384$, 8 heads, $d_\text{ff}=1536$),
+yielding 10.7M trainable parameters alongside 14.2M frozen encoder parameters.
+
+\paragraph{Condition encoding.}
+Sequences are conditioned on normalised length, net charge, and
+Kyte--Doolittle hydrophobicity (GRAVY):
+\begin{equation}
+\mathbf{c} = \bigl[\ell/50,\;\tanh(q/5),\;\tanh(h)\bigr] \in \mathbb{R}^3,
+\end{equation}
+projected to $\mathbf{c}_\text{emb} \in \mathbb{R}^{128}$ by a two-layer MLP.
+
+\paragraph{Training regularisation.}
+Condition dropout ($p=0.30$) and context dropout ($p=0.15$) discourage the
+decoder from ignoring the condition or relying entirely on the context prefix.
+The training loss combines cross-entropy token prediction with a differentiable
+auxiliary loss on expected charge and GRAVY:
+\begin{equation}
+  \mathcal{L} = \mathcal{L}_\text{CE}
+  + 0.3\,\mathcal{L}_\text{phys},
+  \label{eq:gen_loss}
+\end{equation}
+where $\mathcal{L}_\text{phys}$ is the sum of MSE between expected (soft)
+charge/GRAVY and the target values.
+
+\paragraph{Decoder component ablations.}
+To attribute charge-control performance to specific design choices, we train
+two ablation variants on the same corpus and evaluate with the same
+formal generation-control protocol:
+\begin{itemize}[noitemsep]
+  \item \textbf{v4-no-aux}: $\alpha=0$ in Eq.~\ref{eq:gen_loss}
+        (no auxiliary physicochemical loss).
+  \item \textbf{v4-no-dropout}: $p_\text{cond}=p_\text{ctx}=0$
+        (no CFG-style dropout).
+\end{itemize}
+Results for these ablations are reported in Table~\ref{tab:gen_ablation}.

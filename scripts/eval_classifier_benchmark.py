@@ -1,11 +1,13 @@
 """
-Evaluate our JEPA AMP classifier on the AMPlify held-out test set.
-Reports ROC-AUC, accuracy, precision, recall, F1.
+Evaluate AMP classifiers on the AMPlify held-out test set.
+Reports aggregate metrics and can export per-example predictions plus bootstrap
+confidence intervals for auditable paper evidence.
 
 Usage:
   uv run python scripts/eval_classifier_benchmark.py
 """
 import json
+import random
 from pathlib import Path
 
 import numpy as np
@@ -173,19 +175,120 @@ def score_sequences(model, seqs: list[str], max_seq_len: int,
 def evaluate(scores: np.ndarray, labels: np.ndarray) -> dict:
     preds = (scores >= 0.5).astype(int)
     return {
-        "ROC-AUC":   round(roc_auc_score(labels, scores), 4),
-        "Accuracy":  round(accuracy_score(labels, preds), 4),
-        "Precision": round(precision_score(labels, preds, zero_division=0), 4),
-        "Recall":    round(recall_score(labels, preds, zero_division=0), 4),
-        "F1":        round(f1_score(labels, preds, zero_division=0), 4),
-        "MCC":       round(matthews_corrcoef(labels, preds), 4),
+        "ROC-AUC":   float(round(roc_auc_score(labels, scores), 4)),
+        "Accuracy":  float(round(accuracy_score(labels, preds), 4)),
+        "Precision": float(round(precision_score(labels, preds, zero_division=0), 4)),
+        "Recall":    float(round(recall_score(labels, preds, zero_division=0), 4)),
+        "F1":        float(round(f1_score(labels, preds, zero_division=0), 4)),
+        "MCC":       float(round(matthews_corrcoef(labels, preds), 4)),
     }
+
+
+def bootstrap_metric_ci(
+    scores: np.ndarray,
+    labels: np.ndarray,
+    *,
+    n_bootstrap: int,
+    seed: int,
+) -> dict[str, list[float]]:
+    rng = random.Random(seed)
+    n = len(labels)
+    vals: dict[str, list[float]] = {
+        "ROC-AUC": [],
+        "Accuracy": [],
+        "Precision": [],
+        "Recall": [],
+        "F1": [],
+        "MCC": [],
+    }
+    for _ in range(n_bootstrap):
+        idx = np.array([rng.randrange(n) for _ in range(n)], dtype=int)
+        if len(set(labels[idx].tolist())) < 2:
+            continue
+        metrics = evaluate(scores[idx], labels[idx])
+        for key in vals:
+            vals[key].append(float(metrics[key]))
+    return {
+        key: [
+            float(np.percentile(arr, 2.5)),
+            float(np.percentile(arr, 97.5)),
+        ]
+        for key, arr in vals.items()
+        if arr
+    }
+
+
+def prediction_rows(
+    *,
+    dataset: str,
+    model_name: str,
+    seqs: list[str],
+    labels: np.ndarray,
+    scores: np.ndarray,
+) -> list[dict]:
+    preds = (scores >= 0.5).astype(int)
+    rows = []
+    for i, (seq, label, score, pred) in enumerate(zip(seqs, labels, scores, preds)):
+        rows.append({
+            "dataset": dataset,
+            "model": model_name,
+            "sample_index": int(i),
+            "sequence": seq,
+            "label": int(label),
+            "score": float(score),
+            "prediction": int(pred),
+            "correct": bool(pred == label),
+        })
+    return rows
+
+
+def write_jsonl(path: Path, rows: list[dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w") as f:
+        for row in rows:
+            f.write(json.dumps(row) + "\n")
+
+
+def write_summary(path: Path, payload: dict) -> None:
+    lines = ["# AMP Classification Evidence Summary", ""]
+    lines.append(f"- Bootstrap replicates: {payload['n_bootstrap']}")
+    lines.append(f"- Seed: {payload['seed']}")
+    lines.append(f"- Predictions: `{payload['predictions']}`")
+    lines.append("")
+    for dataset, models in payload["metrics"].items():
+        lines.append(f"## {dataset}")
+        lines.append("")
+        lines.append("| Model | ROC-AUC | ROC-AUC 95% CI | F1 | F1 95% CI | MCC | MCC 95% CI |")
+        lines.append("|---|---:|---:|---:|---:|---:|---:|")
+        for model, item in models.items():
+            m = item["metrics"]
+            ci = item.get("bootstrap_ci", {})
+            lines.append(
+                f"| {model} | {m['ROC-AUC']:.4f} | "
+                f"[{ci.get('ROC-AUC', [float('nan'), float('nan')])[0]:.4f}, {ci.get('ROC-AUC', [float('nan'), float('nan')])[1]:.4f}] | "
+                f"{m['F1']:.4f} | "
+                f"[{ci.get('F1', [float('nan'), float('nan')])[0]:.4f}, {ci.get('F1', [float('nan'), float('nan')])[1]:.4f}] | "
+                f"{m['MCC']:.4f} | "
+                f"[{ci.get('MCC', [float('nan'), float('nan')])[0]:.4f}, {ci.get('MCC', [float('nan'), float('nan')])[1]:.4f}] |"
+            )
+        lines.append("")
+    lines.append("Interpretation: intervals resample the archived test examples and quantify sampling uncertainty for locally scored models only; published baselines still use reported aggregate numbers.")
+    path.write_text("\n".join(lines) + "\n")
 
 
 def main():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--gpu", type=int, default=1)
+    parser.add_argument("--n-bootstrap", type=int, default=1000)
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--evidence-out", type=Path, default=PROJECT_ROOT / "eval_results/amp_classification_evidence")
+    parser.add_argument(
+        "--models",
+        nargs="*",
+        default=None,
+        help="Optional exact model names to evaluate. Defaults to all available local models.",
+    )
     args = parser.parse_args()
     device = torch.device(f"cuda:{args.gpu}" if torch.cuda.is_available() else "cpu")
     print(f"Device: {device}\n")
@@ -198,8 +301,18 @@ def main():
     all_seqs   = pos_seqs + neg_seqs
     all_labels = np.array([1]*len(pos_seqs) + [0]*len(neg_seqs))
 
+    evidence: dict = {
+        "experiment_id": "amp_classification_evidence",
+        "seed": args.seed,
+        "n_bootstrap": args.n_bootstrap,
+        "metrics": {"amplify_test": {}, "apd3_independent": {}},
+    }
+    prediction_export_rows: list[dict] = []
+
     results = {}
     for name, spec in MODELS.items():
+        if args.models is not None and name not in args.models:
+            continue
         if not spec["ckpt"].exists():
             print(f"[SKIP] {name} — checkpoint not found")
             continue
@@ -208,6 +321,17 @@ def main():
         scores = score_sequences(model, all_seqs, max_seq_len, device)
         metrics = evaluate(scores, all_labels)
         results[name] = metrics
+        evidence["metrics"]["amplify_test"][name] = {
+            "metrics": metrics,
+            "bootstrap_ci": bootstrap_metric_ci(
+                scores, all_labels, n_bootstrap=args.n_bootstrap, seed=args.seed
+            ),
+            "checkpoint": str(spec["ckpt"].relative_to(PROJECT_ROOT)),
+            "config": str(spec["cfg"].relative_to(PROJECT_ROOT)),
+        }
+        prediction_export_rows.extend(
+            prediction_rows(dataset="amplify_test", model_name=name, seqs=all_seqs, labels=all_labels, scores=scores)
+        )
         print("  " + "  ".join(f"{k}={v}" for k, v in metrics.items()))
 
     # Published baselines (from AMPlify paper Table 1, same test set)
@@ -242,6 +366,8 @@ def main():
     # ESM-2 models
     esm_results = {}
     for name, spec in ESM_MODELS.items():
+        if args.models is not None and name not in args.models:
+            continue
         if not spec["ckpt"].exists():
             print(f"[SKIP] {name} — checkpoint not found")
             continue
@@ -250,6 +376,17 @@ def main():
         scores = score_esm_sequences(esm_model, batch_converter, all_seqs, device)
         metrics = evaluate(scores, all_labels)
         esm_results[name] = metrics
+        evidence["metrics"]["amplify_test"][name] = {
+            "metrics": metrics,
+            "bootstrap_ci": bootstrap_metric_ci(
+                scores, all_labels, n_bootstrap=args.n_bootstrap, seed=args.seed
+            ),
+            "checkpoint": str(spec["ckpt"].relative_to(PROJECT_ROOT)),
+            "model_key": spec["model_key"],
+        }
+        prediction_export_rows.extend(
+            prediction_rows(dataset="amplify_test", model_name=name, seqs=all_seqs, labels=all_labels, scores=scores)
+        )
         print("  " + "  ".join(f"{k}={v}" for k, v in metrics.items()))
 
     if esm_results:
@@ -277,12 +414,25 @@ def main():
 
         apd3_results = {}
         for name, spec in MODELS.items():
+            if args.models is not None and name not in args.models:
+                continue
             if not spec["ckpt"].exists():
                 continue
             model, max_seq_len = load_model(spec["ckpt"], spec["cfg"], device)
             scores = score_sequences(model, apd3_seqs, max_seq_len, device)
             metrics = evaluate(scores, apd3_labels)
             apd3_results[name] = metrics
+            evidence["metrics"]["apd3_independent"][name] = {
+                "metrics": metrics,
+                "bootstrap_ci": bootstrap_metric_ci(
+                    scores, apd3_labels, n_bootstrap=args.n_bootstrap, seed=args.seed
+                ),
+                "checkpoint": str(spec["ckpt"].relative_to(PROJECT_ROOT)),
+                "config": str(spec["cfg"].relative_to(PROJECT_ROOT)),
+            }
+            prediction_export_rows.extend(
+                prediction_rows(dataset="apd3_independent", model_name=name, seqs=apd3_seqs, labels=apd3_labels, scores=scores)
+            )
 
         print("\n" + "=" * 70)
         print("AMP CLASSIFICATION — APD3 INDEPENDENT TEST (cross-dataset generalisation)")
@@ -307,9 +457,32 @@ def main():
                                         for k, v in published.items()}},
         "apd3_independent": apd3_results,
     }
-    with open(PROJECT_ROOT / "eval_results/classifier_benchmark.json", "w") as f:
-        json.dump(out, f, indent=2)
-    print("\nSaved to eval_results/classifier_benchmark.json")
+    if args.models is None:
+        with open(PROJECT_ROOT / "eval_results/classifier_benchmark.json", "w") as f:
+            json.dump(out, f, indent=2)
+        print("\nSaved to eval_results/classifier_benchmark.json")
+    else:
+        print("\nSkipped eval_results/classifier_benchmark.json update because --models filtered the run.")
+
+    args.evidence_out.mkdir(parents=True, exist_ok=True)
+    pred_path = args.evidence_out / "predictions.jsonl"
+    metrics_path = args.evidence_out / "metrics.json"
+    summary_path = args.evidence_out / "SUMMARY.md"
+    manifest_path = args.evidence_out / "manifest.json"
+    write_jsonl(pred_path, prediction_export_rows)
+    evidence["predictions"] = str(pred_path.relative_to(PROJECT_ROOT))
+    with open(metrics_path, "w") as f:
+        json.dump(evidence, f, indent=2)
+    write_summary(summary_path, evidence)
+    with open(manifest_path, "w") as f:
+        json.dump({
+            "experiment_id": evidence["experiment_id"],
+            "metrics": str(metrics_path.relative_to(PROJECT_ROOT)),
+            "predictions": str(pred_path.relative_to(PROJECT_ROOT)),
+            "summary": str(summary_path.relative_to(PROJECT_ROOT)),
+            "status": "formal_artifact",
+        }, f, indent=2)
+    print(f"Saved AMP classification evidence artifacts to {args.evidence_out}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,83 @@
+\section{Related Work}
+\label{sec:related}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+% 2.1  AMP classification and potency prediction
+% ═══════════════════════════════════════════════════════════════════════════════
+\subsection{AMP Classification and Potency Prediction}
+
+Computational AMP discovery began with supervised classifiers.
+AMPlify~\citep{amplify}, AMP Scanner~\citep{ampscanner}, and
+iAMPpred~\citep{iamppred} demonstrated that recurrent, convolutional, and
+classical machine-learning models can discriminate antimicrobial from
+non-antimicrobial sequences with high accuracy.
+BERT-style peptide encoders later pushed supervised screening further by
+introducing contextual sequence representations~\citep{ampbert,peptidebert}.
+These classifiers answer a binary question---active or not---but
+real-world peptide development also requires quantitative potency estimation.
+GRAMPA~\citep{grampa} and DBAASP~\citep{dbaasp3} provide large multi-species
+MIC measurements, and the recent QMAP benchmark~\citep{qmap2026} defines
+precomputed homology-aware splits that control for sequence similarity between
+training and test sets, addressing a long-standing comparability problem in AMP
+regression.
+Our work uses the same frozen encoder for both binary classification and
+quantitative MIC prediction, and evaluates under both standard and
+homology-aware protocols to test how far a single representation can stretch.
+
+% ═══════════════════════════════════════════════════════════════════════════════
+% 2.2  AMP generation
+% ═══════════════════════════════════════════════════════════════════════════════
+\subsection{AMP Generation}
+
+Early generative approaches to AMP design used variational
+autoencoders~\citep{pepvae} and generative adversarial
+networks~\citep{gupta2018}, followed by more recent work combining deep
+generative models with cell-free biosynthesis~\citep{pandi2023}, diffusion
+frameworks~\citep{diffamp}, and knowledge-aware prompt
+conditioning~\citep{kppepgen}.
+HydrAMP~\citep{hydramp} showed that conditional generation can propose
+peptides with improved predicted potency and reduced hemolysis.
+A common thread is that generators are evaluated primarily by aggregate
+statistics---average hydrophobicity, net charge, or predicted AMP score of
+a generated batch---rather than by asking which specific target properties
+the model can and cannot control.
+Our generation experiments adopt a different evaluation stance: we condition
+on individual physicochemical properties and MIC targets, then audit control
+success property by property, explicitly mapping where generation succeeds
+and where physical or data constraints set the boundary.
+We also compare three decoding paradigms---autoregressive, non-autoregressive,
+and masked diffusion---on the same frozen encoder, isolating the effect of
+decoding strategy from the effect of representation quality.
+
+% ═══════════════════════════════════════════════════════════════════════════════
+% 2.3  Self-supervised representation learning for proteins and peptides
+% ═══════════════════════════════════════════════════════════════════════════════
+\subsection{Self-Supervised Representation Learning for Proteins and Peptides}
+
+Large protein language models such as ESM-2~\citep{esm2} and
+ProtTrans~\citep{prottrans} learn general sequence representations from
+evolutionary-scale corpora and transfer well to many protein tasks.
+UniRep~\citep{unirep} earlier showed that unsupervised sequence pre-training
+can support downstream protein prediction even with simpler architectures.
+At the peptide scale, domain-specific models---PepBERT~\citep{pepbert},
+LLAMP~\citep{llamp}, PeptideBERT~\citep{peptidebert}---have demonstrated
+that pre-training on curated peptide corpora can match or exceed general
+protein models at a fraction of the parameter count, establishing the value
+of domain-specific representation learning for short sequences.
+
+These models span a wide range of scales and training data, but they share
+a common pre-training paradigm: predicting masked or next tokens from
+sequence context.
+An alternative family of self-supervised objectives operates entirely in
+representation space.
+The Joint-Embedding Predictive Architecture (JEPA)~\citep{jepa_assran},
+originally proposed for images, predicts the \emph{embedding} of a target
+region from a context region, encouraging the encoder to capture abstract
+structure rather than reconstruct surface-level inputs.
+To our knowledge, JEPA-style representation-level pre-training has not been
+applied to biological sequences.
+\projectname{} tests this objective on AMPs---a domain where activity depends
+on holistic physicochemical patterns rather than specific residue
+identities---and compares the resulting representations against both a
+general-purpose protein model (ESM-2) and an identically architected
+MLM-pre-trained encoder.

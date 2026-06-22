@@ -1,5 +1,8 @@
 \documentclass[11pt,a4paper]{article}
 
+% ══════════════════════════════════════════════════════════════════════════════
+% Packages
+% ══════════════════════════════════════════════════════════════════════════════
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
@@ -16,16 +19,28 @@
 \usepackage{natbib}
 \usepackage{microtype}
 \usepackage{enumitem}
+\emergencystretch=2em
 
+% ══════════════════════════════════════════════════════════════════════════════
+% Colors
+% ══════════════════════════════════════════════════════════════════════════════
 \definecolor{jepaBlue}{RGB}{41,98,255}
 \definecolor{jepaGreen}{RGB}{0,150,136}
 \definecolor{jepaOrange}{RGB}{255,109,0}
 \definecolor{jepaPurple}{RGB}{103,58,183}
 \definecolor{jepaRed}{RGB}{211,47,47}
 
-\title{\textbf{JEPA-AMP: A Joint-Embedding Predictive Architecture\\
-for Antimicrobial Peptide Discovery, Property Prediction,\\
-and MIC-Conditioned Generation}}
+% ══════════════════════════════════════════════════════════════════════════════
+% Macros — all terminology, numbers, and formatting in one file
+% ══════════════════════════════════════════════════════════════════════════════
+\input{macros}
+
+% ══════════════════════════════════════════════════════════════════════════════
+% Section toggles — comment out \input lines to hide sections during drafting
+% ══════════════════════════════════════════════════════════════════════════════
+
+\title{\textbf{\projectname{}: Representation-Level Pre-Training\\
+for Antimicrobial Peptide Understanding and Generation}}
 
 \author{Ziwei~[Author]\\
 \small Department of [Institution]\\
@@ -36,40 +51,43 @@ and MIC-Conditioned Generation}}
 \begin{document}
 \maketitle
 
-%% ── Abstract ─────────────────────────────────────────────────────────────────
+%% ── Abstract ────────────────────────────────────────────────────────────────
 \input{sections/abstract}
 
-%% ── Introduction ─────────────────────────────────────────────────────────────
+%% ── Introduction ────────────────────────────────────────────────────────────
 \input{sections/introduction}
 
-%% ── Methods ──────────────────────────────────────────────────────────────────
+%% ── Related Work ────────────────────────────────────────────────────────────
+\input{sections/related_work}
+
+%% ── Methods (modular: sections/methods/*.tex) ───────────────────────────────
 \input{sections/methods}
 
-%% ── Architecture Figure ──────────────────────────────────────────────────────
+%% ── Architecture Figure ─────────────────────────────────────────────────────
 \section{Architecture Overview}
 \label{sec:arch_fig}
 
 \begin{figure}[h]
 \centering
-\input{figures/architecture.tex}
-\caption{JEPA-AMP framework.
-\textbf{(A)}~Pre-training: context encoder $f_\theta$ processes observed tokens (blue);
-target encoder $\bar{f}_\theta$ (EMA) encodes masked tokens (orange);
-predictor $g_\phi$ minimises $\ell_2$ loss in representation space---not token space.
-\textbf{(B)}~Fine-tuning: a shared bottleneck adapter (green) is attached to the
-frozen encoder. Three task-specific heads share this backbone:
-AMP classifier (top), MIC predictor with FiLM species conditioning (middle),
-and conditional generator with AdaLN decoder (bottom).
-\textbf{(C)}~Conditional generator detail: condition vector $\mathbf{c}$ is processed
-by a shared condition MLP and injected both as a cross-attention memory token and via
-per-layer AdaLN scale/shift, providing dual gradient pathways that prevent posterior collapse.}
+\resizebox{\textwidth}{!}{\input{figures/architecture.tex}}
+\caption{\projectname{} overview.
+\textbf{(A)}~Joint-embedding pre-training predicts masked-region representations
+rather than tokens.
+\textbf{(B)}~The frozen encoder is evaluated with lightweight heads on AMP
+classification, MIC regression, and QMAP endpoints.
+\textbf{(C)}~The conditional decoder receives both sequence context and property
+or MIC conditions; our evidence supports strong charge control and more limited
+MIC-oracle control.}
 \label{fig:arch}
 \end{figure}
 
-%% ── Results ──────────────────────────────────────────────────────────────────
+%% ── Results (modular: sections/results/*.tex) ───────────────────────────────
 \input{sections/results}
 
-%% ── Discussion & Conclusion ──────────────────────────────────────────────────
+%% ── Threats to Validity ─────────────────────────────────────────────────────
+\input{sections/threats}
+
+%% ── Discussion & Conclusion ─────────────────────────────────────────────────
 \input{sections/discussion}
 
 \end{document}

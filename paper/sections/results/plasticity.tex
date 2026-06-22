@@ -1,0 +1,50 @@
+% ── results/plasticity.tex ────────────────────────────────────────────────────
+\subsection{Representation Quality: JEPA vs.\ ESM-2}
+\label{sec:res_emb}
+
+\begin{table}[h]
+\centering
+\caption{Frozen embedding quality comparison on GRAMPA ($k$-NN MIC,
+  cosine distance, GRAMPA 90/10 split) and AMPlify (linear probe AUROC,
+  70/30 random split).
+  Neither model is fine-tuned for these tasks; embeddings are mean-pooled
+  final-layer representations.}
+\label{tab:emb_quality}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{$k$-NN $r$ ($k{=}5$)} & \textbf{$k$-NN $r$ ($k{=}10$)} & \textbf{Linear probe AUROC} & \textbf{Silhouette} \\
+\midrule
+ESM-2 (35M, frozen) & \textbf{0.618} & \textbf{0.586} & \textbf{0.935} & \textbf{0.063} \\
+JEPA-AMP (frozen)   & 0.598          & 0.549          & 0.888          & 0.043          \\
+\midrule
+\textit{After supervised fine-tuning (Table~\ref{tab:mic}):} & & & & \\
+ESM-2 (35M, fine-tuned head) & \multicolumn{2}{c}{Pearson $r = 0.554$} & --- & --- \\
+\textbf{JEPA-AMP (fine-tuned head)} & \multicolumn{2}{c}{\textbf{Pearson $r = 0.640$}} & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Frozen ESM-2 embeddings are more directly useful: they achieve higher $k$-NN
+MIC correlation, linear probe AUROC, and silhouette score without any
+fine-tuning.
+However, the pattern \emph{reverses} after supervised fine-tuning: JEPA-AMP
+outperforms ESM-2 by $+0.086$ Pearson on GRAMPA MIC (Table~\ref{tab:mic}).
+This reversal suggests that JEPA's latent-space prediction objective creates
+representations that are less immediately discriminative but more
+\emph{adaptable}: they have greater headroom for task-specific fine-tuning,
+whereas ESM-2's masked-token objective produces representations that are
+already near their downstream utility ceiling.
+
+UMAP visualisations of both embedding spaces are provided in
+Figure~\ref{fig:umap}.
+In JEPA space, AMP sequences form peripheral satellite clusters distinct from
+non-AMP, while in ESM-2 space the separation is more centripetal.
+Generated peptides occupy a distinct region of the JEPA embedding space
+from the training corpus, consistent with the 100\% exact-match novelty score
+and a median nearest-neighbour identity of 0.526.
+
+\finding{Frozen JEPA embeddings are less discriminative than frozen ESM-2, but more
+adaptable under supervised fine-tuning. This supports a ``plasticity''
+interpretation: JEPA pre-training preserves representational capacity that
+is unlocked by task-specific heads, rather than committing early to
+discriminative boundaries.}

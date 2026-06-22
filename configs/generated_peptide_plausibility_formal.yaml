@@ -1,0 +1,47 @@
+experiment_id: generated_peptide_plausibility_formal
+research_decision: "Assess whether MIC-conditioned generated peptides look like plausible novel screening candidates rather than near-neighbor memorization or chemically shifted artifacts."
+seed: 42
+device: cuda
+gpu: 1
+output_dir: eval_results/generated_peptide_plausibility_formal
+
+inputs:
+  generated_predictions: eval_results/mic_conditioned_generation_formal/predictions.jsonl
+  reference_grampa_csv: data/grampa.csv
+  reference_sets:
+    - name: grampa
+      type: grampa_csv
+      path: data/grampa.csv
+    - name: apd3
+      type: fasta
+      path: data/benchmarks/apd3.fasta
+    - name: dramp
+      type: fasta
+      path: data/raw/dramp_amps.fasta
+    - name: uniprot_amp
+      type: fasta
+      path: data/raw/uniprot_amps.fasta
+  max_generated: null
+
+nearest_neighbor:
+  kmer_size: 3
+  prefilter_top_k: 100
+
+hc50_proxy:
+  enabled: true
+  checkpoint_root: eval_results/qmap_jepa_hc50_head_finetune_seed42
+  splits: [0, 1, 2, 3, 4]
+  pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+  batch_size: 256
+  hidden: 512
+  dropout: 0.25
+
+candidate_selection:
+  scenario_key: broad_spectrum_potent
+  top_k: 25
+  max_identity: 0.80
+  min_hc50_log10: 2.0
+  min_length: 8
+  max_length: 40
+  max_abs_charge: 15
+  max_cationic_fraction: 0.60

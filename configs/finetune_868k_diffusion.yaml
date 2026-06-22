@@ -1,0 +1,41 @@
+pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+generator_version: diffusion
+
+data:
+  fasta_paths:
+    - data/processed/amp_corpus.fasta
+  max_len: 50
+  val_ratio: 0.05
+  prefix_ratio: 0.5
+  min_prefix_len: 3
+
+generator:
+  adapter_bottleneck: 128
+  denoiser_layers: 6        # deeper than NAR/AR — diffusion benefits from capacity
+  denoiser_nhead: 8
+  denoiser_ff: 1536
+  dropout: 0.1
+  max_seq_len: 52
+  num_conditions: 3
+  d_cond: 128
+  d_time: 128
+  cond_dropout: 0.30
+  context_dropout: 0.15
+
+train:
+  freeze_encoder: true
+  epochs: 100              # diffusion needs slightly more epochs
+  batch_size: 1024         # slightly smaller to accommodate 6-layer denoiser
+  lr: 3.0e-4
+  weight_decay: 0.01
+  fp16: true
+  num_workers: 8
+  save_dir: checkpoints/generator_868k_diffusion
+  patience: 25
+  save_every: 10
+  physchem_loss_weight: 0.30
+
+wandb:
+  enabled: false
+  project: jepa-amp
+  run_name: finetune_868k_diffusion

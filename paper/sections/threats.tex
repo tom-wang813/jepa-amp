@@ -1,0 +1,51 @@
+\section{Threats to Validity}
+\label{sec:threats}
+
+\paragraph{Construct validity.}
+MIC and HC50 are assay-dependent measurements.
+Consensus labels cannot remove all variation from strain, medium, peptide purity,
+exposure time, or readout protocol.
+The GRAMPA experiments use $\log_2$ MIC values, whereas QMAP evaluates
+$\log_{10}$ consensus values through its official metric interface.
+These targets are appropriate for regression, but they are not direct clinical
+efficacy or safety endpoints.
+HC50 also captures hemolysis, not the full toxicity profile needed for therapy.
+
+\paragraph{Internal validity.}
+For QMAP we use the official five predefined splits, split-specific
+\texttt{get\_train\_mask} filtering, and \texttt{compute\_metrics(..., log=True)}
+to avoid silent split drift.
+The main JEPA QMAP claims are averaged over three training seeds, reducing the
+risk that a single favorable initialization drives the result.
+Still, the conditional model pools multiple bacterial targets and HC50 under
+shared property keys.
+Its gains should therefore be read as evidence for useful shared conditioning,
+not as proof that one universal head is best for every endpoint.
+
+\paragraph{External validity.}
+The current JEPA encoder supports peptides up to 50 amino acids after reserving
+special tokens, so longer QMAP sequences are truncated during evaluation.
+QMAP includes noncanonical amino acids and SMILES representations for some
+peptides; the current sequence encoder treats the benchmark as a sequence-only
+task and does not yet model full chemical structure, terminal modifications, or
+intrachain bonds explicitly.
+This makes the reported QMAP performance conservative for sequence-level
+comparison, but it also limits claims about chemically modified peptides.
+
+\paragraph{Conclusion validity.}
+Leaderboard comparisons are restricted to the methods and numbers reported in
+the QMAP README plus our reproduced JEPA runs.
+We report seed variability, but we do not yet provide paired statistical tests
+over split-level predictions against every prior method because their raw
+predictions are not available in this workspace.
+Finally, generated peptides are evaluated with computational oracles and
+physicochemical checks only.
+Wet-lab synthesis and antimicrobial assays are still required before making
+biological efficacy claims.
+
+\paragraph{Dry-lab scope.}
+All claims in this manuscript are computational. The MIC-conditioned generator is
+therefore evaluated as an oracle-mediated steering mechanism, not as evidence
+that generated sequences are active, selective, safe, stable, or synthesizable.
+Future wet-lab validation would change the evidentiary status of candidate
+claims, but the current paper should be read as a benchmarked dry-lab study.

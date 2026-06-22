@@ -1,0 +1,153 @@
+{
+  "source": "eLife 2025 doi:10.7554/eLife.97330 Table 2",
+  "n": 24,
+  "grampa_overlap": 0,
+  "pearson_jepa_vs_ampredictor": 0.4162,
+  "spearman_jepa_vs_ampredictor": 0.4261,
+  "per_seq": [
+    {
+      "name": "P089",
+      "seq": "GLKALMKILALFMAKKIT",
+      "ampredictor_log2": 1.644,
+      "jepa_log2": 0.7784653902053833
+    },
+    {
+      "name": "P386",
+      "seq": "PIGLKLRAAIAKGLLHALLKGARAD",
+      "ampredictor_log2": 1.857,
+      "jepa_log2": 0.7496509552001953
+    },
+    {
+      "name": "P120",
+      "seq": "RWKKILGKAGKLLALRSGKLIL",
+      "ampredictor_log2": 1.161,
+      "jepa_log2": 0.3459744453430176
+    },
+    {
+      "name": "P135",
+      "seq": "KWKQFLKKLAKLIATRIAIIIKRRLK",
+      "ampredictor_log2": 1.078,
+      "jepa_log2": 0.34752771258354187
+    },
+    {
+      "name": "P247",
+      "seq": "KKLGKPLFKGLKKILKLFVKM",
+      "ampredictor_log2": 1.45,
+      "jepa_log2": 0.38347795605659485
+    },
+    {
+      "name": "P026",
+      "seq": "GIHKKLGPIAKKLLKKIAKL",
+      "ampredictor_log2": 3.2,
+      "jepa_log2": 0.7186722755432129
+    },
+    {
+      "name": "P039",
+      "seq": "GWKPILKKAAKIGKRLTGWLFLNSRVN",
+      "ampredictor_log2": 2.27,
+      "jepa_log2": 0.580184280872345
+    },
+    {
+      "name": "P070",
+      "seq": "LKWWKKFGRKLARKFRM",
+      "ampredictor_log2": 2.41,
+      "jepa_log2": 0.49181514978408813
+    },
+    {
+      "name": "P091",
+      "seq": "GRMIRKMFKKLWKILRD",
+      "ampredictor_log2": 2.48,
+      "jepa_log2": 0.8271070718765259
+    },
+    {
+      "name": "P127",
+      "seq": "QKPKKDCGGNLLGMIKKFLK",
+      "ampredictor_log2": 3.112,
+      "jepa_log2": 1.3753236532211304
+    },
+    {
+      "name": "P122",
+      "seq": "IKARLKLKQRIKLIKIGKTFRRRRTDNM",
+      "ampredictor_log2": 2.663,
+      "jepa_log2": -0.2815755307674408
+    },
+    {
+      "name": "P352",
+      "seq": "RKFKYKFSKLKRVIFMAK",
+      "ampredictor_log2": 3.141,
+      "jepa_log2": 0.9848006367683411
+    },
+    {
+      "name": "P105",
+      "seq": "FTLKKLLKKGKKTRKLLTPLIKDHSDAM",
+      "ampredictor_log2": 1.855,
+      "jepa_log2": 0.04088687151670456
+    },
+    {
+      "name": "P316",
+      "seq": "MFKKILKKATKVIAGLTGHLFWGTRL",
+      "ampredictor_log2": 1.317,
+      "jepa_log2": 0.18824797868728638
+    },
+    {
+      "name": "P244",
+      "seq": "GTCKGLLKKLLKGMAKFILK",
+      "ampredictor_log2": 1.766,
+      "jepa_log2": 1.126977562904358
+    },
+    {
+      "name": "P302",
+      "seq": "GKWQGLLKMIAKILAK",
+      "ampredictor_log2": 1.973,
+      "jepa_log2": 1.1320255994796753
+    },
+    {
+      "name": "P185",
+      "seq": "FRGRIGKILLKMLAQLAK",
+      "ampredictor_log2": 2.103,
+      "jepa_log2": 0.5263917446136475
+    },
+    {
+      "name": "P019",
+      "seq": "PRLAKLLKGGKYILKKITM",
+      "ampredictor_log2": 3.482,
+      "jepa_log2": 0.673743486404419
+    },
+    {
+      "name": "P252",
+      "seq": "GMGSFRKLIKKLAKW",
+      "ampredictor_log2": 3.491,
+      "jepa_log2": 1.067450761795044
+    },
+    {
+      "name": "P213",
+      "seq": "HKCYKWFIKMLRKFQ",
+      "ampredictor_log2": 2.982,
+      "jepa_log2": 1.5403144359588623
+    },
+    {
+      "name": "P036",
+      "seq": "KMKTFKKKFLKQFAKRLAGRIYPRFK",
+      "ampredictor_log2": 2.325,
+      "jepa_log2": 0.1626555323600769
+    },
+    {
+      "name": "P018",
+      "seq": "NWKPKIYRTAKKILKIAGKTL",
+      "ampredictor_log2": 2.695,
+      "jepa_log2": 1.069551706314087
+    },
+    {
+      "name": "P168",
+      "seq": "KKKKFKKFSKGFQKTLMGMLCMSAAKAW",
+      "ampredictor_log2": 2.321,
+      "jepa_log2": 0.653179943561554
+    },
+    {
+      "name": "P214",
+      "seq": "KQKIFQKLAARGILLPLAPFIMERIKW",
+      "ampredictor_log2": 2.802,
+      "jepa_log2": 0.49716153740882874
+    }
+  ]
+}

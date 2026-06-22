@@ -1,0 +1,108 @@
+experiment_id: generation_control_v6_formal
+research_decision: "Evaluate whether the v6 7-dim conditional generator can control added physicochemical targets beyond charge."
+seed: 42
+device: cuda
+gpu: 0
+output_dir: eval_results/generation_control_v6
+
+data:
+  pretrain_config: configs/jepa_pretrain_868k.yaml
+  reference_finetune_config: configs/finetune_868k_v6.yaml
+  max_context_batches: 64
+  batch_size: 64
+
+generation:
+  n_per_condition: 200
+  temperature: 0.9
+  top_p: 0.9
+  max_new_tokens: 50
+  cfg_scale: 0.0
+  amp_batch_size: 512
+
+variant:
+  key: ar_v6_7dim
+  implementation: v6
+  checkpoint: checkpoints/generator_868k_v6/best_generator.pt
+  config: configs/finetune_868k_v6.yaml
+
+targets:
+  - key: amp_like_balanced
+    length: 20
+    charge: 5.0
+    gravy: 0.31
+    helix: 1.15
+    pI: 9.5
+    hydrophobic_moment: 0.25
+    amp_score: 0.90
+  - key: high_charge_short
+    length: 10
+    charge: 9.0
+    gravy: 0.0
+    helix: 1.05
+    pI: 11.0
+    hydrophobic_moment: 0.20
+    amp_score: 0.85
+  - key: hydrophobic_neutral
+    length: 15
+    charge: 0.0
+    gravy: 0.90
+    helix: 1.20
+    pI: 7.0
+    hydrophobic_moment: 0.18
+    amp_score: 0.55
+  - key: anionic_hydrophilic
+    length: 20
+    charge: -4.0
+    gravy: -0.70
+    helix: 0.90
+    pI: 4.8
+    hydrophobic_moment: 0.10
+    amp_score: 0.20
+  - key: long_helical_amp
+    length: 30
+    charge: 6.0
+    gravy: 0.20
+    helix: 1.35
+    pI: 10.0
+    hydrophobic_moment: 0.28
+    amp_score: 0.92
+  - key: low_amp_control
+    length: 20
+    charge: 1.0
+    gravy: -0.20
+    helix: 0.95
+    pI: 6.5
+    hydrophobic_moment: 0.08
+    amp_score: 0.15
+  - key: hm_rich_cationic
+    length: 22
+    charge: 5.0
+    gravy: 0.10
+    helix: 1.10
+    pI: 9.8
+    hydrophobic_moment: 0.40
+    amp_score: 0.88
+  - key: acidic_helical
+    length: 18
+    charge: -3.0
+    gravy: -0.10
+    helix: 1.30
+    pI: 5.2
+    hydrophobic_moment: 0.22
+    amp_score: 0.30
+  - key: short_mid_amp
+    length: 12
+    charge: 3.0
+    gravy: 0.15
+    helix: 1.05
+    pI: 8.2
+    hydrophobic_moment: 0.16
+    amp_score: 0.60
+  - key: neutral_nonhelical
+    length: 16
+    charge: 0.0
+    gravy: -0.30
+    helix: 0.80
+    pI: 6.8
+    hydrophobic_moment: 0.06
+    amp_score: 0.25

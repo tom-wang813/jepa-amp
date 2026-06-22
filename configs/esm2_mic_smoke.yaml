@@ -1,0 +1,29 @@
+task: mic
+esm_model: esm2_t12_35M
+
+data:
+  grampa_csv: data/grampa.csv
+  max_len: 48
+  val_ratio: 0.1
+  test_ratio: 0.1
+  seed: 42
+  label_noise_std: 0.0
+
+head:
+  head_type: mlp
+  bacteria_dim: 64
+  hidden: 256
+  dropout: 0.3
+
+train:
+  freeze_encoder: false
+  epochs: 1
+  batch_size: 64
+  lr: 3.0e-4
+  lr_encoder: 5.0e-6
+  weight_decay: 0.05
+  fp16: true
+  num_workers: 0
+  save_dir: checkpoints/smoke_esm2_mic
+  patience: 1
+  save_every: 1

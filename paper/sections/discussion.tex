@@ -1,75 +1,118 @@
 \section{Discussion}
 
-\paragraph{Pre-training scale vs.\ fine-tuning data quality.}
-AMPlify achieves AUROC~0.984 with a BiLSTM trained on 3{,}338 curated sequences.
-Our JEPA encoder uses \textbf{256$\times$ more pre-training data} and a Transformer,
-yet reaches AUROC~0.958 with the \emph{same} 3{,}338 fine-tuning samples---only 2.6
-AUROC points below the AMPlify ensemble.
-This gap is consistent with the known advantage of small, domain-curated models on
-narrow benchmarks.
-Crucially, on the \textbf{APD3 cross-dataset test} JEPA-AMP (AUROC~0.944) \emph{surpasses}
-larger but less focused models, demonstrating that self-supervised pre-training on
-unlabelled AMP sequences transfers to out-of-distribution sequences more robustly.
+\paragraph{JEPA representations are adaptable, not immediately discriminative.}
+Section~\ref{sec:res_emb} shows a simple pattern.
+Frozen ESM-2 embeddings work better before fine-tuning.
+JEPA-AMP works better after fine-tuning.
+We read this as \emph{representational plasticity}.
+JEPA keeps more room for task-specific adaptation, while ESM-2 is stronger
+before adaptation.
+In practice, JEPA is the better choice when task labels are available for
+fine-tuning. ESM-2 may be enough for quick screening without fine-tuning.
 
-\paragraph{MIC representation vs.\ general protein LMs.}
-JEPA-AMP outperforms ESM-2 (35M) for MIC prediction by +0.149 Pearson $r$ and 31\%
-lower RMSE, despite ESM-2 having $\sim$100$\times$ more parameters.
-This confirms that \textbf{AMP-specific pre-training} extracts structural features
-(charge distribution, hydrophobic moment, amphipathicity) more relevant to membrane
-disruption than general protein evolutionary context.
+\paragraph{AMP-specific pre-training helps, but not by winning every metric.}
+JEPA-AMP does not win every benchmark.
+On AMPlify, a specialised supervised ensemble remains stronger.
+The main value of AMP-domain pre-training is breadth.
+The same encoder supports classification, multi-species MIC prediction, and
+QMAP regression without changing the backbone.
+It is especially strong on high-efficiency E.~coli under homology-aware
+evaluation ($+0.098$ PCC over the best prior result).
+So the contribution is not ``a better classifier.''
+It is a compact AMP-specific representation that works across several tasks,
+with clear limits on each task.
 
-\paragraph{Resolving conditional generation collapse.}
-The failure of v2/v3 ($R^2<0.01$) was traced to posterior collapse: with a strong
-sequence context encoder, the decoder had no incentive to use conditions.
-v4 resolves this with three complementary mechanisms that collectively provide
-\textbf{diverse gradient pathways}: physicochemical auxiliary loss, context starvation
-via 15\% dropout, and dual-pathway condition injection (AdaLN + cross-attention).
-The resulting $R^2=0.98$ for charge targeting confirms that all three are necessary---
-ablating any one degrades performance in preliminary experiments.
+\paragraph{Homology-aware benchmarks sharpen biological claims.}
+QMAP matters because it reduces the chance that simple near-neighbour
+memorisation explains good performance.
+Under this stricter protocol, JEPA-AMP is competitive on full E.~coli MIC and
+stronger on high-efficiency E.~coli, but the HC50 result clarifies that bacterial
+MIC and mammalian haemolysis should not be treated as one interchangeable task.
+For AMP discovery, this distinction matters: shared representations may transfer
+across bacterial species, but antimicrobial potency and mammalian toxicity require
+separate heads and separate supervision.
 
-\paragraph{MIC conditioning: what works and what is limited.}
-The v5 generator successfully learns \textbf{global activity level control}---the
-distinction between potent and inactive peptides---from 3{,}940 GRAMPA sequences.
-This is a non-trivial result: the model must generate amino acid sequences whose
-physicochemical properties (charge, hydrophobicity, amphipathicity) collectively
-shift the MIC predictor's output by over one $\log_2$ unit.
-Cross-species selectivity remains elusive because (i)~the training data itself
-rarely contains selective peptides (only 11\% have $|\Delta_{MIC}|>1$ between
-E.~coli and S.~aureus), and (ii)~common AMPs disrupt membranes via conserved
-mechanisms affecting both Gram-negative and Gram-positive bacteria.
-Future directions: (a)~selectivity-enriched training data with pairs showing
-$|\Delta|>2$; (b)~a differentiable MIC oracle loss using Gumbel-softmax or
-straight-through estimators to backpropagate MIC signals through the decoder.
+\paragraph{Controllability is property-specific, not a property of the decoder.}
+The generation results draw a clear boundary.
+Net charge is directly controllable because it is compositional and receives an
+explicit differentiable loss signal; GRAVY and length remain coupled with amino
+acid residue choices required to satisfy charge constraints.
+MIC conditioning is more indirect: the generator can move JEPA and ESM-2 MIC
+scorers toward globally active or inactive regions, but species selectivity fails
+because sparse GRAMPA supervision ($\sim$3.5 of 20 bacterial measurements per
+peptide) is dominated by broad-spectrum correlations.
+So we should not say ``the generator controls peptides'' in a broad sense.
+We should say that each requested property needs its own control audit.
+
+\paragraph{Three generation settings on one backbone.}
+The comparison in Section~\ref{sec:res_gen_paradigm} gives a clear answer.
+The AR decoder is still best for charge control.
+NAR works, but it is weaker than AR on both charge and length.
+Masked diffusion is the strongest new option: it keeps good charge control and
+matches target length exactly in this evaluation.
+The v6 model shows a different tradeoff.
+Adding more target dimensions helps for helix and pI, but it does not solve
+GRAVY, hydrophobic moment, or length control.
+In short, decoder choice matters, and more condition variables do not
+automatically make every property controllable.
 
 \paragraph{Limitations.}
 \begin{enumerate}[noitemsep]
-  \item GRAVY control degrades at extreme charges due to residue-level correlation
-        (K/R are both cationic and hydrophilic); a decoupled orthogonal conditioning
-        basis may help.
-  \item MIC predictions carry RMSE~0.45 in $\log_2$ space ($\approx$1.4 two-fold
-        dilutions); clinical translation typically requires $<$1.
-  \item The AMP pre-training corpus may contain annotation biases from automated
-        database curation; a community benchmark beyond AMPlify would enable
-        definitive comparison.
+  \item \textbf{GRAVY and length control remain weak.}
+        GRAVY correlates with the residue composition required to achieve a
+        target charge (K/R are both cationic and hydrophilic); a decoupled
+        orthogonal conditioning basis or multi-property optimisation may help.
+  \item \textbf{MIC accuracy is moderate.}
+        RMSE of 0.62--0.63 in $\log_2$ space corresponds to approximately a
+        half-doubling-dilution error; clinical translation requires
+        assay-specific validation.
+  \item \textbf{MIC-conditioned generation is oracle-mediated.}
+        The ESM-2 scorer reduces single-oracle circularity, but both are
+        in-silico validators. Wet-lab synthesis and antimicrobial assays are
+        required before any generated sequence can be described as
+        biologically active.
+  \item \textbf{Species-selective control is a data limitation.}
+        GRAMPA's sparse per-sequence bacterial coverage makes fine-grained
+        selective activity a supervision gap, not an architecture failure.
+  \item \textbf{Single-split MIC evaluation.}
+        The GRAMPA formal evaluation uses one seed-42 split; multi-seed
+        or cross-validation estimates are not yet reported.
+  \item \textbf{Positional embedding length limit.}
+        Sequences longer than 50 AAs are truncated; future encoders should
+        remove this constraint.
+  \item \textbf{Corpus annotation bias.}
+        The 868k pre-training corpus relies on automated database curation;
+        a community benchmark beyond AMPlify would enable definitive comparisons.
 \end{enumerate}
+
+\paragraph{Path to wet-lab extension.}
+The next wet-lab step is simple.
+We should synthesise a small and diverse set of generated peptides plus matched
+scrambled controls, then test MIC on at least E.~coli and S.~aureus together
+with a haemolysis or cytotoxicity screen.
+This would test ranking quality, global activity shifts, and safety filtering
+without making stronger claims than this paper can support.
+We have already generated 20 top-ranked candidates for this future screen.
 
 \section{Conclusion}
 
-JEPA-AMP demonstrates that a single AMP-specific self-supervised encoder can serve
-as a strong backbone for classification, MIC regression, and controlled generation.
-Key results:
-\begin{itemize}[noitemsep]
-  \item \textbf{Classification}: AUROC~0.958 (AMPlify-identical training), APD3~0.944.
-  \item \textbf{MIC prediction}: Pearson $r=0.678$, RMSE~0.450; 5.4\% improvement
-        via MC-Dropout; well-calibrated uncertainty ($r=0.44$).
-  \item \textbf{Charge targeting}: $R^2=0.98$ with v4 conditional generator
-        (v2/v3 baseline: $R^2<0.01$).
-  \item \textbf{MIC conditioning}: global activity control with $\Delta\log_2\text{MIC}=+1.04$
-        for inactivation and $-0.42$ for potentiation.
-\end{itemize}
-Together, these results provide a practical pipeline for rational AMP design:
-screen candidates with the classifier, prioritise by MIC prediction and uncertainty,
-and generate novel sequences with targeted activity profiles.
+JEPA-AMP shows that AMP-specific self-supervised learning is useful mainly as a
+reusable backbone for dry-lab AMP prioritisation.
+The same encoder approaches curated AMP classifiers, improves MIC prediction
+over ESM-2, and remains competitive under homology-aware QMAP evaluation.
+The plasticity analysis also shows when JEPA is preferable:
+it has more fine-tuning headroom than ESM-2, while ESM-2 frozen embeddings
+may still be enough for rapid screening.
+The generation study draws a complementary boundary: charge control is reliable
+via the dual-pathway decoder, while GRAVY, length, and species-selective MIC
+control remain limited.
+Comparing AR, NAR, masked diffusion, and extended conditioning on the same
+backbone shows that some limits come from the decoder, while others come from
+the target properties themselves.
+Together, these results support a cautious computational pipeline for ranking
+AMP candidates.
+Model predictions should be treated as prioritisation evidence, not as
+biological validation.
 
 \bibliographystyle{plainnat}
 \bibliography{refs}

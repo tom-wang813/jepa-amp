@@ -1,0 +1,96 @@
+# Master comparison config: correct V2→V3→V4→V7 ablation chain + MLM baseline
+# Run with: uv run python scripts/compare_all_generators_formal.py --config configs/comparison_formal.yaml
+experiment_id: comparison_formal
+research_decision: >
+  Compare the full architecture ablation chain (V2→V3→V4→V7) and an MLM-encoder baseline
+  on a unified target sweep with separated property axes.
+  Primary metrics: charge R², GRAVY R², HC50 R² (per-axis, not mixed).
+  Secondary: AMP score, diversity, novelty.
+seed: 42
+gpu: 0
+output_dir: eval_results/comparison_formal
+
+data:
+  pretrain_config: configs/jepa_pretrain_868k.yaml
+  amp_corpus_fasta: data/processed/amp_corpus.fasta
+  max_context_batches: 64
+  batch_size: 64
+
+quality:
+  amp_classifier_ckpt: checkpoints/amp_classifier_v6/best_model.pt
+  amp_classifier_cfg:  configs/amp_classifier_v6.yaml
+  hc50_oracle_ckpt: eval_results/qmap_jepa_hc50_head_finetune_seed42/split_0/best_model.pt
+
+generation:
+  n_per_condition: 200
+  temperature: 0.9
+  top_p: 0.9
+  max_new_tokens: 50
+
+variants:
+  # ── Ablation chain (architecture evolution) ──────────────────────────────
+  - key: V2_no_adaLN
+    implementation: v2
+    num_conditions: 3
+    checkpoint: checkpoints/generator_868k_v2/best_generator.pt
+    description: "V2: simple conditioning, no AdaLN, no aux loss — weakest baseline"
+
+  - key: V3_adaLN_only
+    implementation: v3
+    num_conditions: 3
+    checkpoint: checkpoints/generator_868k_v3/best_generator.pt
+    description: "V3: AdaLN d_cond=128 + CFG dropout, no dual pathway, no aux loss"
+
+  - key: V4_dual_pathway
+    implementation: v4
+    num_conditions: 3
+    checkpoint: checkpoints/generator_868k_v4/best_generator.pt
+    description: "V4 (proposed): dual pathway decoder + physchem aux loss (w=0.30 shared)"
+
+  - key: V7_separate_weights_hc50
+    implementation: v7
+    num_conditions: 4
+    checkpoint: checkpoints/generator_868k_v7/best_generator.pt
+    description: "V7: charge_w=0.5, gravy_w=2.5 (17× GRAVY boost) + HC50 oracle 4th dim"
+
+  # ── MLM encoder baseline ──────────────────────────────────────────────────
+  # Same V4 decoder architecture, same 868k corpus, same training procedure.
+  # Only difference from V4: encoder pre-trained with MLM (token CE) vs JEPA (latent MSE).
+  # Checkpoint created by queue: waits for V7, then runs finetune_868k_mlm_v4.yaml
+  - key: MLM_enc_V4_dec
+    implementation: v4
+    num_conditions: 3
+    checkpoint: checkpoints/generator_868k_mlm_v4/best_generator.pt
+    description: "MLM encoder + V4 decoder: direct JEPA-vs-MLM comparison for conditional generation"
+
+# ── Target sweep: each axis varied independently ──────────────────────────
+# Rationale: mixing axes (e.g. high charge AND high GRAVY in same target) creates
+# correlated conditions that conflate property-specific R² — keep axes separated.
+
+targets:
+  # charge sweep — GRAVY and HC50 held at neutral AMP-like values
+  - {key: charge_neg8,  group: charge_sweep, length: 18, charge: -8.0, gravy:  0.00, hc50_log10: 2.3}
+  - {key: charge_neg4,  group: charge_sweep, length: 18, charge: -4.0, gravy:  0.00, hc50_log10: 2.3}
+  - {key: charge_0,     group: charge_sweep, length: 18, charge:  0.0, gravy:  0.00, hc50_log10: 2.3}
+  - {key: charge_pos4,  group: charge_sweep, length: 18, charge:  4.0, gravy:  0.00, hc50_log10: 2.3}
+  - {key: charge_pos8,  group: charge_sweep, length: 18, charge:  8.0, gravy:  0.00, hc50_log10: 2.3}
+  - {key: charge_pos12, group: charge_sweep, length: 18, charge: 12.0, gravy:  0.00, hc50_log10: 2.3}
+
+  # GRAVY sweep — charge held at +2 (mild cationic AMP-like), HC50 neutral
+  - {key: gravy_neg1p5, group: gravy_sweep, length: 18, charge: 2.0, gravy: -1.50, hc50_log10: 2.3}
+  - {key: gravy_neg0p8, group: gravy_sweep, length: 18, charge: 2.0, gravy: -0.80, hc50_log10: 2.3}
+  - {key: gravy_0,      group: gravy_sweep, length: 18, charge: 2.0, gravy:  0.00, hc50_log10: 2.3}
+  - {key: gravy_pos0p7, group: gravy_sweep, length: 18, charge: 2.0, gravy:  0.70, hc50_log10: 2.3}
+  - {key: gravy_pos1p4, group: gravy_sweep, length: 18, charge: 2.0, gravy:  1.40, hc50_log10: 2.3}
+
+  # HC50 sweep — charge and GRAVY held at typical AMP values, only hemolysis risk varied
+  - {key: hc50_very_safe,  group: hc50_sweep, length: 18, charge: 4.0, gravy: 0.30, hc50_log10: 3.2}
+  - {key: hc50_safe,       group: hc50_sweep, length: 18, charge: 4.0, gravy: 0.30, hc50_log10: 2.8}
+  - {key: hc50_mid,        group: hc50_sweep, length: 18, charge: 4.0, gravy: 0.30, hc50_log10: 2.3}
+  - {key: hc50_risky,      group: hc50_sweep, length: 18, charge: 4.0, gravy: 0.30, hc50_log10: 1.5}
+  - {key: hc50_dangerous,  group: hc50_sweep, length: 18, charge: 4.0, gravy: 0.30, hc50_log10: 1.0}
+
+  # Realistic AMP design targets (combined, for quality evaluation)
+  - {key: amp_canonical,    group: amp_like, length: 20, charge: 5.0, gravy:  0.31, hc50_log10: 2.8}
+  - {key: amp_potent_risky, group: amp_like, length: 20, charge: 7.0, gravy:  0.80, hc50_log10: 1.5}
+  - {key: amp_safe,         group: amp_like, length: 20, charge: 5.0, gravy:  0.20, hc50_log10: 3.2}

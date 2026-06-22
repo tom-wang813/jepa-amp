@@ -1,25 +1,44 @@
 \begin{abstract}
-Antimicrobial peptides (AMPs) are promising candidates for next-generation antibiotics,
-but systematic discovery and optimisation remain challenging.
-We present \textbf{JEPA-AMP}, a unified framework based on a
-Joint-Embedding Predictive Architecture (JEPA) pre-trained on \textbf{868{,}724} AMP sequences.
-The pre-trained encoder is fine-tuned for three downstream tasks:
-\begin{enumerate}[noitemsep]
-  \item \textbf{AMP classification}: AUROC~\textbf{0.958} and MCC~\textbf{0.802}
-        on the AMPlify benchmark test set using identical training data to AMPlify
-        (AUROC~0.984), demonstrating that AMP-specific pre-training at scale is competitive
-        with supervised BiLSTM ensembles.
-  \item \textbf{MIC prediction} across 20 bacterial species:
-        Pearson~$r=\mathbf{0.678}$ and RMSE~\textbf{0.450} on the GRAMPA test set,
-        outperforming ESM-2 (35M) by $+0.149$ in correlation;
-        MC-Dropout ensemble inference further reduces RMSE by \textbf{5.4\%}
-        with well-calibrated uncertainty ($r=0.44$ between uncertainty and error).
-  \item \textbf{Controlled generation} via an AdaLN conditional decoder with
-        physicochemical auxiliary loss: charge targeting $R^2=\mathbf{0.98}$
-        (vs.\ $R^2<0.01$ for unconditioned baselines),
-        and MIC-conditioned generation with global activity control
-        ($\Delta\log_2\text{MIC}=\mathbf{+1.04}$ for inactivation,
-        $\mathbf{-0.42}$ for broad-spectrum potentiation).
-\end{enumerate}
-All code and checkpoints are released at \url{https://github.com/[repo]}.
+Antimicrobial peptides (AMPs) are promising candidates for next-generation
+antibiotics, but computational AMP discovery remains limited by saturated
+binary benchmarks, assay-dependent potency measurements, and conditional
+generators whose controllability is rarely audited property by property.
+We study these limitations with \textbf{JEPA-AMP}, a compact
+Joint-Embedding Predictive Architecture pre-trained on \textbf{868{,}724}
+AMP sequences and evaluated as a shared backbone for classification,
+MIC and HC50 regression, and three conditional generation paradigms.
+
+Across AMPlify, GRAMPA, and QMAP, AMP-specific pre-training gives useful but
+limited gains.
+JEPA-AMP approaches strong supervised baselines on AMP classification
+(AUROC~\textbf{0.958}, MCC~\textbf{0.802}) without surpassing the published
+AMPlify ensemble, and improves GRAMPA MIC regression over an ESM-2~(35M)
+baseline (best JEPA Pearson~$r{=}\mathbf{0.640}$, RMSE~\textbf{0.619}).
+On the homology-aware QMAP benchmark, JEPA-AMP is competitive with the
+best reported full E.~coli result (PCC~\textbf{0.512}) and distinctly stronger
+on high-efficiency E.~coli (PCC~\textbf{0.388} vs.\ prior best 0.290, $+34\%$).
+
+A frozen embedding comparison reveals a \emph{plasticity} gap.
+ESM-2 frozen embeddings score higher on $k$-NN MIC prediction and
+AMP linear-probe AUROC, yet JEPA-AMP performs better after supervised
+fine-tuning. This suggests that JEPA pre-training keeps useful capacity
+that appears after task-specific tuning.
+
+For generation, the proposed dual-pathway decoder---combining per-layer AdaLN
+conditioning with a cross-attention condition token---achieves reliable charge
+control ($R^2{=}\mathbf{0.866}$ vs.\ negative $R^2$ for weaker baselines),
+while GRAVY, length, and species-selective MIC control remain limited.
+We also compare three generator settings on the same frozen JEPA backbone:
+the AR baseline, a non-autoregressive (NAR) decoder, and a masked diffusion
+decoder. The AR decoder gives the best charge control, while masked diffusion
+is the strongest new paradigm (charge $R^2{=}0.702$, length $R^2{=}1.000$).
+An extended 7-condition AR model gives partial extra control for helix
+($R^2{=}0.533$) and pI ($R^2{=}0.330$), but weak control for other added targets.
+MIC-conditioned generation shifts model-predicted global activity relative to
+matched physicochemical controls (broad-spectrum:
+$\Delta\log_2\text{MIC}{=}{-}0.250$ under JEPA oracle, $-0.291$ under
+independent ESM-2 scorer), but these are \emph{oracle-mediated dry-lab screens},
+not biological validation.
+All code, configs, and locked artifacts are released at
+\url{https://github.com/[repo]}.
 \end{abstract}

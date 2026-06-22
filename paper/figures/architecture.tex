@@ -1,237 +1,61 @@
-% JEPA-AMP Full Architecture Figure  — three panels, generous spacing
-% Compile standalone or \input inside figure environment
+% Compact JEPA-AMP architecture overview.
 \begin{tikzpicture}[
   font=\small,
   >=Stealth,
-  %% Node styles
-  seq/.style={draw, rounded corners=2pt, fill=white,
-              minimum width=0.55cm, minimum height=0.55cm,
-              inner sep=2pt, font=\scriptsize\ttfamily},
-  seqM/.style={seq, fill=jepaOrange!30, draw=jepaOrange},
-  seqC/.style={seq, fill=jepaBlue!20, draw=jepaBlue!60},
-  block/.style={draw, rounded corners=4pt, align=center,
-                minimum width=3.2cm, minimum height=0.85cm,
-                inner sep=5pt},
-  enc/.style={block, fill=jepaBlue!18, draw=jepaBlue!70},
-  tgtenc/.style={block, fill=jepaOrange!20, draw=jepaOrange!70},
-  pred/.style={block, fill=jepaPurple!18, draw=jepaPurple!70},
-  adapter/.style={block, fill=jepaGreen!20, draw=jepaGreen!70,
-                  minimum width=2.4cm},
-  head/.style={block, fill=jepaRed!12, draw=jepaRed!60,
-               minimum width=2.8cm, minimum height=0.75cm},
-  cond/.style={block, fill=jepaOrange!15, draw=jepaOrange!60,
-               minimum width=2.6cm},
-  decoder/.style={block, fill=jepaPurple!15, draw=jepaPurple!60,
-                  minimum width=5.8cm, minimum height=2.2cm},
-  loss/.style={draw, rounded corners=3pt, align=center,
-               fill=gray!8, draw=gray!50, minimum width=2.8cm,
-               minimum height=0.7cm, font=\scriptsize},
-  lbl/.style={font=\footnotesize\bfseries, align=center},
+  panel/.style={draw=gray!35, rounded corners=4pt, inner sep=7pt},
+  block/.style={draw, rounded corners=3pt, align=center, minimum height=0.72cm,
+                inner sep=4pt, font=\scriptsize},
+  enc/.style={block, fill=jepaBlue!14, draw=jepaBlue!65, minimum width=2.35cm},
+  pred/.style={block, fill=jepaPurple!13, draw=jepaPurple!65, minimum width=2.1cm},
+  cond/.style={block, fill=jepaOrange!15, draw=jepaOrange!65, minimum width=2.35cm},
+  head/.style={block, fill=jepaGreen!15, draw=jepaGreen!65, minimum width=2.7cm},
+  result/.style={block, fill=gray!7, draw=gray!55, minimum width=2.35cm},
   arr/.style={->, thick},
-  darr/.style={->, thick, dashed, draw=gray!70},
-  ema/.style={->, thick, dotted, draw=gray!60},
-  brace/.style={decorate, decoration={brace, amplitude=5pt}},
+  soft/.style={->, thick, dashed, draw=gray!65},
+  label/.style={font=\footnotesize\bfseries},
 ]
 
-% ─────────────────────────────────────────────────────────────
-%  PANEL A  —  Pre-training  (left column, y = 0..10)
-% ─────────────────────────────────────────────────────────────
-\node[lbl] at (2.6, 10.5) {(A)\;Pre-training (JEPA)};
+% Panel A: JEPA pre-training.
+\node[label] at (1.9, 3.95) {(A) JEPA pre-training};
+\node[result]  (tokens) at (1.9, 3.15) {masked peptide\\sequence};
+\node[enc]  (ctx)    at (0.65, 2.05) {context\\encoder};
+\node[enc, fill=jepaOrange!14, draw=jepaOrange!70] (target) at (3.15, 2.05) {EMA target\\encoder};
+\node[pred] (predict) at (0.65, 0.95) {predictor};
+\node[result]  (loss)    at (2.0, 0.12) {$\ell_2$ representation\\prediction loss};
+\draw[arr] (tokens.south west) -- (ctx.north);
+\draw[arr] (tokens.south east) -- (target.north);
+\draw[arr] (ctx) -- (predict);
+\draw[arr] (predict.south) |- (loss.west);
+\draw[arr] (target.south) |- (loss.east);
+\draw[soft] (ctx.east) -- node[above, font=\scriptsize]{EMA} (target.west);
+\node[panel, fit=(tokens)(ctx)(target)(predict)(loss)] {};
 
-% ── Input tokens row ──
-\foreach \i/\sty/\lbl in {
-    0/seqC/A, 1/seqC/K, 2/seqC/L,
-    3/seqM/{[M]}, 4/seqM/{[M]}, 5/seqM/{[M]}}{
-  \node[\sty] (t\i) at (0.7*\i, 9.4) {\lbl};
-}
-\draw [decorate, decoration={brace,amplitude=4pt,mirror},
-       jepaBlue!60, thick]
-  (t0.south west) -- (t2.south east)
-  node[midway, below=5pt, font=\scriptsize, jepaBlue!80]{context $\mathcal{C}$};
-\draw [decorate, decoration={brace,amplitude=4pt,mirror},
-       jepaOrange!70, thick]
-  (t3.south west) -- (t5.south east)
-  node[midway, below=5pt, font=\scriptsize, jepaOrange!80]{target $\mathcal{T}$};
+% Panel B: supervised evaluation.
+\node[label] at (7.0, 3.95) {(B) Representation evaluation};
+\node[enc]  (frozen) at (5.35, 3.10) {frozen JEPA\\encoder};
+\node[head] (adapter) at (5.35, 2.05) {shared\\adapter};
+\node[result]  (clf) at (8.25, 3.10) {AMP\\classification};
+\node[result]  (mic) at (8.25, 2.05) {multi-species\\MIC regression};
+\node[result]  (qmap) at (8.25, 1.00) {homology-aware\\QMAP tasks};
+\draw[arr] (frozen) -- (adapter);
+\draw[arr] (adapter.east) -- ++(0.45,0) |- (clf.west);
+\draw[arr] (adapter.east) -- ++(0.45,0) -- (mic.west);
+\draw[arr] (adapter.east) -- ++(0.45,0) |- (qmap.west);
+\node[panel, fit=(frozen)(adapter)(clf)(mic)(qmap)] {};
 
-% ── Context encoder ──
-\node[enc] (cenc) at (0.7, 7.7) {Context\\Encoder $f_\theta$};
-\draw[arr, jepaBlue!60]
-  ($(t0.south)!0.5!(t2.south)+(0,-0.25)$) -- (cenc.north)
-  node[midway] (cenc_arr_mid) {};
-\draw[arr, jepaBlue!60] (t0.south) -- ++(0,-0.25) -| (cenc.north);
-\draw[arr, jepaBlue!60] (t1.south) -- ++(0,-0.25) -| (cenc.north);
-\draw[arr, jepaBlue!60] (t2.south) -- ++(0,-0.25) -| (cenc.north);
-
-% ── Target encoder ──
-\node[tgtenc] (tenc) at (4.2, 7.7) {Target\\Encoder $\bar{f}_\theta$\\\scriptsize(EMA of $f_\theta$)};
-\draw[arr, jepaOrange!60] (t3.south) -- ++(0,-0.25) -| (tenc.north);
-\draw[arr, jepaOrange!60] (t4.south) -- ++(0,-0.25) -| (tenc.north);
-\draw[arr, jepaOrange!60] (t5.south) -- ++(0,-0.25) -| (tenc.north);
-
-% EMA dashed arrow
-\draw[ema] (cenc.north east) -- ++(0.4,0.3)
-     node[midway, above right, font=\scriptsize, gray]{EMA} -- ++(1.2,0) |- (tenc.north west);
-
-% ── Predictor ──
-\node[pred] (pred) at (0.7, 6.1) {Predictor $g_\phi$};
-\draw[arr] (cenc.south) -- (pred.north)
-     node[midway, right, font=\scriptsize]{$z_\mathcal{C}$};
-
-% ── Target representation ──
-\node[tgtenc, minimum width=2.2cm, minimum height=0.7cm]
-     (trep) at (4.2, 6.1) {$\bar{z}_\mathcal{T}$};
-\draw[arr] (tenc.south) -- (trep.north);
-
-% ── Loss ──
-\node[loss, minimum width=3.6cm] (lloss) at (2.4, 4.7)
-     {$\mathcal{L}_\text{JEPA} =
-      \bigl\|\hat{z}_\mathcal{T} - \bar{z}_\mathcal{T}\bigr\|_2^2$};
-\draw[arr] (pred.south) -- ++(0,-0.4) -| (lloss.west)
-     node[near end, left, font=\scriptsize]{$\hat{z}_\mathcal{T}$};
-\draw[arr] (trep.south) -- ++(0,-0.4) -| (lloss.east);
-
-% Panel box
-\draw[gray!35, rounded corners=6pt, dashed, very thick]
-  (-0.6, 4.2) rectangle (5.8, 11.0);
-
-
-% ─────────────────────────────────────────────────────────────
-%  PANEL B  —  Fine-tuning  (right column, y = 4..10)
-% ─────────────────────────────────────────────────────────────
-\node[lbl] at (11.4, 10.5) {(B)\;Fine-tuning};
-
-% Frozen encoder
-\node[enc, opacity=0.55, minimum width=3.0cm] (fenc) at (9.4, 9.2)
-     {Frozen Encoder $f_\theta$};
-\node[font=\scriptsize, gray] at (9.4, 9.85) {input sequence $\mathbf{x}$};
-\draw[arr, gray!60] (9.4, 9.72) -- (fenc.north);
-
-% Adapter
-\node[adapter, fill=jepaGreen!25] (adap) at (9.4, 7.9)
-     {Adapter $A_\psi$\\\scriptsize(shared, bottleneck 128)};
-\draw[arr, jepaGreen!70] (fenc.south) -- (adap.north);
-
-% Three heads
-\node[head] (hclf) at (13.8, 9.2)
-     {MLP Head\\AMP Classifier};
-\node[head] (hmic) at (13.8, 7.9)
-     {FiLM-MLP Head\\MIC Predictor};
-\node[head] (hgen) at (13.8, 6.5)
-     {AdaLN Decoder\\Cond.\ Generator};
-
-% Fan-out arrows
-\draw[arr] (adap.east) -- ++(0.5,0) |- (hclf.west);
-\draw[arr] (adap.east) -- ++(0.5,0) |- (hmic.west);
-\draw[arr] (adap.east) -- ++(0.5,0) |- (hgen.west);
-
-% Outputs
-\node[right=0.3cm of hclf, font=\scriptsize] {$p(\text{AMP})\in[0,1]$};
-\node[right=0.3cm of hmic, font=\scriptsize] {$\hat{y}_\text{MIC}\in\mathbb{R}^{20}$};
-\node[right=0.3cm of hgen, font=\scriptsize] {$\tilde{\mathbf{x}}_\text{gen}$};
-\foreach \h in {hclf, hmic, hgen}
-  \draw[arr] (\h.east) -- ++(0.28,0);
-
-% Species embedding note for MIC
-\node[draw, fill=gray!8, rounded corners=3pt, font=\scriptsize, align=center]
-     (bact) at (11.8, 6.85)
-     {species\\embedding $e_b$};
-\draw[darr] (bact.east) -| (hmic.south);
-
-% Panel box
-\draw[gray!35, rounded corners=6pt, dashed, very thick]
-  (7.8, 5.9) rectangle (16.5, 11.0);
-
-
-% ─────────────────────────────────────────────────────────────
-%  PANEL C  —  Conditional Generator Detail  (full bottom row)
-% ─────────────────────────────────────────────────────────────
-\node[lbl] at (7.6, 4.0) {(C)\;Conditional Generator Detail (v4)};
-
-% ── Condition input ──
-\node[cond, minimum height=0.7cm] (cin) at (2.2, 2.9)
-     {$\mathbf{c}=[\,\ell/50,\;\tanh(q/5),\;\tanh(h)\,]$};
-\node[font=\scriptsize, align=center, gray] at (2.2, 3.45)
-     {length\quad charge\quad GRAVY};
-
-% ── Condition encoder ──
-\node[cond] (cenc2) at (2.2, 1.8)
-     {Condition Encoder\\$\text{MLP}: \mathbb{R}^3\!\to\!\mathbb{R}^{128}$};
-\draw[arr] (cin.south) -- (cenc2.north);
-
-% ── Two branches from cond encoder ──
-\node[adapter, minimum width=2.6cm, fill=jepaGreen!18]
-     (ctok) at (-0.3, 0.5)
-     {$W_\text{proj}\,\mathbf{c}_\text{emb}$\\\scriptsize cross-attn token};
-\node[cond, minimum width=2.6cm]
-     (adaln) at (4.5, 0.5)
-     {AdaLN modulation\\
-      $(\gamma_i,\beta_i)_{i=1}^3 = W_{6d}\,\mathbf{c}_\text{emb}$};
-
-\draw[arr] (cenc2.south west) -- ++(0,-0.3) -| (ctok.north);
-\draw[arr] (cenc2.south east) -- ++(0,-0.3) -| (adaln.north);
-
-% ── Context path ──
-\node[enc, minimum width=2.6cm] (ctx) at (-0.3, 2.9)
-     {Context Encoder $f_\theta$\\(frozen)};
-\node[adapter, minimum width=2.6cm] (adp2) at (-0.3, 1.8)
-     {Adapter $A_\psi$};
-\draw[arr] (adp2.south) -- (ctx.north |- adp2.south)
-     -- (ctx.south |- ctok.north) -- (ctok.north);
-% redrawn cleanly:
-\draw[arr] (ctx.south) -- (adp2.north);
-\draw[arr] (adp2.south) -- ++(0,-0.35) -| (ctok.north);
-
-% ── Memory concat ──
-\node[draw, fill=gray!10, rounded corners=3pt,
-      minimum width=4.8cm, minimum height=0.6cm,
-      font=\scriptsize, align=center] (mem) at (1.7, -0.7)
-     {Memory $=\bigl[\,\mathbf{c}_\text{tok}\;;\;A_\psi(f_\theta(\mathbf{x}))\,\bigr]$
-      \quad(cross-attn keys/values)};
-\draw[arr] (ctok.south) -- ++(0,-0.35) -| (mem.north west);
-
-% ── Decoder ──
-\node[decoder, align=center] (dec) at (8.5, 0.4)
-     {\textbf{AR Decoder} (4 layers)\\[4pt]
-      \scriptsize
-      \textbf{Self-Attention}\ $\xrightarrow{\text{AdaLN}(\gamma_1,\beta_1)}$\\[2pt]
-      \textbf{Cross-Attention} $\leftarrow$ Memory\ $\xrightarrow{\text{AdaLN}(\gamma_2,\beta_2)}$\\[2pt]
-      \textbf{Feed-Forward}\ $\xrightarrow{\text{AdaLN}(\gamma_3,\beta_3)}$\\[4pt]
-      \scriptsize\textit{zero-init: starts as unconditional}};
-
-\draw[arr] (mem.east) -- ++(0.35,0) |- (dec.west)
-     node[near start, above, font=\scriptsize]{memory};
-\draw[arr] (adaln.south) -- ++(0,-0.55) -| (dec.north)
-     node[near start, right, font=\scriptsize]{$(\gamma,\beta)$ per layer};
-
-% ── Generated output ──
-\node[font=\small] (gout) at (8.5, -1.35) {Generated sequence $\tilde{\mathbf{x}}$};
-\draw[arr] (dec.south) -- (gout.north);
-
-% ── Aux loss ──
-\node[loss, minimum width=3.4cm, fill=jepaRed!8, draw=jepaRed!40]
-     (aloss) at (13.5, 0.4)
-     {\textbf{Aux.\ Loss} $\mathcal{L}_\text{phys}$\\[3pt]
-      \scriptsize
-      $\mathbb{E}[q] = \!\!\sum_{t,a} p_{t,a}\,q_a$\\
-      $\mathcal{L} = \text{MSE}(\mathbb{E}[q], q^\star)$\\
-      $+\,\text{MSE}(\mathbb{E}[h], h^\star)$};
-\draw[darr, jepaRed!60, thick] (dec.east) -- (aloss.west)
-     node[midway, above, font=\scriptsize]{logits $p_{t,a}$};
-
-% ── Context dropout annotation ──
-\node[draw, fill=gray!8, rounded corners=3pt, font=\scriptsize, align=center]
-     (cdrop) at (-0.3, -0.7)
-     {context dropout\\$p=0.15$};
-\draw[darr] (adp2.south west) -- ++(-0.5,-0.3) |- (cdrop.north);
-
-% ── CFG dropout annotation ──
-\node[draw, fill=gray!8, rounded corners=3pt, font=\scriptsize, align=center]
-     (cdrop2) at (2.2, -1.5)
-     {CFG dropout\\$p_\text{cond}=0.30$};
-\draw[darr] (cenc2.south) -- ++(0,-0.25) -| (cdrop2.north);
-
-% Panel box
-\draw[gray!35, rounded corners=6pt, dashed, very thick]
-  (-2.0, -2.1) rectangle (16.5, 4.5);
+% Panel C: conditional generation.
+\node[label] at (12.3, 3.95) {(C) Conditional generation};
+\node[enc]  (gctx) at (10.55, 3.10) {context\\encoder};
+\node[cond] (cvec) at (10.55, 1.85) {property / MIC\\condition};
+\node[pred, minimum width=2.9cm] (decoder) at (13.35, 2.45)
+  {dual-pathway decoder\\AdaLN + condition token};
+\node[result] (peptide) at (15.55, 2.45) {generated\\peptide};
+\node[result, minimum width=2.9cm] (eval) at (13.35, 0.95)
+  {reported controls:\\charge strong; MIC oracle-limited};
+\draw[arr] (gctx.east) -- (decoder.west);
+\draw[arr] (cvec.east) -- (decoder.west);
+\draw[arr] (decoder) -- (peptide);
+\draw[soft] (decoder.south) -- (eval.north);
+\node[panel, fit=(gctx)(cvec)(decoder)(peptide)(eval)] {};
 
 \end{tikzpicture}

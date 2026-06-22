@@ -1,0 +1,55 @@
+% ── results/cross_species.tex ─────────────────────────────────────────────────
+\subsection{Cross-Species Zero-Shot Transfer}
+\label{sec:res_cross_species}
+
+To probe whether JEPA-AMP learns transferable MIC representations rather than
+species-specific patterns, we evaluate zero-shot cross-species generalisation:
+a model trained on a \emph{source} bacterial species is applied without
+re-training to a held-out \emph{target} species.
+We test all five directed routes spanning E.\,coli, S.\,aureus, and
+P.\,aeruginosa (three seeds, $n_{\text{test}}$ ranging from 402 to 796 per
+route).
+
+\begin{table}[h]
+\centering
+\caption{Zero-shot cross-species MIC prediction (Pearson $r$, mean $\pm$ SD
+  over seeds 42, 7, 123).
+  In-domain results (trained on target species) are shown for reference.
+  Statistical comparison uses paired permutation testing across all 15
+  route--seed observations.}
+\label{tab:cross_species}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Route} & \textbf{JEPA zero-shot} & \textbf{ESM-2 zero-shot} & \textbf{JEPA in-domain} \\
+\midrule
+E.~coli $\to$ S.~aureus       & $0.553 \pm 0.040$ & $0.451 \pm 0.030$ & $0.598 \pm 0.039$ \\
+E.~coli $\to$ P.~aeruginosa   & $0.657 \pm 0.020$ & $0.547 \pm 0.046$ & $0.603 \pm 0.013$ \\
+S.~aureus $\to$ E.~coli       & $0.384 \pm 0.055$ & $0.300 \pm 0.036$ & $0.628 \pm 0.038$ \\
+S.~aureus $\to$ P.~aeruginosa & $0.484 \pm 0.028$ & $0.403 \pm 0.030$ & $0.620 \pm 0.021$ \\
+P.~aeruginosa $\to$ E.~coli   & $0.536 \pm 0.022$ & $0.417 \pm 0.044$ & $0.582 \pm 0.026$ \\
+\midrule
+\textbf{Mean}                 & $\mathbf{0.523}$ & $0.423$ & $0.606$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Across all five routes JEPA-AMP outperforms the ESM-2 baseline in zero-shot
+transfer (mean $\Delta = +0.100$, 95\,\% CI $[0.073, 0.126]$,
+permutation $p < 0.001$, $n = 15$ paired observations).
+The gain is consistent in direction across every route, with the largest
+advantage on the P.\,aeruginosa $\to$ E.\,coli route
+($\Delta = +0.119$) and the E.\,coli $\to$ P.\,aeruginosa route
+($\Delta = +0.110$).
+
+Notably, on E.\,coli $\to$ P.\,aeruginosa JEPA zero-shot ($r = 0.657$)
+\emph{matches} JEPA in-domain ($r = 0.603$), suggesting the E.\,coli
+representation generalises particularly well to this gram-negative target.
+The harder gram-positive transfer (S.\,aureus $\to$ E.\,coli, $r = 0.384$)
+leaves a larger gap versus in-domain, indicating that membrane-composition
+differences remain a challenge.
+
+\finding{JEPA-AMP representations transfer across bacterial species with no
+re-training, outperforming the ESM-2 baseline by $\Delta r = +0.100$ on
+average ($p < 0.001$).
+Domain-specific fine-tuning closes a substantial additional gap, pointing
+to few-shot adaptation as a practical deployment pathway.}

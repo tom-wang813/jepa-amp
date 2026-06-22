@@ -1,0 +1,41 @@
+pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+generator_version: v6   # same dual-pathway AR decoder, but train on 7-dim conditions
+
+data:
+  fasta_paths:
+    - data/processed/amp_corpus.fasta
+  amp_score_cache: data/processed/amp_scores_cache.json
+  max_len: 50
+  val_ratio: 0.05
+  prefix_ratio: 0.5
+  min_prefix_len: 3
+
+generator:
+  adapter_bottleneck: 128
+  decoder_layers: 4
+  decoder_nhead: 8
+  decoder_ff: 1536
+  dropout: 0.1
+  max_seq_len: 52
+  num_conditions: 7        # len, charge, GRAVY, helix, pI, hydrophobic_moment, AMP_score
+  d_cond: 128
+  cond_dropout: 0.30
+  context_dropout: 0.15
+
+train:
+  freeze_encoder: true
+  epochs: 80
+  batch_size: 1536
+  lr: 5.0e-4
+  weight_decay: 0.01
+  fp16: true
+  num_workers: 0
+  save_dir: checkpoints/generator_868k_v6
+  patience: 20
+  save_every: 10
+  physchem_loss_weight: 0.30
+
+wandb:
+  enabled: false
+  project: jepa-amp
+  run_name: finetune_868k_v6_extended_cond

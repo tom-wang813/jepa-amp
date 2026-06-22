@@ -1,0 +1,48 @@
+pretrain_checkpoint: checkpoints/jepa_pretrain_868k/last_jepa.pt
+generator_version: v7   # V4 architecture with 4-dim conditions + v7 loss
+
+data:
+  fasta_paths:
+    - data/processed/amp_corpus.fasta
+  hc50_cache: data/processed/hc50_pseudolabels.json   # pre-computed by compute_hc50_pseudolabels.py
+  max_len: 50
+  val_ratio: 0.05
+  prefix_ratio: 0.5
+  min_prefix_len: 3
+
+generator:
+  adapter_bottleneck: 128
+  decoder_layers: 4
+  decoder_nhead: 8
+  decoder_ff: 1536
+  dropout: 0.1
+  max_seq_len: 52
+  num_conditions: 4        # [len/50, tanh(charge/5), tanh(GRAVY), tanh(log10_HC50/3)]
+  d_cond: 128
+  cond_dropout: 0.30
+  context_dropout: 0.15
+
+train:
+  freeze_encoder: true
+  epochs: 80
+  batch_size: 1536
+  lr: 5.0e-4
+  weight_decay: 0.01
+  fp16: true
+  num_workers: 8
+  save_dir: checkpoints/generator_868k_v7
+  patience: 20
+  save_every: 10
+
+  # V7 loss: separate weights overcome CE dominance on GRAVY
+  charge_loss_weight: 0.5    # moderate — charge was already working
+  gravy_loss_weight: 2.5     # 5× stronger than effective v4 GRAVY weight (0.15)
+
+  # HC50 oracle loss (non-differentiable, runs every step)
+  hc50_oracle_loss_weight: 0.5
+  hc50_oracle_ckpt: eval_results/qmap_jepa_hc50_head_finetune_seed42/split_0/best_model.pt
+
+wandb:
+  enabled: false
+  project: jepa-amp
+  run_name: finetune_868k_v7_gravy_hc50

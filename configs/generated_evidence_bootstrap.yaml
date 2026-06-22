@@ -1,0 +1,64 @@
+experiment_id: generated_evidence_bootstrap
+research_decision: "Add bootstrap confidence intervals for MIC-conditioned generation and generated-peptide plausibility claims."
+seed: 123
+output_dir: eval_results/generated_evidence_bootstrap
+
+inputs:
+  mic_generation_predictions: eval_results/mic_conditioned_generation_formal/predictions.jsonl
+  plausibility_predictions: eval_results/generated_peptide_plausibility_formal/predictions.jsonl
+
+bootstrap:
+  n_resamples: 5000
+  ci: 0.95
+
+mic_deltas:
+  - key: broad_spectrum_jepa_ecoli
+    scenario: broad_spectrum_potent
+    control: amp_physchem_control
+    field: jepa_oracle_b0
+  - key: broad_spectrum_esm2_ecoli
+    scenario: broad_spectrum_potent
+    control: amp_physchem_control
+    field: esm2_independent_b0
+  - key: inactive_jepa_ecoli
+    scenario: inactive_all
+    control: neutral_context_control
+    field: jepa_oracle_b0
+  - key: inactive_esm2_ecoli
+    scenario: inactive_all
+    control: neutral_context_control
+    field: esm2_independent_b0
+  - key: ecoli_selective_jepa_ecoli_minus_saureus
+    scenario: ecoli_selective
+    control: null
+    field_a: jepa_oracle_b0
+    field_b: jepa_oracle_b1
+  - key: saureus_selective_jepa_ecoli_minus_saureus
+    scenario: saureus_selective
+    control: null
+    field_a: jepa_oracle_b0
+    field_b: jepa_oracle_b1
+
+plausibility:
+  metrics:
+    - key: nearest_identity_median
+      field: nearest_identity_proxy
+      statistic: median
+    - key: nearest_identity_p95
+      field: nearest_identity_proxy
+      statistic: p95
+    - key: hc50_log10_mean
+      field: hc50_log10_mean
+      statistic: mean
+    - key: hc50_log10_fraction_ge_2
+      field: hc50_log10_mean
+      statistic: fraction_ge
+      threshold: 2.0
+    - key: abs_charge_gt_15
+      field: charge
+      statistic: fraction_abs_gt
+      threshold: 15.0
+    - key: cationic_fraction_gt_0.60
+      field: cationic_fraction
+      statistic: fraction_gt
+      threshold: 0.60

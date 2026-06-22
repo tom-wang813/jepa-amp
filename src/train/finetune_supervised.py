@@ -14,6 +14,7 @@ Usage:
 
 import argparse
 import itertools
+import json
 from pathlib import Path
 
 import torch
@@ -27,12 +28,16 @@ from src.data.supervised_dataset import (
     AMPClassificationDataset,
     load_fasta_sequences,
     load_grampa,
+    load_cancer_ic50,
     collate_supervised,
     BACTERIA_TO_IDX,
+    GRAMPA_TOP20,
     N_BACTERIA,
+    CANCER_TYPES,
+    N_CANCER_TYPES,
 )
-from src.models.jepa import JEPA
 from src.models.encoder import TransformerEncoder
+from src.models.pretrain_utils import load_pretrained_encoder
 from src.models.supervised_head import JEPAClassifier, JEPAMICPredictor
 
 
@@ -41,12 +46,7 @@ from src.models.supervised_head import JEPAClassifier, JEPAMICPredictor
 # ---------------------------------------------------------------------------
 
 def _load_encoder(pretrain_ckpt: str, device: torch.device) -> tuple[TransformerEncoder, dict]:
-    ckpt = torch.load(pretrain_ckpt, map_location=device, weights_only=False)
-    cfg = ckpt["cfg"]
-    jepa = JEPA(**cfg["model"])
-    jepa.load_state_dict(ckpt["model_state"])
-    print(f"Loaded JEPA encoder (epoch {ckpt['epoch']}, val_loss={ckpt['val_loss']:.4f})")
-    return jepa.context_encoder, cfg
+    return load_pretrained_encoder(pretrain_ckpt, device)
 
 
 def _build_neg_sequences(neg_cfg: dict, max_len: int) -> list[str]:
@@ -178,12 +178,15 @@ def train_mic(cfg: dict, gpu: int = 0) -> None:
     print(f"Trainable params: {sum(p.numel() for p in model.parameters() if p.requires_grad):,}")
 
     data_cfg = cfg["data"]
+    split_seed = data_cfg.get("seed", 42)
     train_ds, val_ds, test_ds = load_grampa(
         data_cfg["grampa_csv"],
         max_len=max_len - 2,
         val_ratio=data_cfg.get("val_ratio", 0.1),
         test_ratio=data_cfg.get("test_ratio", 0.1),
+        seed=split_seed,
         label_noise_std=data_cfg.get("label_noise_std", 0.3),
+        train_fraction=data_cfg.get("train_fraction", 1.0),
     )
     print(f"MIC train: {len(train_ds)}  val: {len(val_ds)}  test: {len(test_ds)}")
 
@@ -206,6 +209,19 @@ def train_mic(cfg: dict, gpu: int = 0) -> None:
     test_loss, test_metrics = _evaluate(model, test_loader, device, use_fp16,
                                         _mic_loss_fn(), _mic_metric_fn(), is_mic=True)
     print(f"\nTest | loss={test_loss:.4f} | " + " | ".join(f"{k}={v:.4f}" for k, v in test_metrics.items()))
+    _write_mic_test_artifacts(
+        save_dir=save_dir,
+        model=model,
+        test_loader=test_loader,
+        test_dataset=test_ds,
+        cfg=cfg,
+        device=device,
+        use_fp16=use_fp16,
+        test_loss=test_loss,
+        test_metrics=test_metrics,
+        split_seed=split_seed,
+        checkpoint_path=save_dir / "best_model.pt",
+    )
 
 
 def train_multitask(cfg: dict, gpu: int = 0) -> None:
@@ -394,7 +410,108 @@ def _mic_metric_fn():
     return fn
 
 
-def _evaluate(model, loader, device, use_fp16, loss_fn, metric_fn, is_mic: bool = False):
+def _spearman(x: torch.Tensor, y: torch.Tensor) -> float:
+    try:
+        from scipy.stats import spearmanr
+
+        return float(spearmanr(x.numpy(), y.numpy()).statistic)
+    except Exception:
+        return float("nan")
+
+
+def _write_mic_test_artifacts(
+    *,
+    save_dir: Path,
+    model: nn.Module,
+    test_loader: DataLoader,
+    test_dataset,
+    cfg: dict,
+    device: torch.device,
+    use_fp16: bool,
+    test_loss: float,
+    test_metrics: dict,
+    split_seed: int,
+    checkpoint_path: Path,
+) -> None:
+    """Save MIC test predictions and metadata for paper evidence locking."""
+    save_dir.mkdir(parents=True, exist_ok=True)
+    records = getattr(test_dataset, "_records", None)
+    preds: list[float] = []
+    targets: list[float] = []
+
+    model.eval()
+    with torch.no_grad():
+        for batch in test_loader:
+            ids = batch["input_ids"].to(device)
+            bidx = batch["bacteria_idx"].to(device)
+            with torch.cuda.amp.autocast(enabled=use_fp16):
+                batch_preds = model(ids, bidx)
+            preds.extend(batch_preds.cpu().float().tolist())
+            targets.extend(batch["log2_mic"].cpu().float().tolist())
+
+    p = torch.tensor(preds)
+    t = torch.tensor(targets)
+    metrics = {
+        "loss": float(test_loss),
+        "rmse": float(((p - t) ** 2).mean().sqrt().item()),
+        "mae": float((p - t).abs().mean().item()),
+        "pearson": float(_pearson(p, t)),
+        "spearman": float(_spearman(p, t)),
+        "n": len(preds),
+        "printed_metrics": {k: float(v) for k, v in test_metrics.items()},
+    }
+
+    with open(save_dir / "test_metrics.json", "w") as f:
+        json.dump(metrics, f, indent=2)
+
+    with open(save_dir / "test_predictions.jsonl", "w") as f:
+        for i, (pred, target) in enumerate(zip(preds, targets)):
+            row = {
+                "index": i,
+                "pred_log2_mic": float(pred),
+                "true_log2_mic": float(target),
+                "error": float(pred - target),
+            }
+            if records is not None and i < len(records):
+                rec = records[i]
+                bacteria_idx = int(rec["bacteria_idx"])
+                row.update(
+                    {
+                        "seq": rec["seq"],
+                        "bacteria_idx": bacteria_idx,
+                        "bacteria": GRAMPA_TOP20[bacteria_idx]
+                        if bacteria_idx < len(GRAMPA_TOP20)
+                        else str(bacteria_idx),
+                    }
+                )
+            f.write(json.dumps(row) + "\n")
+
+    with open(save_dir / "config_resolved.yaml", "w") as f:
+        yaml.safe_dump(cfg, f, sort_keys=False)
+
+    manifest = {
+        "task": "mic_regression",
+        "status": "formal_artifact",
+        "config": str(save_dir / "config_resolved.yaml"),
+        "checkpoint": str(checkpoint_path),
+        "metrics": str(save_dir / "test_metrics.json"),
+        "predictions": str(save_dir / "test_predictions.jsonl"),
+        "split": {
+            "loader": "src.data.supervised_dataset.load_grampa",
+            "grampa_csv": cfg["data"].get("grampa_csv"),
+            "seed": split_seed,
+            "val_ratio": cfg["data"].get("val_ratio", 0.1),
+            "test_ratio": cfg["data"].get("test_ratio", 0.1),
+        },
+        "n_test": len(preds),
+    }
+    with open(save_dir / "run_manifest.json", "w") as f:
+        json.dump(manifest, f, indent=2)
+    print(f"Saved MIC evidence artifacts to {save_dir}")
+
+
+def _evaluate(model, loader, device, use_fp16, loss_fn, metric_fn, is_mic: bool = False,
+              reg_label_key: str = "log2_mic"):
     model.eval()
     total_loss = 0.0
     all_out, all_labels = [], []
@@ -404,7 +521,7 @@ def _evaluate(model, loader, device, use_fp16, loss_fn, metric_fn, is_mic: bool 
             total_loss += loss.item()
             if is_mic:
                 all_out.extend(out.cpu().float().tolist())
-                all_labels.extend(batch["log2_mic"].tolist())
+                all_labels.extend(batch[reg_label_key].tolist())
             else:
                 all_out.extend(out["amp_logit"].cpu().float().tolist())
                 all_labels.extend(batch["amp_label"].tolist())
@@ -413,7 +530,7 @@ def _evaluate(model, loader, device, use_fp16, loss_fn, metric_fn, is_mic: bool 
 
 
 def _run_training(model, train_loader, val_loader, cfg, device, use_fp16,
-                  loss_fn, metric_fn, is_mic: bool = False):
+                  loss_fn, metric_fn, is_mic: bool = False, reg_label_key: str = "log2_mic"):
     lr_encoder = cfg["train"].get("lr_encoder", None)
     if lr_encoder is not None and hasattr(model, "encoder"):
         encoder_ids = {id(p) for p in model.encoder.parameters()}
@@ -456,7 +573,8 @@ def _run_training(model, train_loader, val_loader, cfg, device, use_fp16,
         scheduler.step()
 
         val_loss, val_metrics = _evaluate(model, val_loader, device, use_fp16,
-                                          loss_fn, metric_fn, is_mic=is_mic)
+                                          loss_fn, metric_fn, is_mic=is_mic,
+                                          reg_label_key=reg_label_key)
         lr = optimizer.param_groups[0]["lr"]
         metric_str = " | ".join(f"{k}={v:.4f}" for k, v in val_metrics.items())
         print(f"Epoch {epoch+1:03d} | train={train_loss:.4f} | val={val_loss:.4f} | {metric_str} | lr={lr:.2e}")
@@ -479,6 +597,118 @@ def _run_training(model, train_loader, val_loader, cfg, device, use_fp16,
     print(f"Training done. Best val_loss: {best_val_loss:.4f}")
 
 
+def train_cancer_ic50(cfg: dict, gpu: int = 0) -> None:
+    """Cancer cell IC50 regression (multitask over 6 cancer types, xDeep-AcPEP data)."""
+    device = torch.device(f"cuda:{gpu}" if torch.cuda.is_available() else "cpu")
+    use_fp16 = device.type == "cuda" and cfg["train"].get("fp16", True)
+
+    encoder, pretrain_cfg = _load_encoder(cfg["pretrain_checkpoint"], device)
+    d_model = pretrain_cfg["model"]["d_model"]
+    max_len = pretrain_cfg["model"].get("max_seq_len", 52)
+
+    head_cfg = cfg["head"].copy()
+    head_type = head_cfg.pop("head_type", "mlp")
+
+    model = JEPAMICPredictor(
+        encoder=encoder,
+        d_model=d_model,
+        n_bacteria=N_CANCER_TYPES,  # reuse MIC predictor with cancer-type conditioning
+        head_type=head_type,
+        freeze_encoder=cfg["train"]["freeze_encoder"],
+        **head_cfg,
+    ).to(device)
+    print(f"Trainable params: {sum(p.numel() for p in model.parameters() if p.requires_grad):,}")
+
+    data_cfg = cfg["data"]
+    train_ds, val_ds, test_ds = load_cancer_ic50(
+        data_cfg["cancer_ic50_csv"],
+        max_len=max_len - 2,
+        val_ratio=data_cfg.get("val_ratio", 0.15),
+        test_ratio=data_cfg.get("test_ratio", 0.15),
+        seed=data_cfg.get("seed", 42),
+        label_noise_std=data_cfg.get("label_noise_std", 0.1),
+    )
+    print(f"Cancer IC50 | train: {len(train_ds)}  val: {len(val_ds)}  test: {len(test_ds)}")
+
+    nw = cfg["train"].get("num_workers", 2)
+    bs = cfg["train"]["batch_size"]
+    train_loader = DataLoader(train_ds, batch_size=bs, shuffle=True,
+                              num_workers=nw, pin_memory=True, collate_fn=collate_supervised)
+    val_loader   = DataLoader(val_ds,   batch_size=bs, shuffle=False,
+                              num_workers=min(nw, 2), pin_memory=True, collate_fn=collate_supervised)
+    test_loader  = DataLoader(test_ds,  batch_size=bs, shuffle=False,
+                              num_workers=min(nw, 2), pin_memory=True, collate_fn=collate_supervised)
+
+    def cancer_loss_fn(model, batch, device, use_fp16):
+        ids    = batch["input_ids"].to(device)
+        cidx   = batch["cancer_idx"].to(device)
+        targets = batch["log10_ic50"].to(device)
+        with torch.cuda.amp.autocast(enabled=use_fp16):
+            preds = model(ids, cidx)
+            loss  = F.huber_loss(preds, targets, delta=0.5)
+        return loss, preds
+
+    def cancer_metric_fn(all_preds, all_targets):
+        p = torch.tensor(all_preds)
+        t = torch.tensor(all_targets)
+        rmse = ((p - t) ** 2).mean().sqrt().item()
+        pearson = _pearson(p, t)
+        return {"rmse": rmse, "pearson": pearson}
+
+    _run_training(model, train_loader, val_loader, cfg, device, use_fp16,
+                  loss_fn=cancer_loss_fn, metric_fn=cancer_metric_fn, is_mic=True,
+                  reg_label_key="log10_ic50")
+
+    # test evaluation
+    save_dir = Path(cfg["train"]["save_dir"])
+    best_ckpt = torch.load(save_dir / "best_model.pt", map_location=device, weights_only=False)
+    model.load_state_dict(best_ckpt["model_state"])
+
+    model.eval()
+    all_preds, all_targets, all_cancer_types = [], [], []
+    with torch.no_grad():
+        for batch in test_loader:
+            ids    = batch["input_ids"].to(device)
+            cidx   = batch["cancer_idx"].to(device)
+            with torch.cuda.amp.autocast(enabled=use_fp16):
+                preds = model(ids, cidx)
+            all_preds.extend(preds.cpu().float().tolist())
+            all_targets.extend(batch["log10_ic50"].cpu().float().tolist())
+            all_cancer_types.extend(cidx.cpu().tolist())
+
+    p = torch.tensor(all_preds)
+    t = torch.tensor(all_targets)
+    test_rmse    = ((p - t) ** 2).mean().sqrt().item()
+    test_pearson = _pearson(p, t)
+    print(f"\nTest | RMSE={test_rmse:.4f} | Pearson={test_pearson:.4f}")
+
+    # per-cancer-type metrics
+    per_type = {}
+    for i, cname in enumerate(CANCER_TYPES):
+        mask = [j for j, c in enumerate(all_cancer_types) if c == i]
+        if len(mask) < 2:
+            continue
+        pi = torch.tensor([all_preds[j] for j in mask])
+        ti = torch.tensor([all_targets[j] for j in mask])
+        per_type[cname] = {
+            "n": len(mask),
+            "rmse": round(((pi - ti) ** 2).mean().sqrt().item(), 4),
+            "pearson": round(_pearson(pi, ti), 4),
+        }
+        print(f"  {cname}: n={len(mask)} rmse={per_type[cname]['rmse']:.4f} r={per_type[cname]['pearson']:.4f}")
+
+    test_metrics = {"rmse": test_rmse, "pearson": test_pearson, "per_cancer_type": per_type}
+    with open(save_dir / "test_metrics.json", "w") as f:
+        json.dump(test_metrics, f, indent=2)
+
+    # save config copy
+    import yaml as _yaml
+    with open(save_dir / "config_resolved.yaml", "w") as f:
+        _yaml.dump(cfg, f)
+
+    print(f"Artifacts saved to {save_dir}")
+
+
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
@@ -499,6 +729,8 @@ def main():
         train_mic(cfg, gpu=args.gpu)
     elif task == "multitask":
         train_multitask(cfg, gpu=args.gpu)
+    elif task == "cancer_ic50":
+        train_cancer_ic50(cfg, gpu=args.gpu)
     else:
         raise ValueError(f"Unknown task: {task}")
 

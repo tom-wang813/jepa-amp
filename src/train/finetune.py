@@ -15,9 +15,10 @@ from torch.utils.data import DataLoader
 
 from src.data.dataset import (
     build_seq2seq_datasets, build_seq2seq_datasets_v5,
-    build_seq2seq_datasets_grampa_v5,
+    build_seq2seq_datasets_grampa_v5, build_seq2seq_datasets_v6,
+    build_seq2seq_datasets_v7,
 )
-from src.models.jepa import JEPA
+from src.models.pretrain_utils import load_pretrained_encoder
 from src.models.generator import (
     ConditionalGenerator, ConditionalGeneratorV3, ConditionalGeneratorV4,
     ConditionalGeneratorV5,
@@ -28,7 +29,7 @@ from src.models.generator import (
 def load_mic_oracle(cfg: dict, device: torch.device):
     """Load frozen MIC predictor as differentiable oracle for aux loss."""
     import yaml
-    from src.models.jepa import JEPA
+    from src.models.pretrain_utils import load_pretrained_encoder
     from src.models.supervised_head import JEPAMICPredictor
     from src.data.supervised_dataset import N_BACTERIA
 
@@ -41,16 +42,14 @@ def load_mic_oracle(cfg: dict, device: torch.device):
     with open(project_root / mic_cfg_path) as f:
         mc = yaml.safe_load(f)
 
-    pt_ckpt = torch.load(project_root / mc["pretrain_checkpoint"],
-                         map_location=device, weights_only=False)
-    jepa = JEPA(**pt_ckpt["cfg"]["model"])
-    jepa.load_state_dict(pt_ckpt["model_state"])
+    enc, pt_cfg = load_pretrained_encoder(
+        str(project_root / mc["pretrain_checkpoint"]), device)
 
     head_cfg  = mc["head"].copy()
     head_type = head_cfg.pop("head_type", "transformer")
     model = JEPAMICPredictor(
-        encoder=jepa.context_encoder,
-        d_model=pt_ckpt["cfg"]["model"]["d_model"],
+        encoder=enc,
+        d_model=pt_cfg["model"]["d_model"],
         n_bacteria=N_BACTERIA,
         head_type=head_type,
         freeze_encoder=True,
@@ -132,27 +131,124 @@ def physchem_aux_loss(
     conditions: torch.Tensor,
     tgt_labels: torch.Tensor,
 ) -> torch.Tensor:
+    """Legacy combined physicochemical loss (charge + GRAVY, equal weights)."""
+    mask   = (tgt_labels != -100).float()
+    n_real = mask.sum(dim=1).clamp(min=1)
+    probs_aa = F.softmax(logits, dim=-1)[:, :, 2:22]
+    charge_vec = _CHARGE_VEC.to(logits.device)
+    kd_vec     = _KD_VEC.to(logits.device)
+    E_charge = ((probs_aa * charge_vec).sum(-1) * mask).sum(1)
+    E_gravy  = ((probs_aa * kd_vec).sum(-1) * mask).sum(1) / n_real
+    tgt_charge = torch.atanh(conditions[:, 1].clamp(-0.9999, 0.9999)) * 5.0
+    tgt_gravy  = torch.atanh(conditions[:, 2].clamp(-0.9999, 0.9999))
+    return F.mse_loss(E_charge, tgt_charge) + F.mse_loss(E_gravy, tgt_gravy)
+
+
+def physchem_aux_loss_v7(
+    logits: torch.Tensor,
+    conditions: torch.Tensor,
+    tgt_labels: torch.Tensor,
+    charge_weight: float = 0.5,
+    gravy_weight: float = 2.5,
+) -> torch.Tensor:
     """
-    Differentiable physicochemical loss.
-    Computes expected charge & GRAVY from the predicted token distribution and
-    penalises deviation from the target conditions.
-    Fully differentiable — gradients flow back through softmax into logits.
+    V7 physicochemical aux loss with separate charge and GRAVY weights.
+    Higher gravy_weight overcomes CE-loss dominance that caused GRAVY R²≈0.
+    Fully differentiable via soft token probabilities.
     """
     mask   = (tgt_labels != -100).float()          # (B, T)
     n_real = mask.sum(dim=1).clamp(min=1)           # (B,)
-
-    probs_aa = F.softmax(logits, dim=-1)[:, :, 2:22]   # (B, T, 20) — AA tokens only
-
+    probs_aa = F.softmax(logits, dim=-1)[:, :, 2:22]   # (B, T, 20)
     charge_vec = _CHARGE_VEC.to(logits.device)
     kd_vec     = _KD_VEC.to(logits.device)
-
     E_charge = ((probs_aa * charge_vec).sum(-1) * mask).sum(1)           # (B,)
     E_gravy  = ((probs_aa * kd_vec).sum(-1) * mask).sum(1) / n_real      # (B,)
-
     tgt_charge = torch.atanh(conditions[:, 1].clamp(-0.9999, 0.9999)) * 5.0
     tgt_gravy  = torch.atanh(conditions[:, 2].clamp(-0.9999, 0.9999))
+    return (charge_weight * F.mse_loss(E_charge, tgt_charge) +
+            gravy_weight  * F.mse_loss(E_gravy,  tgt_gravy))
 
-    return F.mse_loss(E_charge, tgt_charge) + F.mse_loss(E_gravy, tgt_gravy)
+
+def load_hc50_oracle(cfg: dict, device: torch.device):
+    """Load frozen HC50 predictor (MeanPoolRegressor from qmap script)."""
+    import torch.nn as nn
+
+    hc50_ckpt_path = cfg.get("hc50_oracle_ckpt")
+    if not hc50_ckpt_path:
+        return None
+
+    project_root = Path(cfg.get("_project_root", Path(__file__).resolve().parents[2]))
+    ckpt_path = project_root / hc50_ckpt_path
+    if not ckpt_path.exists():
+        print(f"WARNING: HC50 oracle checkpoint not found at {ckpt_path}")
+        return None
+
+    ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
+    args = ckpt.get("args", {})
+
+    pretrain_ckpt = args.get("checkpoint", "checkpoints/jepa_pretrain_868k/last_jepa.pt")
+    enc, pt_cfg = load_pretrained_encoder(str(project_root / pretrain_ckpt), device)
+    d_model = pt_cfg["model"]["d_model"]
+
+    class _HC50Oracle(nn.Module):
+        def __init__(self, encoder, d_model, hidden, dropout):
+            super().__init__()
+            self.encoder = encoder
+            self.head = nn.Sequential(
+                nn.LayerNorm(d_model),
+                nn.Linear(d_model, hidden), nn.GELU(), nn.Dropout(dropout),
+                nn.Linear(hidden, hidden),  nn.GELU(), nn.Dropout(dropout),
+                nn.Linear(hidden, 1),
+            )
+        def forward(self, input_ids, lengths):
+            h = self.encoder(input_ids)  # (B, L, D)
+            pooled = torch.stack([h[i, 1:lengths[i]-1].mean(0) for i in range(len(lengths))])
+            return self.head(pooled).squeeze(-1)
+
+    model = _HC50Oracle(enc, d_model, hidden=args.get("hidden", 512),
+                        dropout=args.get("dropout", 0.25)).to(device)
+    model.load_state_dict(ckpt["model_state"])
+    for p in model.parameters():
+        p.requires_grad_(False)
+    model.eval()
+    print(f"HC50 oracle loaded (frozen): {hc50_ckpt_path}")
+    return model
+
+
+@torch.no_grad()
+def hc50_oracle_loss_batch(
+    hc50_oracle,
+    logits: torch.Tensor,
+    conditions: torch.Tensor,
+    tgt_labels: torch.Tensor,
+) -> torch.Tensor:
+    """
+    Non-differentiable HC50 oracle loss.
+    conditions[:, 3] = tanh(log10_HC50 / 3).
+    Decodes argmax sequences, runs through frozen HC50 predictor.
+    """
+    from src.data.tokenizer import PAD_ID, EOS_ID
+    device = logits.device
+    B = logits.shape[0]
+
+    token_ids  = logits.argmax(-1)      # (B, T)
+    label_mask = (tgt_labels != -100)   # (B, T)
+
+    max_l = int(label_mask.sum(1).max().item()) + 2
+    max_l = max(max_l, 5)
+    padded  = torch.full((B, max_l), PAD_ID, dtype=torch.long, device=device)
+    lengths = torch.zeros(B, dtype=torch.long, device=device)
+    padded[:, 0] = 0  # BOS
+    for b in range(B):
+        toks = token_ids[b][label_mask[b]]
+        end  = min(len(toks), max_l - 2)
+        padded[b, 1:end + 1] = toks[:end]
+        padded[b, end + 1]   = EOS_ID
+        lengths[b] = end + 2
+
+    preds = hc50_oracle(padded, lengths)                          # (B,) log10 HC50
+    tgt_hc50 = torch.atanh(conditions[:, 3].clamp(-0.9999, 0.9999)) * 3.0  # decode
+    return F.mse_loss(preds, tgt_hc50)
 
 
 def build_generator_batch(batch: dict, device: torch.device):
@@ -172,20 +268,14 @@ def train(cfg: dict, gpu: int = 0):
     use_fp16 = device.type == "cuda" and cfg["train"].get("fp16", True)
     print(f"Device: {device}  fp16={use_fp16}")
 
-    # --- load pretrained JEPA encoder ---
-    ckpt = torch.load(cfg["pretrain_checkpoint"], map_location=device, weights_only=False)
-    pretrain_cfg = ckpt["cfg"]
-
-    jepa = JEPA(**pretrain_cfg["model"])
-    jepa.load_state_dict(ckpt["model_state"])
-    encoder = jepa.context_encoder
-    print(f"Loaded JEPA checkpoint from epoch {ckpt['epoch']} (val_loss={ckpt['val_loss']:.4f})")
+    # --- load pretrained encoder (JEPA or MLM) ---
+    encoder, pretrain_cfg = load_pretrained_encoder(cfg["pretrain_checkpoint"], device)
 
     # --- build generator ---
     gen_version = cfg.get("generator_version", "v2")
     if gen_version in ("v5", "grampa_v5"):
         GenClass = ConditionalGeneratorV5
-    elif gen_version == "v4":
+    elif gen_version in ("v4", "v6", "v7"):
         GenClass = ConditionalGeneratorV4
     elif gen_version == "v3":
         GenClass = ConditionalGeneratorV3
@@ -210,7 +300,19 @@ def train(cfg: dict, gpu: int = 0):
         min_prefix_len=data_cfg.get("min_prefix_len", 3),
         max_seq_len=cfg["generator"]["max_seq_len"],
     )
-    if gen_version in ("v5", "grampa_v5"):
+    if gen_version == "v7":
+        train_ds, val_ds = build_seq2seq_datasets_v7(
+            data_cfg["fasta_paths"],
+            hc50_cache_path=data_cfg.get("hc50_cache"),
+            **ds_kwargs,
+        )
+    elif gen_version == "v6":
+        train_ds, val_ds = build_seq2seq_datasets_v6(
+            data_cfg["fasta_paths"],
+            amp_score_cache_path=data_cfg.get("amp_score_cache"),
+            **ds_kwargs,
+        )
+    elif gen_version in ("v5", "grampa_v5"):
         from pathlib import Path as _Path
         if gen_version == "grampa_v5":
             train_ds, val_ds = build_seq2seq_datasets_grampa_v5(
@@ -261,10 +363,15 @@ def train(cfg: dict, gpu: int = 0):
     save_every         = cfg["train"].get("save_every", 5)
     physchem_weight    = cfg["train"].get("physchem_loss_weight", 0.0)
     mic_oracle_weight  = cfg["train"].get("mic_oracle_loss_weight", 0.0)
+    hc50_oracle_weight = cfg["train"].get("hc50_oracle_loss_weight", 0.0)
+    charge_weight      = cfg["train"].get("charge_loss_weight", 0.5)
+    gravy_weight       = cfg["train"].get("gravy_loss_weight", 2.5)
+    use_v7_loss        = gen_version == "v7"
 
     project_root = Path(__file__).resolve().parents[2]
     cfg["train"]["_project_root"] = str(project_root)
-    mic_oracle = load_mic_oracle(cfg["train"], device) if mic_oracle_weight > 0 else None
+    mic_oracle  = load_mic_oracle(cfg["train"], device) if mic_oracle_weight > 0 else None
+    hc50_oracle = load_hc50_oracle(cfg["train"], device) if hc50_oracle_weight > 0 else None
 
     scaler = torch.cuda.amp.GradScaler(enabled=use_fp16)
     best_val_loss = float("inf")
@@ -284,14 +391,26 @@ def train(cfg: dict, gpu: int = 0):
                     tgt_labels.reshape(-1),
                     ignore_index=-100,
                 )
-                if physchem_weight > 0 and conditions is not None:
-                    loss = loss + physchem_weight * physchem_aux_loss(
-                        logits, conditions, tgt_labels)
-            if mic_oracle_weight > 0 and mic_oracle is not None and conditions is not None:
-                with torch.cuda.amp.autocast(enabled=False):
-                    mic_loss = mic_oracle_loss_batch(mic_oracle, logits.float().detach(),
-                                                     conditions, tgt_labels)
-                loss = loss + mic_oracle_weight * mic_loss
+                if conditions is not None:
+                    if use_v7_loss:
+                        loss = loss + physchem_aux_loss_v7(
+                            logits, conditions, tgt_labels,
+                            charge_weight=charge_weight,
+                            gravy_weight=gravy_weight)
+                    elif physchem_weight > 0:
+                        loss = loss + physchem_weight * physchem_aux_loss(
+                            logits, conditions, tgt_labels)
+            if conditions is not None:
+                if mic_oracle_weight > 0 and mic_oracle is not None:
+                    with torch.cuda.amp.autocast(enabled=False):
+                        mic_loss = mic_oracle_loss_batch(
+                            mic_oracle, logits.float().detach(), conditions, tgt_labels)
+                    loss = loss + mic_oracle_weight * mic_loss
+                if hc50_oracle_weight > 0 and hc50_oracle is not None:
+                    with torch.cuda.amp.autocast(enabled=False):
+                        hc50_loss = hc50_oracle_loss_batch(
+                            hc50_oracle, logits.float().detach(), conditions, tgt_labels)
+                    loss = loss + hc50_oracle_weight * hc50_loss
             optimizer.zero_grad()
             scaler.scale(loss).backward()
             scaler.unscale_(optimizer)

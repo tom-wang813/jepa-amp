@@ -1,0 +1,275 @@
+{
+  "source": "eLife 2025 doi:10.7554/eLife.97330 Table 5",
+  "bacterium": "E. coli ATCC 25922",
+  "n_sequences": 28,
+  "grampa_overlap": 0,
+  "note": "zero-leakage external test set; all sequences absent from GRAMPA training data",
+  "metrics": {
+    "AMPredictor (eLife 2025)": {
+      "pearson": 0.10741729232645264,
+      "spearman": 0.12205801860974276
+    },
+    "JEPA-AMP (ours)": {
+      "pearson": 0.06218860053635828,
+      "spearman": 0.010946907498631636
+    },
+    "ESM-2 (baseline)": {
+      "pearson": -0.09068611685561928,
+      "spearman": -0.1625615763546798
+    }
+  },
+  "per_sequence": [
+    {
+      "peptide": "BigDynorphin",
+      "sequence": "YGGFLRRIRPKLKWDNQKRYGGFLRRQFKVVT",
+      "mic_uM": 14.58,
+      "log2_mic_true": 5.859488117471518,
+      "jepa_pred": -0.04141519218683243,
+      "esm2_pred": 1.2387243509292603,
+      "ampredictor_pred": 4.9735946031580385
+    },
+    {
+      "peptide": "Apelin-1",
+      "sequence": "ERPVNLTMRRKLRKHNCLQRRCMPLHSRVPFP",
+      "mic_uM": 41.67,
+      "log2_mic_true": 7.369385578436435,
+      "jepa_pred": 0.6054792404174805,
+      "esm2_pred": 0.16979414224624634,
+      "ampredictor_pred": 5.782344266057488
+    },
+    {
+      "peptide": "Apelin-36",
+      "sequence": "LVQPRGSRNGPGPWQGGRRKFRRQRPRLSHKGPNPF",
+      "mic_uM": 29.17,
+      "log2_mic_true": 6.928618104156867,
+      "jepa_pred": 1.1030930280685425,
+      "esm2_pred": 0.8936189413070679,
+      "ampredictor_pred": 5.0164009334202895
+    },
+    {
+      "peptide": "vWF-PQR19",
+      "sequence": "PQRMSRNFVRYVQGLKKKK",
+      "mic_uM": 63.5,
+      "log2_mic_true": 7.228889092296086,
+      "jepa_pred": 0.7463319301605225,
+      "esm2_pred": 0.8687571883201599,
+      "ampredictor_pred": 6.123825221809592
+    },
+    {
+      "peptide": "INTb-FTR26",
+      "sequence": "FTRGKLMSSLHLKRYYGRILHYLKAK",
+      "mic_uM": 25.0,
+      "log2_mic_true": 6.312315746690106,
+      "jepa_pred": -0.13116511702537537,
+      "esm2_pred": 0.49089014530181885,
+      "ampredictor_pred": 4.3192241160322835
+    },
+    {
+      "peptide": "HSA-GKA38",
+      "sequence": "GKASSAKQRLKCASLQKFGERAFKAWAVARLSQRFPKA",
+      "mic_uM": 48.92,
+      "log2_mic_true": 7.689701473760143,
+      "jepa_pred": 0.5827458500862122,
+      "esm2_pred": 1.5886038541793823,
+      "ampredictor_pred": 6.86707822638325
+    },
+    {
+      "peptide": "CXC19-VKE44",
+      "sequence": "VKELIKKWEKQVSQKKKQKNGKKHQKKKVLKVRKSQRSRQKKTT",
+      "mic_uM": 76.0,
+      "log2_mic_true": 8.67638885970383,
+      "jepa_pred": 0.6532379388809204,
+      "esm2_pred": -0.33722123503685,
+      "ampredictor_pred": 2.0325326699291053
+    },
+    {
+      "peptide": "FIBg-TWK25",
+      "sequence": "TWKTRWYSMKKTTMKIIPFNRLTIG",
+      "mic_uM": 76.0,
+      "log2_mic_true": 7.880032834823318,
+      "jepa_pred": 0.5867786407470703,
+      "esm2_pred": 1.039002776145935,
+      "ampredictor_pred": 3.5543031697761
+    },
+    {
+      "peptide": "SCUB1-MPF22",
+      "sequence": "MFPRSFIKLLRSKVSRFLRPYK",
+      "mic_uM": 60.37,
+      "log2_mic_true": 7.384900895195874,
+      "jepa_pred": 0.8921734690666199,
+      "esm2_pred": 1.012059211730957,
+      "ampredictor_pred": 3.616447697938168
+    },
+    {
+      "peptide": "SCUB1-SKE25",
+      "sequence": "SKEMFPRSFIKLLRSKVSRFLRPYK",
+      "mic_uM": 22.92,
+      "log2_mic_true": 6.1567155810143035,
+      "jepa_pred": 0.7456735968589783,
+      "esm2_pred": 1.6291958093643188,
+      "ampredictor_pred": 3.842947192686737
+    },
+    {
+      "peptide": "SCUB3-KHK26",
+      "sequence": "KHKEMLPKSFIKLLRSKVSSFLRPYK",
+      "mic_uM": 20.83,
+      "log2_mic_true": 6.040415048377795,
+      "jepa_pred": 0.5110556483268738,
+      "esm2_pred": 1.4509708881378174,
+      "ampredictor_pred": 4.213184617447201
+    },
+    {
+      "peptide": "SCUB3-MLP22",
+      "sequence": "MLPKSFIKLLRSKVSSFLRPYK",
+      "mic_uM": 18.23,
+      "log2_mic_true": 5.587413750084233,
+      "jepa_pred": 1.0330642461776733,
+      "esm2_pred": 1.0384875535964966,
+      "ampredictor_pred": 3.1476323268238584
+    },
+    {
+      "peptide": "SFRP1-KKI32",
+      "sequence": "KKIVPKKKKPLKLGPIKKKDLKKLVLYLKNGA",
+      "mic_uM": 16.67,
+      "log2_mic_true": 5.928785172038386,
+      "jepa_pred": 0.7527475953102112,
+      "esm2_pred": 1.234700322151184,
+      "ampredictor_pred": 4.759076515357803
+    },
+    {
+      "peptide": "NAPP-LIR38",
+      "sequence": "LIRIPLHRVQPGRRILNLLRGWREPAELPKLGAPSPGD",
+      "mic_uM": 55.17,
+      "log2_mic_true": 7.886927596440573,
+      "jepa_pred": 0.47665226459503174,
+      "esm2_pred": 0.8432382345199585,
+      "ampredictor_pred": 4.719354176677659
+    },
+    {
+      "peptide": "NAPP-LIR23",
+      "sequence": "LIRIPLHRVQPGRRILNLLRGWR",
+      "mic_uM": 87.42,
+      "log2_mic_true": 7.951559902472085,
+      "jepa_pred": 0.18659493327140808,
+      "esm2_pred": 0.7949482202529907,
+      "ampredictor_pred": 5.881566592985833
+    },
+    {
+      "peptide": "Bomidin",
+      "sequence": "MGRFKRFRKKFKKLFKKLS",
+      "mic_uM": 4.0,
+      "log2_mic_true": 3.3059530159838593,
+      "jepa_pred": 0.6662879586219788,
+      "esm2_pred": 0.46902987360954285,
+      "ampredictor_pred": 3.746905214013496
+    },
+    {
+      "peptide": "CBPZ-GSK24",
+      "sequence": "GSKPWWWSYFTSLSTHRPRWLLKY",
+      "mic_uM": 3.0,
+      "log2_mic_true": 3.2086140188849868,
+      "jepa_pred": 0.7972625494003296,
+      "esm2_pred": 1.2081202268600464,
+      "ampredictor_pred": 5.003549681688523
+    },
+    {
+      "peptide": "XDH-AVA32",
+      "sequence": "AVAKLPAQKTEVFRGVLEQLRWFAGKQVKSVA",
+      "mic_uM": 32.0,
+      "log2_mic_true": 6.829447740716651,
+      "jepa_pred": 1.430484414100647,
+      "esm2_pred": 0.32689768075942993,
+      "ampredictor_pred": 6.384650374594948
+    },
+    {
+      "peptide": "c_AMP660",
+      "sequence": "IFFRRNKKMAVKVAINGFGRIGRLAFRQMF",
+      "mic_uM": 10.0,
+      "log2_mic_true": 5.158252188774766,
+      "jepa_pred": 0.2111613154411316,
+      "esm2_pred": 0.7436870336532593,
+      "ampredictor_pred": 5.700262544311375
+    },
+    {
+      "peptide": "c_AMP575",
+      "sequence": "GRYIAKINPDNKKFKTMPSGKKRKGHKMATHKRKKRLRKNRHKKK",
+      "mic_uM": 2.0,
+      "log2_mic_true": 3.4468146697831785,
+      "jepa_pred": -0.14946618676185608,
+      "esm2_pred": 0.18075363337993622,
+      "ampredictor_pred": 3.0221270004706153
+    },
+    {
+      "peptide": "c_AMP1043",
+      "sequence": "KQKTLKKVWKLSEKVLIFASAFAKKAGAAEATLVL",
+      "mic_uM": 10.0,
+      "log2_mic_true": 5.253701908413525,
+      "jepa_pred": 0.4060858190059662,
+      "esm2_pred": 0.02361888810992241,
+      "ampredictor_pred": 5.256584416946647
+    },
+    {
+      "peptide": "c_AMP67",
+      "sequence": "AMTLRKRKFAWYVLSSSLKWLIKKAKKIGVQVCGFE",
+      "mic_uM": 20.0,
+      "log2_mic_true": 6.396549983415594,
+      "jepa_pred": 0.22225460410118103,
+      "esm2_pred": 0.9003072381019592,
+      "ampredictor_pred": 4.337656294362025
+    },
+    {
+      "peptide": "c_AMP69",
+      "sequence": "AMTSRKRKFVWYVLSSSLKWLIKKAKKIGVQVCGFE",
+      "mic_uM": 10.0,
+      "log2_mic_true": 5.39722795932385,
+      "jepa_pred": 0.3855281174182892,
+      "esm2_pred": 1.2033827304840088,
+      "ampredictor_pred": 4.2956298193160425
+    },
+    {
+      "peptide": "c_AMP2041",
+      "sequence": "SVIWRKLFFIFIKRSGNWIKKVEKRQNLL",
+      "mic_uM": 20.0,
+      "log2_mic_true": 6.188278268154468,
+      "jepa_pred": 0.8354425430297852,
+      "esm2_pred": 1.0550092458724976,
+      "ampredictor_pred": 7.474568026288565
+    },
+    {
+      "peptide": "c_AMP250",
+      "sequence": "DRDRPECSTMVKYEQKLPSLGKYALKRAIKIKFGRK",
+      "mic_uM": 10.0,
+      "log2_mic_true": 5.410164692064836,
+      "jepa_pred": 1.4692350625991821,
+      "esm2_pred": 1.6912022829055786,
+      "ampredictor_pred": 4.225740120927408
+    },
+    {
+      "peptide": "c_AMP518",
+      "sequence": "GINLKRKGNIMKKVKNIFHKIANADPMIWGYVMLSESK",
+      "mic_uM": 25.0,
+      "log2_mic_true": 6.771921883067378,
+      "jepa_pred": -0.23771163821220398,
+      "esm2_pred": 0.8279391527175903,
+      "ampredictor_pred": 4.781125710397218
+    },
+    {
+      "peptide": "c_AMP593",
+      "sequence": "GVPMGSVIKKRRKRMAKKKHRKLLRKTRHQRRNKK",
+      "mic_uM": 25.0,
+      "log2_mic_true": 6.7594221856963275,
+      "jepa_pred": 0.1923215389251709,
+      "esm2_pred": -0.13916024565696716,
+      "ampredictor_pred": 3.226597308310347
+    },
+    {
+      "peptide": "c_AMP1655",
+      "sequence": "RGTCYNRVGLIIRNFSKLKGKKV",
+      "mic_uM": 20.0,
+      "log2_mic_true": 5.727642777098717,
+      "jepa_pred": 0.6079962253570557,
+      "esm2_pred": 0.8949645161628723,
+      "ampredictor_pred": 5.18497440258373
+    }
+  ]
+}

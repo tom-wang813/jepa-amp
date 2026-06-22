@@ -9,6 +9,7 @@ Usage:
 """
 
 import argparse
+import json
 from pathlib import Path
 
 import torch
@@ -299,12 +300,15 @@ def train_mic(cfg: dict, gpu: int = 0):
 
     data_cfg = cfg["data"]
     max_len  = data_cfg.get("max_len", 48)
+    split_seed = data_cfg.get("seed", 42)
     train_ds_jepa, val_ds_jepa, test_ds_jepa = load_grampa(
         PROJECT_ROOT / data_cfg["grampa_csv"],
         max_len=max_len,
         val_ratio=data_cfg.get("val_ratio", 0.1),
         test_ratio=data_cfg.get("test_ratio", 0.1),
+        seed=split_seed,
         label_noise_std=data_cfg.get("label_noise_std", 0.3),
+        train_fraction=data_cfg.get("train_fraction", 1.0),
     )
 
     def jepa_to_esm(ds):
@@ -361,7 +365,91 @@ def train_mic(cfg: dict, gpu: int = 0):
             preds.extend(p)
             targets.extend(batch["log2_mic"].tolist())
     p, t = torch.tensor(preds), torch.tensor(targets)
-    print(f"\nTest | Pearson={_pearson(p, t):.4f}  RMSE={((p-t)**2).mean().sqrt():.4f}  n={len(preds)}")
+    metrics = {
+        "pearson": float(_pearson(p, t)),
+        "rmse": float(((p - t) ** 2).mean().sqrt().item()),
+        "mae": float((p - t).abs().mean().item()),
+        "spearman": float(_spearman(p, t)),
+        "n": len(preds),
+    }
+    print(f"\nTest | Pearson={metrics['pearson']:.4f}  RMSE={metrics['rmse']:.4f}  n={len(preds)}")
+    _write_esm_mic_artifacts(
+        save_dir=save_dir,
+        cfg=cfg,
+        split_seed=split_seed,
+        checkpoint_path=save_dir / "best_model.pt",
+        test_dataset=test_ds,
+        preds=preds,
+        targets=targets,
+        metrics=metrics,
+    )
+
+
+def _spearman(x: torch.Tensor, y: torch.Tensor) -> float:
+    try:
+        from scipy.stats import spearmanr
+
+        return float(spearmanr(x.numpy(), y.numpy()).statistic)
+    except Exception:
+        return float("nan")
+
+
+def _write_esm_mic_artifacts(
+    *,
+    save_dir: Path,
+    cfg: dict,
+    split_seed: int,
+    checkpoint_path: Path,
+    test_dataset: ESMMICDataset,
+    preds: list[float],
+    targets: list[float],
+    metrics: dict,
+) -> None:
+    """Save ESM MIC test metrics, predictions, config, and run manifest."""
+    save_dir.mkdir(parents=True, exist_ok=True)
+    with open(save_dir / "test_metrics.json", "w") as f:
+        json.dump(metrics, f, indent=2)
+
+    from src.data.supervised_dataset import GRAMPA_TOP20
+
+    with open(save_dir / "test_predictions.jsonl", "w") as f:
+        for i, (pred, target) in enumerate(zip(preds, targets)):
+            bacteria_idx = int(test_dataset.bacteria_idxs[i])
+            row = {
+                "index": i,
+                "seq": test_dataset.seqs[i],
+                "bacteria_idx": bacteria_idx,
+                "bacteria": GRAMPA_TOP20[bacteria_idx]
+                if bacteria_idx < len(GRAMPA_TOP20)
+                else str(bacteria_idx),
+                "pred_log2_mic": float(pred),
+                "true_log2_mic": float(target),
+                "error": float(pred - target),
+            }
+            f.write(json.dumps(row) + "\n")
+
+    with open(save_dir / "config_resolved.yaml", "w") as f:
+        yaml.safe_dump(cfg, f, sort_keys=False)
+
+    manifest = {
+        "task": "esm_mic_regression",
+        "status": "formal_artifact",
+        "config": str(save_dir / "config_resolved.yaml"),
+        "checkpoint": str(checkpoint_path),
+        "metrics": str(save_dir / "test_metrics.json"),
+        "predictions": str(save_dir / "test_predictions.jsonl"),
+        "split": {
+            "loader": "src.data.supervised_dataset.load_grampa",
+            "grampa_csv": cfg["data"].get("grampa_csv"),
+            "seed": split_seed,
+            "val_ratio": cfg["data"].get("val_ratio", 0.1),
+            "test_ratio": cfg["data"].get("test_ratio", 0.1),
+        },
+        "n_test": len(preds),
+    }
+    with open(save_dir / "run_manifest.json", "w") as f:
+        json.dump(manifest, f, indent=2)
+    print(f"Saved ESM MIC evidence artifacts to {save_dir}")
 
 
 # ---------------------------------------------------------------------------

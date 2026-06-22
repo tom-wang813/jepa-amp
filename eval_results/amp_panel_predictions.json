@@ -1,0 +1,386 @@
+{
+  "AMP_01_orig": {
+    "sequence": "ACYCRIPACIAGERRYGTCIYQGRLWAFCC",
+    "jepa_amp_score": 0.9902,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": -0.912,
+        "mlm_log2mic": 0.63,
+        "jepa_mic_ugml": 0.5,
+        "mlm_mic_ugml": 1.5
+      },
+      "S. aureus": {
+        "jepa_log2mic": -0.964,
+        "mlm_log2mic": 0.629,
+        "jepa_mic_ugml": 0.5,
+        "mlm_mic_ugml": 1.5
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": -0.801,
+        "mlm_log2mic": 0.721,
+        "jepa_mic_ugml": 0.6,
+        "mlm_mic_ugml": 1.6
+      }
+    }
+  },
+  "AMP_02_orig": {
+    "sequence": "LPVFSTLPFAYCNIHQVCH",
+    "jepa_amp_score": 0.3759,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 0.957,
+        "mlm_log2mic": 1.191,
+        "jepa_mic_ugml": 1.9,
+        "mlm_mic_ugml": 2.3
+      },
+      "S. aureus": {
+        "jepa_log2mic": 0.891,
+        "mlm_log2mic": 1.192,
+        "jepa_mic_ugml": 1.9,
+        "mlm_mic_ugml": 2.3
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 1.136,
+        "mlm_log2mic": 1.234,
+        "jepa_mic_ugml": 2.2,
+        "mlm_mic_ugml": 2.4
+      }
+    }
+  },
+  "AMP_02_opt": {
+    "sequence": "LRVFSTLPRAYCNIHQVCK",
+    "jepa_amp_score": 0.4661,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 0.861,
+        "mlm_log2mic": 1.157,
+        "jepa_mic_ugml": 1.8,
+        "mlm_mic_ugml": 2.2
+      },
+      "S. aureus": {
+        "jepa_log2mic": 0.768,
+        "mlm_log2mic": 1.148,
+        "jepa_mic_ugml": 1.7,
+        "mlm_mic_ugml": 2.2
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 0.962,
+        "mlm_log2mic": 1.209,
+        "jepa_mic_ugml": 1.9,
+        "mlm_mic_ugml": 2.3
+      }
+    }
+  },
+  "AMP_03_orig": {
+    "sequence": "DCYCRIPACIAGERRYGTCIYQGRLWAFCC",
+    "jepa_amp_score": 0.9819,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": -0.601,
+        "mlm_log2mic": 0.771,
+        "jepa_mic_ugml": 0.7,
+        "mlm_mic_ugml": 1.7
+      },
+      "S. aureus": {
+        "jepa_log2mic": -0.661,
+        "mlm_log2mic": 0.773,
+        "jepa_mic_ugml": 0.6,
+        "mlm_mic_ugml": 1.7
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": -0.461,
+        "mlm_log2mic": 0.847,
+        "jepa_mic_ugml": 0.7,
+        "mlm_mic_ugml": 1.8
+      }
+    }
+  },
+  "AMP_04_orig": {
+    "sequence": "GIINTLQKYYCRVRGGRCAVLSCLPKEEQIGKCSTRGRKCCRRKK",
+    "jepa_amp_score": 0.9987,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 0.392,
+        "mlm_log2mic": 1.292,
+        "jepa_mic_ugml": 1.3,
+        "mlm_mic_ugml": 2.4
+      },
+      "S. aureus": {
+        "jepa_log2mic": -0.046,
+        "mlm_log2mic": 1.293,
+        "jepa_mic_ugml": 1.0,
+        "mlm_mic_ugml": 2.5
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 0.36,
+        "mlm_log2mic": 1.339,
+        "jepa_mic_ugml": 1.3,
+        "mlm_mic_ugml": 2.5
+      }
+    }
+  },
+  "AMP_05_orig": {
+    "sequence": "LLGDFFRKSKEKIGKEFKRIVQRIKDFLRNLVPRTES",
+    "jepa_amp_score": 0.9891,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 0.323,
+        "mlm_log2mic": 0.71,
+        "jepa_mic_ugml": 1.3,
+        "mlm_mic_ugml": 1.6
+      },
+      "S. aureus": {
+        "jepa_log2mic": 0.608,
+        "mlm_log2mic": 0.72,
+        "jepa_mic_ugml": 1.5,
+        "mlm_mic_ugml": 1.6
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 0.388,
+        "mlm_log2mic": 0.748,
+        "jepa_mic_ugml": 1.3,
+        "mlm_mic_ugml": 1.7
+      }
+    }
+  },
+  "AMP_05_opt": {
+    "sequence": "LLGDFFRKSKEKIGKAFKRIVQRIKDFLRCCVPRTES",
+    "jepa_amp_score": 0.9912,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 0.243,
+        "mlm_log2mic": 0.769,
+        "jepa_mic_ugml": 1.2,
+        "mlm_mic_ugml": 1.7
+      },
+      "S. aureus": {
+        "jepa_log2mic": 0.465,
+        "mlm_log2mic": 0.776,
+        "jepa_mic_ugml": 1.4,
+        "mlm_mic_ugml": 1.7
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 0.382,
+        "mlm_log2mic": 0.808,
+        "jepa_mic_ugml": 1.3,
+        "mlm_mic_ugml": 1.8
+      }
+    }
+  },
+  "AMP_06_orig": {
+    "sequence": "DHYNCVSSGGQCLYSACPIFTKIQGTCYRGKAKCCK",
+    "jepa_amp_score": 0.9003,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 0.785,
+        "mlm_log2mic": 0.341,
+        "jepa_mic_ugml": 1.7,
+        "mlm_mic_ugml": 1.3
+      },
+      "S. aureus": {
+        "jepa_log2mic": 1.198,
+        "mlm_log2mic": 0.341,
+        "jepa_mic_ugml": 2.3,
+        "mlm_mic_ugml": 1.3
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 1.17,
+        "mlm_log2mic": 0.382,
+        "jepa_mic_ugml": 2.2,
+        "mlm_mic_ugml": 1.3
+      }
+    }
+  },
+  "AMP_06_opt": {
+    "sequence": "DFYNCVSSGGQCLKSACPIFTKIWGTCYRGKAKCCK",
+    "jepa_amp_score": 0.9213,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 0.525,
+        "mlm_log2mic": 0.39,
+        "jepa_mic_ugml": 1.4,
+        "mlm_mic_ugml": 1.3
+      },
+      "S. aureus": {
+        "jepa_log2mic": 0.841,
+        "mlm_log2mic": 0.395,
+        "jepa_mic_ugml": 1.8,
+        "mlm_mic_ugml": 1.3
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 0.808,
+        "mlm_log2mic": 0.433,
+        "jepa_mic_ugml": 1.8,
+        "mlm_mic_ugml": 1.3
+      }
+    }
+  },
+  "AMP_07_orig": {
+    "sequence": "QPWSQCSATCGDGVRERRR",
+    "jepa_amp_score": 0.9204,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 1.239,
+        "mlm_log2mic": 0.92,
+        "jepa_mic_ugml": 2.4,
+        "mlm_mic_ugml": 1.9
+      },
+      "S. aureus": {
+        "jepa_log2mic": 0.752,
+        "mlm_log2mic": 0.904,
+        "jepa_mic_ugml": 1.7,
+        "mlm_mic_ugml": 1.9
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 1.161,
+        "mlm_log2mic": 0.99,
+        "jepa_mic_ugml": 2.2,
+        "mlm_mic_ugml": 2.0
+      }
+    }
+  },
+  "AMP_08_orig": {
+    "sequence": "LRRFSTMPFMFCNINNVCNF",
+    "jepa_amp_score": 0.4257,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 1.229,
+        "mlm_log2mic": 1.287,
+        "jepa_mic_ugml": 2.3,
+        "mlm_mic_ugml": 2.4
+      },
+      "S. aureus": {
+        "jepa_log2mic": 1.174,
+        "mlm_log2mic": 1.278,
+        "jepa_mic_ugml": 2.3,
+        "mlm_mic_ugml": 2.4
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 1.328,
+        "mlm_log2mic": 1.331,
+        "jepa_mic_ugml": 2.5,
+        "mlm_mic_ugml": 2.5
+      }
+    }
+  },
+  "AMP_08_opt": {
+    "sequence": "LRRFCTMPSMFCNINNVCNR",
+    "jepa_amp_score": 0.3325,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 1.044,
+        "mlm_log2mic": 1.156,
+        "jepa_mic_ugml": 2.1,
+        "mlm_mic_ugml": 2.2
+      },
+      "S. aureus": {
+        "jepa_log2mic": 1.003,
+        "mlm_log2mic": 1.152,
+        "jepa_mic_ugml": 2.0,
+        "mlm_mic_ugml": 2.2
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 1.204,
+        "mlm_log2mic": 1.203,
+        "jepa_mic_ugml": 2.3,
+        "mlm_mic_ugml": 2.3
+      }
+    }
+  },
+  "AMP_09_orig (CKS1)": {
+    "sequence": "NGRKACLNPASPIVKKIIEKMLNS",
+    "jepa_amp_score": 0.767,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 1.384,
+        "mlm_log2mic": 0.998,
+        "jepa_mic_ugml": 2.6,
+        "mlm_mic_ugml": 2.0
+      },
+      "S. aureus": {
+        "jepa_log2mic": 1.374,
+        "mlm_log2mic": 0.991,
+        "jepa_mic_ugml": 2.6,
+        "mlm_mic_ugml": 2.0
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 1.549,
+        "mlm_log2mic": 1.045,
+        "jepa_mic_ugml": 2.9,
+        "mlm_mic_ugml": 2.1
+      }
+    }
+  },
+  "AMP_09_opt  (CKS1)": {
+    "sequence": "RGRKACLRPASPIVKKIIEKILNS",
+    "jepa_amp_score": 0.8941,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 1.211,
+        "mlm_log2mic": 1.12,
+        "jepa_mic_ugml": 2.3,
+        "mlm_mic_ugml": 2.2
+      },
+      "S. aureus": {
+        "jepa_log2mic": 1.299,
+        "mlm_log2mic": 1.133,
+        "jepa_mic_ugml": 2.5,
+        "mlm_mic_ugml": 2.2
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 1.375,
+        "mlm_log2mic": 1.245,
+        "jepa_mic_ugml": 2.6,
+        "mlm_mic_ugml": 2.4
+      }
+    }
+  },
+  "AMP_10_orig (CKS3)": {
+    "sequence": "NGKKACLNPASPMVQKIIEKIL",
+    "jepa_amp_score": 0.528,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 1.556,
+        "mlm_log2mic": 0.916,
+        "jepa_mic_ugml": 2.9,
+        "mlm_mic_ugml": 1.9
+      },
+      "S. aureus": {
+        "jepa_log2mic": 1.617,
+        "mlm_log2mic": 0.908,
+        "jepa_mic_ugml": 3.1,
+        "mlm_mic_ugml": 1.9
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 1.716,
+        "mlm_log2mic": 0.955,
+        "jepa_mic_ugml": 3.3,
+        "mlm_mic_ugml": 1.9
+      }
+    }
+  },
+  "AMP_10_opt  (CKS3)": {
+    "sequence": "RGKKACLNPASKMVQKIIKKIL",
+    "jepa_amp_score": 0.9376,
+    "mic": {
+      "E. coli": {
+        "jepa_log2mic": 1.228,
+        "mlm_log2mic": 1.106,
+        "jepa_mic_ugml": 2.3,
+        "mlm_mic_ugml": 2.2
+      },
+      "S. aureus": {
+        "jepa_log2mic": 1.32,
+        "mlm_log2mic": 1.126,
+        "jepa_mic_ugml": 2.5,
+        "mlm_mic_ugml": 2.2
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 1.346,
+        "mlm_log2mic": 1.208,
+        "jepa_mic_ugml": 2.5,
+        "mlm_mic_ugml": 2.3
+      }
+    }
+  }
+}

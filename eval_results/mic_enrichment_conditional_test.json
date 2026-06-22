@@ -1,0 +1,48 @@
+{
+  "n_generated_total": 60,
+  "n_generated_unique": 56,
+  "n_generated_present_in_mic_map": 0,
+  "threshold": 10.0,
+  "ks": {
+    "1": {
+      "precision@k": 0.0,
+      "EF@k": 0.0,
+      "baseline_precision_bootstrap_95ci": [
+        1.0,
+        1.0
+      ]
+    },
+    "5": {
+      "precision@k": 0.0,
+      "EF@k": 0.0,
+      "baseline_precision_bootstrap_95ci": [
+        1.0,
+        1.0
+      ]
+    },
+    "10": {
+      "precision@k": 0.0,
+      "EF@k": 0.0,
+      "baseline_precision_bootstrap_95ci": [
+        1.0,
+        1.0
+      ]
+    },
+    "50": {
+      "precision@k": 0.0,
+      "EF@k": 0.0,
+      "baseline_precision_bootstrap_95ci": [
+        1.0,
+        1.0
+      ]
+    },
+    "100": {
+      "precision@k": 0.0,
+      "EF@k": 0.0,
+      "baseline_precision_bootstrap_95ci": [
+        1.0,
+        1.0
+      ]
+    }
+  }
+}

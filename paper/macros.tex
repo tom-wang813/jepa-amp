@@ -1,0 +1,104 @@
+% ══════════════════════════════════════════════════════════════════════════════
+% macros.tex — single source of truth for all paper-wide terminology & numbers
+% ══════════════════════════════════════════════════════════════════════════════
+
+% ── Project identity ──
+\newcommand{\projectname}{JEPA-AMP}
+
+% ── Encoder architecture ──
+\newcommand{\dmodel}{384}
+\newcommand{\nlayers}{8}
+\newcommand{\nheads}{8}
+\newcommand{\dff}{1536}
+\newcommand{\vocabsize}{25}
+\newcommand{\encoderparams}{14.2M}
+
+% ── Pre-training corpus ──
+\newcommand{\corpussize}{868{,}724}
+\newcommand{\seqlenrange}{5--50}
+\newcommand{\meanseqlen}{35.4}
+\newcommand{\pretrainepochs}{100}
+\newcommand{\pretrainvalloss}{0.244}
+
+% ── Model names (the three encoders we compare) ──
+\newcommand{\jepa}{JEPA}
+\newcommand{\jepafull}{Joint-Embedding Predictive Architecture}
+\newcommand{\mlmenc}{MLM}
+\newcommand{\esmtwo}{ESM-2}
+\newcommand{\esmparams}{35M}
+
+% ── Decoder architecture ──
+\newcommand{\declayers}{4}
+\newcommand{\decparams}{10.7M}
+\newcommand{\difflayers}{6}                       % masked diffusion decoder layers
+\newcommand{\narlayers}{4}                        % NAR decoder layers
+\newcommand{\narrefsteps}{3}                      % NAR refinement steps
+\newcommand{\difftinfer}{50}                      % diffusion inference steps
+
+% ── Key concepts / terminology ──
+\newcommand{\plasticity}{representational plasticity}
+\newcommand{\dualpathway}{dual-pathway conditioning}
+\newcommand{\adaln}{AdaLN}
+\newcommand{\cfg}{classifier-free guidance}
+\newcommand{\controlaudit}{property-by-property control audit}
+
+% ── Decoder paradigm labels ──
+\newcommand{\decAR}{autoregressive (AR)}
+\newcommand{\decNAR}{non-autoregressive (NAR)}
+\newcommand{\decDiff}{masked diffusion}
+
+% ── Benchmarks & datasets ──
+\newcommand{\qmap}{QMAP}
+\newcommand{\grampa}{GRAMPA}
+\newcommand{\amplifyname}{AMPlify}                % \amplify clashes with cite key
+
+% ── Condition dimensions ──
+\newcommand{\condphyschem}{3}                     % length, charge, GRAVY
+\newcommand{\condmic}{43}                         % 3 physchem + 20 MIC + 20 mask
+\newcommand{\condextended}{7}                     % v6: + helix, pI, amp-score, hydmom
+
+% ── Training hyperparameters (generation) ──
+\newcommand{\conddropout}{0.30}
+\newcommand{\ctxdropout}{0.15}
+\newcommand{\auxweight}{0.3}
+
+% ── Key result numbers: classification ──
+\newcommand{\jepAUROC}{0.958}
+\newcommand{\jepMCC}{0.802}
+\newcommand{\esmAUROC}{0.963}
+\newcommand{\esmMCC}{0.827}
+\newcommand{\amplifyAUROC}{0.984}
+
+% ── Key result numbers: MIC prediction ──
+\newcommand{\jepMICpearson}{0.640}
+\newcommand{\jepMICrmse}{0.619}
+\newcommand{\esmMICpearson}{0.554}
+
+% ── Key result numbers: QMAP ──
+\newcommand{\qmapHighEcoli}{0.388}
+\newcommand{\qmapFullEcoli}{0.512}
+\newcommand{\qmapHCfifty}{0.327}
+\newcommand{\qmapPriorHighEcoli}{0.290}
+
+% ── Key result numbers: generation (charge control) ──
+\newcommand{\chargeRsq}{0.866}
+\newcommand{\chargeMAE}{2.23}
+\newcommand{\diffChargeRsq}{0.702}
+\newcommand{\narChargeRsq}{0.693}
+
+% ── Key result numbers: MIC-conditioned generation ──
+\newcommand{\micGenBroadDelta}{-0.250}
+\newcommand{\micGenInactiveDelta}{+0.515}
+
+% ── Key result numbers: plasticity ──
+\newcommand{\frozenKnnJepa}{0.598}
+\newcommand{\frozenKnnEsm}{0.618}
+\newcommand{\frozenProbeJepa}{0.888}
+\newcommand{\frozenProbeEsm}{0.935}
+
+% ── Finding boxes — auto-numbered key takeaways ──
+\newcounter{findingctr}
+\newcommand{\finding}[1]{%
+  \refstepcounter{findingctr}%
+  \paragraph{\textbf{Finding \thefindingctr.}} #1%
+}

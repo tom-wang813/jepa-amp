@@ -1,0 +1,747 @@
+{
+  "source": "eLife 2025 (doi:10.7554/eLife.97330) Supplementary File 2",
+  "bacterium": "E. coli (inferred from AMPredictor training context)",
+  "n_sequences": 104,
+  "grampa_overlap": 0,
+  "note": "104 sequences with real wet-lab logMIC (log10 ug/mL converted to log2). Zero GRAMPA overlap confirmed.",
+  "metrics": {
+    "JEPA-AMP": {
+      "pearson": 0.5517,
+      "spearman": 0.5494
+    },
+    "ESM-2": {
+      "pearson": 0.3214,
+      "spearman": 0.3429
+    }
+  },
+  "per_sequence": [
+    {
+      "name": "seq_119",
+      "sequence": "IDIKVLKRALKLFKALLALAGCRLIMM",
+      "log2_mic_true": -0.5551,
+      "jepa_pred": 0.8708,
+      "esm2_pred": 1.0545
+    },
+    {
+      "name": "seq_1",
+      "sequence": "KWKKNWTKIIQGFLKGGIGTILNLKKK",
+      "log2_mic_true": -0.0755,
+      "jepa_pred": -0.135,
+      "esm2_pred": 1.3473
+    },
+    {
+      "name": "seq_86",
+      "sequence": "GITKRLGGLTKPAAKYLALMIMRTVQMFWI",
+      "log2_mic_true": 0.127,
+      "jepa_pred": 0.1093,
+      "esm2_pred": 1.3421
+    },
+    {
+      "name": "seq_89",
+      "sequence": "GIGQILKKLAKKGALRLATKILPKF",
+      "log2_mic_true": 0.7271,
+      "jepa_pred": 0.8282,
+      "esm2_pred": 0.1211
+    },
+    {
+      "name": "seq_3",
+      "sequence": "ILGKLFKDLKQFGKAIKLLKILKQKAVW",
+      "log2_mic_true": 0.7979,
+      "jepa_pred": 0.353,
+      "esm2_pred": 1.5703
+    },
+    {
+      "name": "seq_76",
+      "sequence": "LKKLKWLAHRLKGMLKKYLKPTAASS",
+      "log2_mic_true": 0.9762,
+      "jepa_pred": 0.7458,
+      "esm2_pred": 0.1412
+    },
+    {
+      "name": "seq_88",
+      "sequence": "PNLIGYLIGGTFTLKKIGIDIRKM",
+      "log2_mic_true": 1.1902,
+      "jepa_pred": 0.5142,
+      "esm2_pred": 1.1565
+    },
+    {
+      "name": "seq_96",
+      "sequence": "GIGRLIGTILKVATQTKWIIRGLTKV",
+      "log2_mic_true": 1.211,
+      "jepa_pred": -0.3433,
+      "esm2_pred": 1.1052
+    },
+    {
+      "name": "seq_90",
+      "sequence": "KFKKYLKFLNRTGALQIAAKLKHKLKFH",
+      "log2_mic_true": 1.2555,
+      "jepa_pred": 0.259,
+      "esm2_pred": 1.1541
+    },
+    {
+      "name": "seq_104",
+      "sequence": "KFGIIRKIFKKFKKKLFMTKAAASAIAAL",
+      "log2_mic_true": 1.2909,
+      "jepa_pred": 0.1744,
+      "esm2_pred": 0.4426
+    },
+    {
+      "name": "seq_2",
+      "sequence": "GWKDFKKTIKKLLRGASRLLKF",
+      "log2_mic_true": 1.4705,
+      "jepa_pred": 0.5418,
+      "esm2_pred": 0.3013
+    },
+    {
+      "name": "seq_92",
+      "sequence": "KWKRLLKLLKKDFDALGIIIQMILNHHAVG",
+      "log2_mic_true": 1.4866,
+      "jepa_pred": 0.6766,
+      "esm2_pred": 1.2754
+    },
+    {
+      "name": "seq_51",
+      "sequence": "KKWIKKFLKIKAGLLMLGLK",
+      "log2_mic_true": 1.5015,
+      "jepa_pred": 0.1801,
+      "esm2_pred": 1.5717
+    },
+    {
+      "name": "seq_63",
+      "sequence": "GFLDRARDILRKIAKPILPKLKKQLF",
+      "log2_mic_true": 1.6163,
+      "jepa_pred": 0.1655,
+      "esm2_pred": 0.3853
+    },
+    {
+      "name": "seq_24",
+      "sequence": "GIWDKTGPIAKLLKFLPGLLGGLGRQ",
+      "log2_mic_true": 1.6794,
+      "jepa_pred": 0.4873,
+      "esm2_pred": 1.0554
+    },
+    {
+      "name": "seq_84",
+      "sequence": "KWKTKAKMKAKFYLSALGMIIMGM",
+      "log2_mic_true": 1.7337,
+      "jepa_pred": 0.8126,
+      "esm2_pred": 1.882
+    },
+    {
+      "name": "seq_9",
+      "sequence": "IAPKLAKMILKKLAKKLLVKLIRK",
+      "log2_mic_true": 1.7883,
+      "jepa_pred": 0.497,
+      "esm2_pred": 0.0402
+    },
+    {
+      "name": "seq_73",
+      "sequence": "GFFPIGKTIKKLMRTFF",
+      "log2_mic_true": 1.8548,
+      "jepa_pred": 0.7257,
+      "esm2_pred": 1.0421
+    },
+    {
+      "name": "seq_43",
+      "sequence": "GIKRGIRRKFPVPKLLMALKI",
+      "log2_mic_true": 1.9013,
+      "jepa_pred": 0.7842,
+      "esm2_pred": 1.0525
+    },
+    {
+      "name": "seq_4",
+      "sequence": "KLTPFMKTIPKLRAGLIRRSLKKK",
+      "log2_mic_true": 2.0385,
+      "jepa_pred": 0.3442,
+      "esm2_pred": 0.9859
+    },
+    {
+      "name": "seq_16",
+      "sequence": "RILGKLLQKAFKIAKHILGKLLVQLKV",
+      "log2_mic_true": 2.0844,
+      "jepa_pred": -0.664,
+      "esm2_pred": 0.4306
+    },
+    {
+      "name": "seq_50",
+      "sequence": "GRIPLLKTINKFGKFAKTQGPLTSKVSF",
+      "log2_mic_true": 2.1445,
+      "jepa_pred": 0.5564,
+      "esm2_pred": 0.5744
+    },
+    {
+      "name": "seq_120",
+      "sequence": "GRKPPIGPILGNLFPTAMWIIGTLLQFY",
+      "log2_mic_true": 2.1789,
+      "jepa_pred": 0.9902,
+      "esm2_pred": 1.579
+    },
+    {
+      "name": "seq_70",
+      "sequence": "RIGPLLRLLIGKTLLKIARKAAADAT",
+      "log2_mic_true": 2.2015,
+      "jepa_pred": 0.7188,
+      "esm2_pred": 0.5963
+    },
+    {
+      "name": "seq_102",
+      "sequence": "FLGKIDKLRHRMKALVKMAK",
+      "log2_mic_true": 2.2074,
+      "jepa_pred": 1.2742,
+      "esm2_pred": 1.0702
+    },
+    {
+      "name": "seq_20",
+      "sequence": "KKFRKIKKRRKKRLKKRAKKLLAAAAATV",
+      "log2_mic_true": 2.2103,
+      "jepa_pred": 0.2236,
+      "esm2_pred": 0.2798
+    },
+    {
+      "name": "seq_27",
+      "sequence": "IDGTLTKFTKGPSGDSIF",
+      "log2_mic_true": 2.3413,
+      "jepa_pred": 1.9067,
+      "esm2_pred": 1.639
+    },
+    {
+      "name": "seq_112",
+      "sequence": "RKGTRTLVKPCKRKKIRNRF",
+      "log2_mic_true": 2.3497,
+      "jepa_pred": 1.3334,
+      "esm2_pred": 1.0352
+    },
+    {
+      "name": "seq_57",
+      "sequence": "GLAKPAIKIAKKIAKKAAKRLL",
+      "log2_mic_true": 2.4952,
+      "jepa_pred": 0.5501,
+      "esm2_pred": 0.3209
+    },
+    {
+      "name": "seq_31",
+      "sequence": "FHPLLGKLLNILPKTIGGKPTTMAAAARL",
+      "log2_mic_true": 2.5095,
+      "jepa_pred": 0.4541,
+      "esm2_pred": 1.0532
+    },
+    {
+      "name": "seq_34",
+      "sequence": "KATGGLLVKGIKLLLKFLIK",
+      "log2_mic_true": 2.5569,
+      "jepa_pred": 1.0052,
+      "esm2_pred": 0.7354
+    },
+    {
+      "name": "seq_46",
+      "sequence": "RFNFFINLATKGLYKAGFTTMWELNHKKAI",
+      "log2_mic_true": 2.5773,
+      "jepa_pred": 1.1662,
+      "esm2_pred": 1.3544
+    },
+    {
+      "name": "seq_78",
+      "sequence": "PLKLNMLKCMLKIMKKS",
+      "log2_mic_true": 2.6477,
+      "jepa_pred": 1.1004,
+      "esm2_pred": 1.2188
+    },
+    {
+      "name": "seq_55",
+      "sequence": "GLLGILPPLPKLLGKKTKTLLKIK",
+      "log2_mic_true": 2.8599,
+      "jepa_pred": 0.8531,
+      "esm2_pred": 0.7058
+    },
+    {
+      "name": "seq_15",
+      "sequence": "LLQKFPPYGGNLTTTL",
+      "log2_mic_true": 2.8696,
+      "jepa_pred": 1.5675,
+      "esm2_pred": 0.7929
+    },
+    {
+      "name": "seq_32",
+      "sequence": "FLGAILKKFKLVFAGFLAKLIIKALDSTV",
+      "log2_mic_true": 2.8701,
+      "jepa_pred": 0.8926,
+      "esm2_pred": 0.4591
+    },
+    {
+      "name": "seq_12",
+      "sequence": "IMPLRLKVKLKVILPIF",
+      "log2_mic_true": 2.9908,
+      "jepa_pred": 1.1055,
+      "esm2_pred": 1.1396
+    },
+    {
+      "name": "seq_110",
+      "sequence": "ILWKRLKIKNRPLKILRKK",
+      "log2_mic_true": 3.0124,
+      "jepa_pred": 0.5593,
+      "esm2_pred": 0.4467
+    },
+    {
+      "name": "seq_65",
+      "sequence": "KKPTKSFKQGLKPLMPRLPKSRQPDDSH",
+      "log2_mic_true": 3.0172,
+      "jepa_pred": 0.8416,
+      "esm2_pred": 0.4662
+    },
+    {
+      "name": "seq_48",
+      "sequence": "PKDWKKYIKPYSIAKQRLDPLRKH",
+      "log2_mic_true": 3.0688,
+      "jepa_pred": 1.2319,
+      "esm2_pred": 1.1093
+    },
+    {
+      "name": "seq_52",
+      "sequence": "GKKLIKFWLMS",
+      "log2_mic_true": 3.0822,
+      "jepa_pred": 1.0697,
+      "esm2_pred": 1.827
+    },
+    {
+      "name": "seq_113",
+      "sequence": "QNLKKCFNKLLTRRAKSI",
+      "log2_mic_true": 3.3068,
+      "jepa_pred": 1.0901,
+      "esm2_pred": 0.1358
+    },
+    {
+      "name": "seq_71",
+      "sequence": "LVFKLLLKSNFKIALKIGC",
+      "log2_mic_true": 3.3224,
+      "jepa_pred": 1.6388,
+      "esm2_pred": 1.5377
+    },
+    {
+      "name": "seq_18",
+      "sequence": "GIGRVSPPFPPLSGGTFLLITNKI",
+      "log2_mic_true": 3.3601,
+      "jepa_pred": 1.0933,
+      "esm2_pred": 1.206
+    },
+    {
+      "name": "seq_93",
+      "sequence": "GLLQLALKLLLKLLRLLGGLLLYLTAAHL",
+      "log2_mic_true": 3.3878,
+      "jepa_pred": 0.2104,
+      "esm2_pred": 0.2729
+    },
+    {
+      "name": "seq_64",
+      "sequence": "RRFIGKLMKIAKF",
+      "log2_mic_true": 3.4085,
+      "jepa_pred": 1.6206,
+      "esm2_pred": 2.0844
+    },
+    {
+      "name": "seq_94",
+      "sequence": "NAFPLLKKRTKQLFG",
+      "log2_mic_true": 3.4996,
+      "jepa_pred": 1.2067,
+      "esm2_pred": 0.8234
+    },
+    {
+      "name": "seq_82",
+      "sequence": "KKMRLMMWWL",
+      "log2_mic_true": 3.6093,
+      "jepa_pred": 1.1687,
+      "esm2_pred": 1.0908
+    },
+    {
+      "name": "seq_74",
+      "sequence": "MRWKLLLKQKIKGAKRDGKTTAAAAKAR",
+      "log2_mic_true": 3.6159,
+      "jepa_pred": 0.4047,
+      "esm2_pred": 0.1822
+    },
+    {
+      "name": "seq_72",
+      "sequence": "TRGALIKLRDLRLPDSRMK",
+      "log2_mic_true": 3.7177,
+      "jepa_pred": 0.7644,
+      "esm2_pred": 0.9625
+    },
+    {
+      "name": "seq_105",
+      "sequence": "GLTPAIPLGPKLIGKLADDI",
+      "log2_mic_true": 3.7216,
+      "jepa_pred": 1.3031,
+      "esm2_pred": 1.2965
+    },
+    {
+      "name": "seq_80",
+      "sequence": "GKKFGKGQPRTQSTDLTKKL",
+      "log2_mic_true": 3.7487,
+      "jepa_pred": 1.0477,
+      "esm2_pred": 1.4151
+    },
+    {
+      "name": "seq_68",
+      "sequence": "FLPLILGLTPHLKPLLMILI",
+      "log2_mic_true": 3.7609,
+      "jepa_pred": 1.5523,
+      "esm2_pred": 1.4811
+    },
+    {
+      "name": "seq_75",
+      "sequence": "PKLFPRMGGTAVVRIGPRLS",
+      "log2_mic_true": 3.8319,
+      "jepa_pred": 1.8394,
+      "esm2_pred": 1.3537
+    },
+    {
+      "name": "seq_53",
+      "sequence": "FLKRKWKVCKLKKK",
+      "log2_mic_true": 3.8532,
+      "jepa_pred": 1.1708,
+      "esm2_pred": 1.3918
+    },
+    {
+      "name": "seq_114",
+      "sequence": "GLLRGKPQPQPPMGRLIM",
+      "log2_mic_true": 3.8564,
+      "jepa_pred": 1.2581,
+      "esm2_pred": 1.4173
+    },
+    {
+      "name": "seq_123",
+      "sequence": "DMPRILLKLNFTGAGTRGC",
+      "log2_mic_true": 3.8588,
+      "jepa_pred": 1.313,
+      "esm2_pred": 1.8947
+    },
+    {
+      "name": "seq_49",
+      "sequence": "GIKLIIDPITKIGKPIIKFITGAIKS",
+      "log2_mic_true": 3.869,
+      "jepa_pred": 0.963,
+      "esm2_pred": 1.0411
+    },
+    {
+      "name": "seq_124",
+      "sequence": "RIIGIRKKFKIRIGKIRTGRRRKDKK",
+      "log2_mic_true": 3.9215,
+      "jepa_pred": 0.2034,
+      "esm2_pred": 0.795
+    },
+    {
+      "name": "seq_62",
+      "sequence": "MLVFAILKLLLRY",
+      "log2_mic_true": 3.9446,
+      "jepa_pred": 0.8997,
+      "esm2_pred": 1.0056
+    },
+    {
+      "name": "seq_98",
+      "sequence": "GILRTLGKGGRSIANILGKI",
+      "log2_mic_true": 3.9654,
+      "jepa_pred": 1.6897,
+      "esm2_pred": 0.4729
+    },
+    {
+      "name": "seq_97",
+      "sequence": "LKKCIKFPRDLPRQMGKLFSS",
+      "log2_mic_true": 3.9697,
+      "jepa_pred": 1.1595,
+      "esm2_pred": 1.1717
+    },
+    {
+      "name": "seq_14",
+      "sequence": "GRWKRFLQKW",
+      "log2_mic_true": 4.0229,
+      "jepa_pred": 1.7321,
+      "esm2_pred": 1.4358
+    },
+    {
+      "name": "seq_103",
+      "sequence": "GIKSKPKIFKKCGKFSILPPSLQPSVVW",
+      "log2_mic_true": 4.102,
+      "jepa_pred": 0.9959,
+      "esm2_pred": 1.1807
+    },
+    {
+      "name": "seq_115",
+      "sequence": "MFGRFRKKIKKARRHAFRKFK",
+      "log2_mic_true": 4.1487,
+      "jepa_pred": 0.3881,
+      "esm2_pred": 0.2959
+    },
+    {
+      "name": "seq_45",
+      "sequence": "ILGRRIKQALGKAAKTLAPVSNSLRKD",
+      "log2_mic_true": 4.1673,
+      "jepa_pred": 0.7224,
+      "esm2_pred": 0.86
+    },
+    {
+      "name": "seq_35",
+      "sequence": "PMKFRPGIGGKLMKYK",
+      "log2_mic_true": 4.2391,
+      "jepa_pred": 1.1203,
+      "esm2_pred": 2.3863
+    },
+    {
+      "name": "seq_107",
+      "sequence": "KPLRVCLKCFLKMWAAAAGAAK",
+      "log2_mic_true": 4.2953,
+      "jepa_pred": 1.0355,
+      "esm2_pred": 1.4116
+    },
+    {
+      "name": "seq_13",
+      "sequence": "GLAVAIGLLLNGLLIILLGLFMN",
+      "log2_mic_true": 4.3428,
+      "jepa_pred": 1.4147,
+      "esm2_pred": 1.9209
+    },
+    {
+      "name": "seq_19",
+      "sequence": "KRLPLLAKCFKK",
+      "log2_mic_true": 4.3444,
+      "jepa_pred": 1.9923,
+      "esm2_pred": 2.0358
+    },
+    {
+      "name": "seq_81",
+      "sequence": "KDRSFKKMFPPKKTLKKKFK",
+      "log2_mic_true": 4.3861,
+      "jepa_pred": 0.9302,
+      "esm2_pred": 1.474
+    },
+    {
+      "name": "seq_37",
+      "sequence": "KLLKVLLLRLLKH",
+      "log2_mic_true": 4.4259,
+      "jepa_pred": 1.4224,
+      "esm2_pred": 0.9263
+    },
+    {
+      "name": "seq_111",
+      "sequence": "FMPWMPRGRMWIK",
+      "log2_mic_true": 4.4284,
+      "jepa_pred": 1.2822,
+      "esm2_pred": 1.9119
+    },
+    {
+      "name": "seq_5",
+      "sequence": "FLPTITKLLPNLFNLLKRKR",
+      "log2_mic_true": 4.53,
+      "jepa_pred": 1.2452,
+      "esm2_pred": 0.5902
+    },
+    {
+      "name": "seq_87",
+      "sequence": "GTMDILKKLKHMRMKIKTG",
+      "log2_mic_true": 4.5435,
+      "jepa_pred": 0.9525,
+      "esm2_pred": 1.0021
+    },
+    {
+      "name": "seq_100",
+      "sequence": "NKKRDAYKKPHPPMKIIGDSVPPSTKST",
+      "log2_mic_true": 4.6081,
+      "jepa_pred": 0.649,
+      "esm2_pred": 1.4999
+    },
+    {
+      "name": "seq_21",
+      "sequence": "KKDGPPLMQILKMYGKMTGKSAAAAKAKL",
+      "log2_mic_true": 4.6209,
+      "jepa_pred": 1.4121,
+      "esm2_pred": 0.903
+    },
+    {
+      "name": "seq_60",
+      "sequence": "QRLTGVLGPIYNT",
+      "log2_mic_true": 4.6614,
+      "jepa_pred": 1.7067,
+      "esm2_pred": 0.8866
+    },
+    {
+      "name": "seq_83",
+      "sequence": "GLWVRMGQALKLLW",
+      "log2_mic_true": 4.695,
+      "jepa_pred": 1.3692,
+      "esm2_pred": 1.2913
+    },
+    {
+      "name": "seq_79",
+      "sequence": "FNRIMKMMHKS",
+      "log2_mic_true": 4.7319,
+      "jepa_pred": 1.7677,
+      "esm2_pred": 1.6535
+    },
+    {
+      "name": "seq_99",
+      "sequence": "KFAPLLGTGAGTAPDLIPSLRGRF",
+      "log2_mic_true": 4.7795,
+      "jepa_pred": 1.4916,
+      "esm2_pred": 1.9649
+    },
+    {
+      "name": "seq_23",
+      "sequence": "GLVLAIPGALGTLGGLLLQIIGKLL",
+      "log2_mic_true": 4.8521,
+      "jepa_pred": 1.2739,
+      "esm2_pred": 1.1933
+    },
+    {
+      "name": "seq_25",
+      "sequence": "GIYRKLGPAGKPGAGLKAIKLARKAK",
+      "log2_mic_true": 4.961,
+      "jepa_pred": 0.2134,
+      "esm2_pred": 1.5291
+    },
+    {
+      "name": "seq_127",
+      "sequence": "KYKGMKKRKVKKK",
+      "log2_mic_true": 5.0198,
+      "jepa_pred": 1.0494,
+      "esm2_pred": 1.0329
+    },
+    {
+      "name": "seq_59",
+      "sequence": "LKKLNKVNSKLLGK",
+      "log2_mic_true": 5.0579,
+      "jepa_pred": 1.3726,
+      "esm2_pred": 1.2034
+    },
+    {
+      "name": "seq_30",
+      "sequence": "GLFPILKGAAKLIIPIFGPITGT",
+      "log2_mic_true": 5.0614,
+      "jepa_pred": 0.786,
+      "esm2_pred": 1.3162
+    },
+    {
+      "name": "seq_85",
+      "sequence": "LMNFMKNLLLYL",
+      "log2_mic_true": 5.0712,
+      "jepa_pred": 2.1568,
+      "esm2_pred": 1.3708
+    },
+    {
+      "name": "seq_125",
+      "sequence": "FLGRALGILGKLLAGLLGKLLAN",
+      "log2_mic_true": 5.1122,
+      "jepa_pred": 1.3027,
+      "esm2_pred": 1.0353
+    },
+    {
+      "name": "seq_54",
+      "sequence": "ALKKVFYSALPVIMG",
+      "log2_mic_true": 5.1694,
+      "jepa_pred": 1.6261,
+      "esm2_pred": 1.4429
+    },
+    {
+      "name": "seq_117",
+      "sequence": "GLGIIISFFTGILGKAAKKIKG",
+      "log2_mic_true": 5.2003,
+      "jepa_pred": 0.6938,
+      "esm2_pred": 1.3762
+    },
+    {
+      "name": "seq_106",
+      "sequence": "KWKKLKKKKFGRKPPSFFI",
+      "log2_mic_true": 5.2713,
+      "jepa_pred": 0.6414,
+      "esm2_pred": 1.344
+    },
+    {
+      "name": "seq_128",
+      "sequence": "WLLLILLKALKIIL",
+      "log2_mic_true": 5.3537,
+      "jepa_pred": 1.5502,
+      "esm2_pred": 0.9638
+    },
+    {
+      "name": "seq_22",
+      "sequence": "PKMLKKGINNSLPKKIPPDPPGSPKDDTKT",
+      "log2_mic_true": 5.4042,
+      "jepa_pred": 0.7116,
+      "esm2_pred": 1.8193
+    },
+    {
+      "name": "seq_121",
+      "sequence": "PNLPLLPRVAKAL",
+      "log2_mic_true": 5.5127,
+      "jepa_pred": 1.1519,
+      "esm2_pred": 1.9357
+    },
+    {
+      "name": "seq_118",
+      "sequence": "ILGLLMAALLIIALK",
+      "log2_mic_true": 5.5191,
+      "jepa_pred": 0.9931,
+      "esm2_pred": 2.1302
+    },
+    {
+      "name": "seq_116",
+      "sequence": "PLLKGFLDLLGLIID",
+      "log2_mic_true": 5.5256,
+      "jepa_pred": 1.5019,
+      "esm2_pred": 1.2206
+    },
+    {
+      "name": "seq_95",
+      "sequence": "FLPFIFKKAGKLIGGALTGIAM",
+      "log2_mic_true": 5.5594,
+      "jepa_pred": 1.1753,
+      "esm2_pred": 1.2654
+    },
+    {
+      "name": "seq_10",
+      "sequence": "ILPILTGLSPPLINLLPKILRG",
+      "log2_mic_true": 5.5973,
+      "jepa_pred": 1.6138,
+      "esm2_pred": 1.4662
+    },
+    {
+      "name": "seq_69",
+      "sequence": "LNMKGIPKPTGKGIMKIKSK",
+      "log2_mic_true": 5.7836,
+      "jepa_pred": 1.5873,
+      "esm2_pred": 1.6194
+    },
+    {
+      "name": "seq_77",
+      "sequence": "RKKRTKNIKKLLDT",
+      "log2_mic_true": 6.1585,
+      "jepa_pred": 1.3438,
+      "esm2_pred": 0.0755
+    },
+    {
+      "name": "seq_6",
+      "sequence": "LHKQPKVWWDLGGMYG",
+      "log2_mic_true": 6.16,
+      "jepa_pred": 2.0444,
+      "esm2_pred": 2.1363
+    },
+    {
+      "name": "seq_26",
+      "sequence": "KRKKITKGF",
+      "log2_mic_true": 6.5435,
+      "jepa_pred": 1.2723,
+      "esm2_pred": 1.6316
+    },
+    {
+      "name": "seq_126",
+      "sequence": "GRLGKLLKKKWKM",
+      "log2_mic_true": 6.6398,
+      "jepa_pred": 1.1523,
+      "esm2_pred": 1.0644
+    },
+    {
+      "name": "seq_67",
+      "sequence": "FPKKRKQRFKRKM",
+      "log2_mic_true": 6.7133,
+      "jepa_pred": 1.1196,
+      "esm2_pred": 1.2561
+    }
+  ]
+}

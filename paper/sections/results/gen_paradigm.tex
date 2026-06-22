@@ -1,0 +1,52 @@
+% ── results/gen_paradigm.tex ──────────────────────────────────────────────────
+\subsection{Generation Paradigm Comparison: AR, NAR, and Masked Diffusion}
+\label{sec:res_gen_paradigm}
+
+\begin{table}[h]
+\centering
+\caption{Comparison of generation settings built on the same frozen JEPA encoder.
+  AR v4 is the main 3-condition baseline.
+  NAR and masked diffusion test new generation paradigms with the same
+  3-condition target.
+  AR v6 keeps the AR decoder but extends conditioning from 3 to 7 properties.
+  Novelty = fraction of generated sequences with no exact match to the
+  868k training corpus.}
+\label{tab:gen_comparison}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Paradigm} & \textbf{Charge $R^2$} & \textbf{Charge MAE}
+  & \textbf{Length $R^2$} & \textbf{Novelty} & \textbf{Unique} & \textbf{Key note} \\
+\midrule
+AR Decoder (v4, proposed)    & $\mathbf{0.866}$ & $\mathbf{2.23}$ & $-1.71$ & 1.000 & 0.946 & best charge control \\
+NAR Decoder                  & 0.693 & 3.566 & $-1.155$ & 0.954 & 0.727 & weaker than AR on charge and length \\
+Masked Diffusion             & 0.702 & 2.525 & $\mathbf{1.000}$ & 0.955 & 0.929 & best new paradigm; exact length control \\
+AR v6 (7-dim conditions)     & 0.659 & 1.630 & $-0.605$ & 1.000 & 0.925 & adds partial helix/pI control \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+All three decoders share the same frozen JEPA encoder (Section~\ref{sec:pretrain})
+and use matched evaluation targets.
+The AR decoder (v4) remains the strongest model for charge control
+($R^2{=}0.866$).
+NAR keeps reasonable charge control ($R^2{=}0.693$), but it is clearly weaker
+than AR and also weak on length control.
+Masked diffusion gives the best result among the new paradigms.
+Its charge control is lower than AR but still strong ($R^2{=}0.702$), and it
+matches target length exactly in this evaluation ($R^2{=}1.000$).
+
+The v6 model answers a different question: what happens when we add four new
+control dimensions on top of the AR decoder.
+It keeps moderate charge control ($R^2{=}0.659$) and shows partial control of
+helix propensity ($R^2{=}0.533$) and pI ($R^2{=}0.330$).
+However, it does not control GRAVY, hydrophobic moment, or length well.
+The AMP-score signal is present but weak ($R^2{=}0.237$).
+
+\finding{The generation paradigm matters.
+The original AR decoder is still best for charge control, but masked diffusion
+is the strongest new paradigm because it keeps good charge control and gives
+perfect length control in this test.
+The v6 model shows that adding more condition dimensions does not guarantee
+reliable control of every property.}

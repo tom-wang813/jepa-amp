@@ -1,0 +1,41 @@
+% ── methods/finetune.tex ──────────────────────────────────────────────────────
+\subsection{Downstream Fine-Tuning}
+\label{sec:finetune}
+
+\paragraph{Shared bottleneck adapter.}
+All downstream tasks attach a bottleneck adapter
+$A_\psi: \mathbb{R}^d \to \mathbb{R}^d$
+(Linear $\to$ GELU $\to$ Linear, bottleneck 128, zero-initialised last layer)
+on top of the frozen encoder, adding $<1\%$ extra parameters.
+
+\paragraph{AMP classification.}
+A two-layer MLP maps mean-pooled adapter output to a binary AMP logit.
+Training data mirrors AMPlify (3{,}338 pos + 3{,}338 neg) for
+an apple-to-apple comparison; the encoder is fine-tuned with
+differential learning rates ($\eta_\text{head} = 1.5\times10^{-4}$,
+$\eta_\text{enc} = 3\times10^{-6}$).
+
+\paragraph{MIC regression.}
+GRAMPA provides minimum inhibitory concentrations across 20 bacterial
+species~\citep{grampa}.
+We evaluate two head types on frozen JEPA embeddings:
+(i) \textbf{FiLM-MLP}: a two-layer MLP with FiLM species modulation
+$(\hat{y} = \text{MLP}((1{+}\gamma_b)\odot A_\psi(f_\theta(\mathbf{x}))+\beta_b))$;
+(ii) \textbf{Transformer}: a two-layer Transformer encoder head
+with the same FiLM modulation.
+Both use a learned species embedding $e_b \in \mathbb{R}^{64}$ and predict
+$\log_2(\text{MIC}/[\mu\text{g\,mL}^{-1}])$.
+A formal ESM-2 (35M) FiLM-MLP baseline is trained on the same split with the
+same protocol.
+
+\paragraph{QMAP homology-aware regression.}
+We evaluate JEPA-AMP on QMAP~\citep{qmap2026} using the official package
+(\texttt{qmap-benchmark==0.1.1}), its five predefined splits, and its
+log-space metric routine.
+Training data for each split is filtered with QMAP's train mask.
+We train three variants: (i) frozen embedding + Ridge; (ii) head-only
+fine-tune; and (iii) a conditional property head with FiLM modulation over
+a shared property-key embedding, enabling one model to predict both
+E.~coli MIC and HC50.
+All QMAP runs use three random seeds (42, 7, 123); split-level ranges and
+paired deltas are archived in \texttt{eval\_results/qmap\_stats\_pack}.

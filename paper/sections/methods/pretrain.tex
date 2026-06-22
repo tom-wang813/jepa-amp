@@ -1,0 +1,39 @@
+% ── methods/pretrain.tex ──────────────────────────────────────────────────────
+\subsection{JEPA Pre-Training}
+\label{sec:pretrain}
+
+\paragraph{Architecture.}
+The context encoder $f_\theta$ is a Transformer~\citep{vaswani} with
+$d{=}384$, $8$ attention heads, $8$ layers, and $d_\text{ff}{=}1536$,
+operating on amino acid sequences tokenised with a 25-token vocabulary
+(20 canonical AAs + BOS / EOS / PAD / MASK / UNK).
+An EMA target encoder $\bar{f}_\theta$ (momentum $= 0.996$) produces stable
+representations without collapse.
+A two-layer Transformer predictor $g_\phi$ bridges context and target
+representations.
+
+\paragraph{Objective.}
+Given a sequence $\mathbf{x}$, we partition tokens into a context set
+$\mathcal{C}$ (observed prefix) and a target set $\mathcal{T}$
+(held-out suffix, 30--70\% of tokens).
+$g_\phi$ maps context representations to target representations in
+\emph{embedding space}:
+\begin{equation}
+  \mathcal{L}_\text{JEPA} =
+  \mathbb{E}\bigl[\|g_\phi(f_\theta(\mathbf{x}_\mathcal{C})) -
+  \bar{f}_\theta(\mathbf{x}_\mathcal{T})\|_2^2\bigr].
+  \label{eq:jepa}
+\end{equation}
+Unlike masked language models, the optimisation target is a representation
+rather than a discrete token identity.
+This objective predicts in embedding space rather than token space.
+We later test whether this leads to different fine-tuning behaviour
+(Section~\ref{sec:res_emb}).
+
+\paragraph{Training corpus.}
+We pre-train on \textbf{868{,}724} unique AMP sequences ($5$--$50$ residues;
+mean $35.4$~AA) drawn from APD3, DRAMP, UniProt AMP annotations (reviewed +
+TrEMBL), and the AMPSphere experimental database.
+AMPlify test sequences are excluded to prevent data leakage.
+Training: AdamW ($\eta = 10^{-3}$, cosine annealing), batch size 2048,
+100 epochs, converging to val loss $= 0.244$ in embedding MSE.

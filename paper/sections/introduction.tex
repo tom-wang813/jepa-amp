@@ -1,33 +1,63 @@
 \section{Introduction}
+\label{sec:introduction}
 
-Antimicrobial resistance (AMR) is one of the most urgent threats to global health,
-with the WHO projecting 10 million annual deaths annually by 2050~\citep{who2019}.
-Antimicrobial peptides (AMPs)---short (typically 10--50 residue) cationic amphipathic
-sequences---disrupt bacterial membranes through mechanisms orthogonal to conventional
-antibiotics, making them prime candidates for novel therapeutics.
+% ── ¶1  General landscape: AI for AMP is a thriving field ──
+Antimicrobial resistance is among the most pressing global health
+threats~\citep{who2019,oneill2016}, and antimicrobial peptides (AMPs)---short,
+cationic, amphipathic sequences that disrupt bacterial membranes through
+mechanisms different from conventional antibiotics---offer a promising class
+of candidates for new therapeutics~\citep{zasloff2002,brogden2005,hancock2006}.
+Discovering such peptides computationally has become a major research
+direction.
+The field now offers a rich and growing tool set:
+supervised classifiers that screen sequences for antimicrobial
+activity~\citep{amplify,ampscanner,iamppred,ampbert},
+large protein language models whose embeddings transfer to peptide
+tasks~\citep{esm2,prottrans,unirep},
+lightweight peptide-specific language models that achieve competitive
+performance at a fraction of the cost~\citep{pepbert,llamp,peptidebert},
+and conditional generators that propose novel AMP
+candidates~\citep{hydramp,diffamp,pandi2023,kppepgen,pepvae}.
+These approaches have collectively advanced the state of computational AMP
+discovery.
 
-Computational AMP discovery has progressed from hand-crafted physicochemical
-features~\citep{iamppred} through deep sequence models~\citep{amplify,ampscanner}
-to Transformer-based approaches~\citep{esm2}.
-Despite this progress, three gaps remain:
-(i)~existing classifiers are trained on small curated sets and do not benefit from the
-large unlabelled AMP sequence databases;
-(ii)~MIC prediction models are limited to a single species or lack uncertainty estimates;
-(iii)~sequence generators either ignore physicochemical constraints entirely or
-do not support targeting specific antimicrobial potency profiles.
+% ── ¶2  Observation: pre-trained representations increasingly central,
+%        and the dominant pre-training objective is MLM ──
+Across these approaches, learned sequence representations have become the
+central building block---whether transferred from a general protein language
+model or trained on a domain-specific peptide corpus.
+The dominant pre-training objective for learning such representations is
+masked language modeling (\mlmenc{}): mask out amino acids and predict the
+exact identity of each masked token.
+\mlmenc{} has been effective across protein science, and we do not argue that
+it is wrong.
+But it is worth noticing what this objective asks the model to learn:
+accurate reconstruction of specific residues at specific positions.
 
-We address all three gaps with \textbf{JEPA-AMP}, which makes four contributions:
-\begin{enumerate}
-  \item A \emph{self-supervised JEPA pre-training} scheme on 868k AMP sequences,
-        learning rich contextual representations without sequence-level labels.
-  \item A \emph{lightweight adapter fine-tuning} protocol for AMP classification
-        and multi-species MIC regression, achieving competitive performance
-        while retaining pre-trained representations.
-  \item A \emph{conditional autoregressive generator} (v4) with dual-pathway
-        conditioning (AdaLN per-layer + cross-attention condition token) and a
-        differentiable physicochemical auxiliary loss, enabling reliable charge
-        and hydrophobicity targeting with $R^2=0.98$.
-  \item An \emph{MIC-conditioned generator} (v5) trained on real experimental
-        measurements from GRAMPA~\citep{grampa}, demonstrating global activity
-        control via a 43-dimensional condition vector specifying per-species MIC targets.
-\end{enumerate}
+% ── ¶3  Insight: AMP activity is a holistic pattern, not a token pattern ──
+AMP activity, however, does not arise from individual residue identities.
+What makes a peptide antimicrobial is a combination of emergent,
+whole-sequence properties: sufficient net positive charge, an amphipathic
+arrangement of hydrophobic and hydrophilic residues, appropriate length, and
+the ability to adopt a membrane-active
+conformation~\citep{fjell2012,hancock2006}.
+The same functional role is often filled by different amino acids---replacing
+one cationic residue with another may preserve activity, while a single
+charge-removing mutation can abolish it.
+In this sense, antimicrobial activity is better described as a
+\emph{holistic physicochemical pattern} than as a sequence motif.
+This raises a natural question: would a pre-training objective that operates
+at the level of representations rather than tokens better capture how AMP
+activity actually works?
+
+% ── ¶4  Our proposal (tight: what we built and the core question) ──
+We explore this question with \projectname{}, a compact (\encoderparams{}
+parameter) encoder pre-trained on \corpussize{} AMP-like sequences using a
+\jepafull{} (\jepa{})~\citep{jepa_assran}.
+Unlike \mlmenc{}, \jepa{} predicts target \emph{representations} from context
+representations in latent space, without reconstructing specific tokens.
+We compare \projectname{} against \esmtwo{} and an identically architected
+\mlmenc{} encoder to understand what changes when the pre-training signal
+shifts from token reconstruction to representation prediction.
+
+% ── ¶5+ RQs and contributions: TODO after wet-lab data ──
