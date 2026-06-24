@@ -1,176 +1,4 @@
 {
-  "v2 cfg=0": {
-    "AMP-like  (+charge, hydrophob)": {
-      "target": {
-        "charge_raw": 4.981075411725516,
-        "gravy_raw": 0.30951960420311175,
-        "len": 20.0
-      },
-      "n": 100,
-      "mean_len": 10.97,
-      "mean_charge": -0.42,
-      "mean_gravy": -0.01922891830391829,
-      "frac_positive_charge": 0.19,
-      "samples": [
-        "AVMEMMVMNNEC",
-        "ANPVPVC",
-        "APNNNNC"
-      ]
-    },
-    "High +charge, short": {
-      "target": {
-        "charge_raw": 9.158904115324113,
-        "gravy_raw": 0.0,
-        "len": 10.0
-      },
-      "n": 100,
-      "mean_len": 10.7,
-      "mean_charge": -0.02,
-      "mean_gravy": -0.835357951770452,
-      "frac_positive_charge": 0.0,
-      "samples": [
-        "ANVMMVNNNNMNC",
-        "AQNPVPNPNNNNC",
-        "ANVPNNNMNC"
-      ]
-    },
-    "Very high +charge": {
-      "target": {
-        "charge_raw": 13.233262061811228,
-        "gravy_raw": 0.0,
-        "len": 20.0
-      },
-      "n": 100,
-      "mean_len": 12.04,
-      "mean_charge": 0.0,
-      "mean_gravy": -0.9782938003173299,
-      "frac_positive_charge": 0.0,
-      "samples": [
-        "ANPNPNMNNNNNC",
-        "ANMNNNNNNMNNC",
-        "ANNNNNNNNNMC"
-      ]
-    },
-    "Neutral, hydrophobic": {
-      "target": {
-        "charge_raw": 0.0,
-        "gravy_raw": 0.8673005276940531,
-        "len": 15.0
-      },
-      "n": 100,
-      "mean_len": 12.29,
-      "mean_charge": -0.17,
-      "mean_gravy": -0.626887221842485,
-      "frac_positive_charge": 0.34,
-      "samples": [
-        "AHPMMHMHMC",
-        "AMERGSWMC",
-        "AEYNYEMYKYEHPPYSGC"
-      ]
-    },
-    "Strongly hydrophobic": {
-      "target": {
-        "charge_raw": 0.0,
-        "gravy_raw": 1.4722194895832204,
-        "len": 15.0
-      },
-      "n": 100,
-      "mean_len": 10.29,
-      "mean_charge": -0.3,
-      "mean_gravy": -0.4073080092293327,
-      "frac_positive_charge": 0.35,
-      "samples": [
-        "AMEWELWC",
-        "AWSKPPWEEPMEPEC",
-        "AIIIEWC"
-      ]
-    },
-    "Anionic (\u2212charge)": {
-      "target": {
-        "charge_raw": -4.981075411725516,
-        "gravy_raw": 0.0,
-        "len": 15.0
-      },
-      "n": 100,
-      "mean_len": 17.13,
-      "mean_charge": -0.54,
-      "mean_gravy": -1.118965628687319,
-      "frac_positive_charge": 0.33,
-      "samples": [
-        "ARHYPHEEGEGPHEKC",
-        "AQPPPPMKC",
-        "APHEIGEEMEEPGNEC"
-      ]
-    },
-    "Strong anionic": {
-      "target": {
-        "charge_raw": -9.158904115324113,
-        "gravy_raw": 0.0,
-        "len": 20.0
-      },
-      "n": 100,
-      "mean_len": 16.09,
-      "mean_charge": -0.36,
-      "mean_gravy": -0.9694277755591577,
-      "frac_positive_charge": 0.3,
-      "samples": [
-        "APWGGFGFGKEGMFIGPPC",
-        "AKKGQGPWHQGGPFKC",
-        "AHHEPHGHMHQPC"
-      ]
-    },
-    "Long, neutral, hydrophilic": {
-      "target": {
-        "charge_raw": 0.0,
-        "gravy_raw": -0.6931471805599453,
-        "len": 30.0
-      },
-      "n": 100,
-      "mean_len": 15.74,
-      "mean_charge": 1.73,
-      "mean_gravy": -0.9913306223704055,
-      "frac_positive_charge": 0.71,
-      "samples": [
-        "ANHNHNHRNKHNHGRRC",
-        "AEEKKNLKWKGRYRKKC",
-        "AKNWHYGNHLWVTKKC"
-      ]
-    },
-    "Cationic + hydrophobic (AMP)": {
-      "target": {
-        "charge_raw": 4.981075411725516,
-        "gravy_raw": 0.6931471805599453,
-        "len": 15.0
-      },
-      "n": 100,
-      "mean_len": 8.93,
-      "mean_charge": -0.1,
-      "mean_gravy": 0.00794497724497724,
-      "frac_positive_charge": 0.06,
-      "samples": [
-        "ANMVNNMC",
-        "APNNMMMMMNC",
-        "AMNNNC"
-      ]
-    },
-    "Anionic + hydrophilic": {
-      "target": {
-        "charge_raw": -3.4657359027997265,
-        "gravy_raw": -0.6931471805599453,
-        "len": 20.0
-      },
-      "n": 100,
-      "mean_len": 17.81,
-      "mean_charge": 0.94,
-      "mean_gravy": -1.0175147749442117,
-      "frac_positive_charge": 0.5,
-      "samples": [
-        "AKVINGNSVEGHVMGHNETKC",
-        "APHHPHGHHGNC",
-        "APWSGHYWPHNHC"
-      ]
-    }
-  },
   "v3 cfg=0": {
     "AMP-like  (+charge, hydrophob)": {
       "target": {
@@ -179,14 +7,14 @@
         "len": 20.0
       },
       "n": 100,
-      "mean_len": 11.2,
-      "mean_charge": -0.54,
-      "mean_gravy": -0.16674388111888105,
-      "frac_positive_charge": 0.19,
+      "mean_len": 11.07,
+      "mean_charge": -0.05,
+      "mean_gravy": -0.13151138861138859,
+      "frac_positive_charge": 0.27,
       "samples": [
-        "APPVPPPVVPYC",
-        "AMKMNKPNNPNC",
-        "AMENNNEPMNC"
+        "APNVPVPKPVC",
+        "ANNNMPRNNC",
+        "AWPNQYVNVC"
       ]
     },
     "High +charge, short": {
@@ -196,14 +24,14 @@
         "len": 10.0
       },
       "n": 100,
-      "mean_len": 10.08,
+      "mean_len": 10.31,
       "mean_charge": 0.0,
-      "mean_gravy": -0.9719850427350427,
+      "mean_gravy": -1.1174260323010323,
       "frac_positive_charge": 0.0,
       "samples": [
-        "ANNNNNNMNC",
-        "ANMNVNNNNNNMC",
-        "ANNMNNNMNNC"
+        "AMNNMNNC",
+        "ANMMNNNNMC",
+        "ANNMMMNNNNC"
       ]
     },
     "Very high +charge": {
@@ -213,14 +41,14 @@
         "len": 20.0
       },
       "n": 100,
-      "mean_len": 12.48,
-      "mean_charge": 0.0,
-      "mean_gravy": -1.0818694416694417,
+      "mean_len": 12.74,
+      "mean_charge": -0.01,
+      "mean_gravy": -0.9333217282717282,
       "frac_positive_charge": 0.0,
       "samples": [
-        "ANMNMNMNMNNNC",
-        "ANNVNNNNC",
-        "AVPNPNNNMNC"
+        "ANNPNNMMNNNNC",
+        "ANNNNNMMNMMNNC",
+        "ANNNNNNNC"
       ]
     },
     "Neutral, hydrophobic": {
@@ -230,14 +58,14 @@
         "len": 15.0
       },
       "n": 100,
-      "mean_len": 9.26,
-      "mean_charge": -0.3,
-      "mean_gravy": -0.33538142135642146,
-      "frac_positive_charge": 0.29,
+      "mean_len": 9.29,
+      "mean_charge": -0.76,
+      "mean_gravy": -0.6204651154401154,
+      "frac_positive_charge": 0.22,
       "samples": [
-        "AIPHEFEIC",
-        "AVFTWPWC",
-        "APPMEPYEGC"
+        "AQMSLIHPC",
+        "ARMKHQMKYPC",
+        "AEEGEEC"
       ]
     },
     "Strongly hydrophobic": {
@@ -247,14 +75,14 @@
         "len": 15.0
       },
       "n": 100,
-      "mean_len": 8.39,
-      "mean_charge": -0.43,
-      "mean_gravy": 0.052053282828282824,
-      "frac_positive_charge": 0.18,
+      "mean_len": 8.58,
+      "mean_charge": -0.46,
+      "mean_gravy": -0.058388233988233985,
+      "frac_positive_charge": 0.2,
       "samples": [
-        "AGEMPMPC",
-        "AMKEEPC",
-        "APPMPPEVC"
+        "AMPGMPPMC",
+        "APHIKC",
+        "APPPMGKWC"
       ]
     },
     "Anionic (\u2212charge)": {
@@ -264,14 +92,14 @@
         "len": 15.0
       },
       "n": 100,
-      "mean_len": 10.01,
-      "mean_charge": -0.05,
-      "mean_gravy": -0.848701085026085,
-      "frac_positive_charge": 0.25,
+      "mean_len": 10.38,
+      "mean_charge": -0.25,
+      "mean_gravy": -0.8338385808635809,
+      "frac_positive_charge": 0.21,
       "samples": [
-        "AGHGIHEHC",
-        "AQKHMGGMGC",
-        "ASHKHGMMGC"
+        "APWGPHHHC",
+        "AQSHGPGHEEHEC",
+        "AEHGGPHHHC"
       ]
     },
     "Strong anionic": {
@@ -281,14 +109,14 @@
         "len": 20.0
       },
       "n": 100,
-      "mean_len": 12.11,
-      "mean_charge": -0.08,
-      "mean_gravy": -1.0961549367299366,
-      "frac_positive_charge": 0.24,
+      "mean_len": 12.02,
+      "mean_charge": -0.09,
+      "mean_gravy": -1.0168080364080365,
+      "frac_positive_charge": 0.28,
       "samples": [
-        "AQRKRGGHGYC",
-        "AHHHHHHPPHPMGGGC",
-        "AHHKPHREGC"
+        "AYGGGGMHYKTC",
+        "AHHHHNHHHHC",
+        "AVEHHHHHHHHHC"
       ]
     },
     "Long, neutral, hydrophilic": {
@@ -298,14 +126,14 @@
         "len": 30.0
       },
       "n": 100,
-      "mean_len": 15.91,
-      "mean_charge": 1.67,
-      "mean_gravy": -1.0240935978237449,
+      "mean_len": 15.9,
+      "mean_charge": 1.6,
+      "mean_gravy": -0.7499941068735189,
       "frac_positive_charge": 0.71,
       "samples": [
-        "AHYGKTNHPERLVEGC",
-        "AKVVYLHHRHNSHVSC",
-        "AVHRPGHGVYPSNHLC"
+        "AWGRTQMHGGKKHNC",
+        "AGVGGPGKKGHSKWC",
+        "AGHMLNHHRKKHVSVC"
       ]
     },
     "Cationic + hydrophobic (AMP)": {
@@ -315,14 +143,14 @@
         "len": 15.0
       },
       "n": 100,
-      "mean_len": 9.35,
-      "mean_charge": 0.0,
-      "mean_gravy": -0.016823742923742915,
-      "frac_positive_charge": 0.05,
+      "mean_len": 9.62,
+      "mean_charge": -0.12,
+      "mean_gravy": 0.14484289599289604,
+      "frac_positive_charge": 0.0,
       "samples": [
-        "AMMMVVMC",
-        "ANNMMNMC",
-        "ANNNNMMC"
+        "ANNNVPMMMC",
+        "AEPMVNC",
+        "AVENNMMNC"
       ]
     },
     "Anionic + hydrophilic": {
@@ -332,14 +160,14 @@
         "len": 20.0
       },
       "n": 100,
-      "mean_len": 11.99,
-      "mean_charge": 0.53,
-      "mean_gravy": -1.1025646936396936,
-      "frac_positive_charge": 0.4,
+      "mean_len": 12.09,
+      "mean_charge": 0.81,
+      "mean_gravy": -1.071399467199467,
+      "frac_positive_charge": 0.5,
       "samples": [
-        "AHHWHHGKHNC",
-        "AGMSGHEGLHKC",
-        "AHLYGHIMNHHHNHC"
+        "ALGGSGEIGVGGC",
+        "AKHHQHHSHLSEC",
+        "AEHGTHHPHSC"
       ]
     }
   },
@@ -351,14 +179,14 @@
         "len": 20.0
       },
       "n": 100,
-      "mean_len": 10.21,
-      "mean_charge": -0.01,
-      "mean_gravy": 1.7503960150960152,
-      "frac_positive_charge": 0.07,
+      "mean_len": 10.24,
+      "mean_charge": 0.0,
+      "mean_gravy": 1.5959060911310912,
+      "frac_positive_charge": 0.08,
       "samples": [
-        "AIMIIIVRVNC",
-        "AIPIPPIVNVC",
-        "AIPIPIPIPIC"
+        "APIPPPVSVSC",
+        "AIFIMIMINVNC",
+        "APIPPPVNVC"
       ]
     },
     "High +charge, short": {
@@ -368,14 +196,14 @@
         "len": 10.0
       },
       "n": 100,
-      "mean_len": 6.7,
+      "mean_len": 7.28,
       "mean_charge": 0.0,
-      "mean_gravy": 0.4902716810966812,
+      "mean_gravy": 0.28173005050505046,
       "frac_positive_charge": 0.0,
       "samples": [
-        "AMPMVNC",
-        "APMPMPMPC",
-        "APMMNC"
+        "AMMMMC",
+        "APMPMPNC",
+        "APPC"
       ]
     },
     "Very high +charge": {
@@ -385,14 +213,14 @@
         "len": 20.0
       },
       "n": 100,
-      "mean_len": 9.87,
+      "mean_len": 9.98,
       "mean_charge": 0.0,
-      "mean_gravy": 0.10677423687423689,
+      "mean_gravy": 0.2025123321123321,
       "frac_positive_charge": 0.0,
       "samples": [
-        "AMPMPMPMPMNC",
-        "APMPPVNC",
-        "AMMMPVNVNC"
+        "APPPPNNNNC",
+        "APPVNVNVNVC",
+        "APPPPVNVNC"
       ]
     },
     "Neutral, hydrophobic": {
@@ -402,14 +230,14 @@
         "len": 15.0
       },
       "n": 100,
-      "mean_len": 7.92,
-      "mean_charge": -0.08,
-      "mean_gravy": 2.1388388805638803,
-      "frac_positive_charge": 0.01,
+      "mean_len": 7.98,
+      "mean_charge": -0.11,
+      "mean_gravy": 2.0244730241980244,
+      "frac_positive_charge": 0.05,
       "samples": [
-        "APMEIMEC",
-        "AIPIPIPIC",
-        "AIPIIIC"
+        "AIIIILC",
+        "AIIPIILVC",
+        "AIPIPIIVC"
       ]
     },
     "Strongly hydrophobic": {
@@ -419,14 +247,14 @@
         "len": 15.0
       },
       "n": 100,
-      "mean_len": 7.1,
+      "mean_len": 7.02,
       "mean_charge": -0.04,
-      "mean_gravy": 1.3446373015873019,
-      "frac_positive_charge": 0.01,
+      "mean_gravy": 1.686002777777778,
+      "frac_positive_charge": 0.0,
       "samples": [
-        "AIPIIC",
-        "AFIPC",
-        "AIPIPIPPC"
+        "APIPPPC",
+        "AIIMIMC",
+        "APPPPC"
       ]
     },
     "Anionic (\u2212charge)": {
@@ -436,14 +264,14 @@
         "len": 15.0
       },
       "n": 100,
-      "mean_len": 8.95,
-      "mean_charge": -0.15,
-      "mean_gravy": 1.1795563107944687,
+      "mean_len": 9.34,
+      "mean_charge": -0.05,
+      "mean_gravy": 1.9345743503555268,
       "frac_positive_charge": 0.02,
       "samples": [
-        "APIPIPIIC",
-        "AIIEYNRHC",
-        "APPPPPC"
+        "AIPMPPPPC",
+        "AIIIIIIIC",
+        "AIPIIC"
       ]
     },
     "Strong anionic": {
@@ -453,14 +281,14 @@
         "len": 20.0
       },
       "n": 100,
-      "mean_len": 11.3,
-      "mean_charge": -0.04,
-      "mean_gravy": 1.121218775258789,
-      "frac_positive_charge": 0.0,
+      "mean_len": 10.69,
+      "mean_charge": -0.02,
+      "mean_gravy": 1.2040517686561807,
+      "frac_positive_charge": 0.02,
       "samples": [
-        "APPPPPPPPPC",
-        "AIPIIIIISIC",
-        "APPPPPPPPPC"
+        "AIIIIIIEC",
+        "APIPIPIPIIPC",
+        "APPIPIPPPPHHC"
       ]
     },
     "Long, neutral, hydrophilic": {
@@ -470,14 +298,14 @@
         "len": 30.0
       },
       "n": 100,
-      "mean_len": 14.89,
-      "mean_charge": 0.11,
-      "mean_gravy": 1.2296931286291968,
-      "frac_positive_charge": 0.15,
+      "mean_len": 14.32,
+      "mean_charge": 0.07,
+      "mean_gravy": 1.426906915130793,
+      "frac_positive_charge": 0.09,
       "samples": [
-        "AIPIPIIININVNGHC",
-        "AIPIIFC",
-        "AIPIPIVIVNPNHNHGC"
+        "AFPC",
+        "AIIIIKNKNKNHGC",
+        "AIPIPIPIPIPISNHNHC"
       ]
     },
     "Cationic + hydrophobic (AMP)": {
@@ -489,12 +317,12 @@
       "n": 100,
       "mean_len": 7.74,
       "mean_charge": 0.0,
-      "mean_gravy": 1.0827470057720057,
+      "mean_gravy": 1.0579338023088025,
       "frac_positive_charge": 0.0,
       "samples": [
-        "AIIMMNC",
-        "APPPVC",
-        "APMMVC"
+        "APPNNVC",
+        "APMPMMC",
+        "APPPNC"
       ]
     },
     "Anionic + hydrophilic": {
@@ -504,358 +332,14 @@
         "len": 20.0
       },
       "n": 100,
-      "mean_len": 10.39,
-      "mean_charge": -0.12,
-      "mean_gravy": 1.4555507740969036,
-      "frac_positive_charge": 0.01,
+      "mean_len": 10.3,
+      "mean_charge": 0.02,
+      "mean_gravy": 1.6298698203757027,
+      "frac_positive_charge": 0.03,
       "samples": [
-        "APIFPC",
-        "AFPIFIC",
-        "AIPIIYYIYHC"
-      ]
-    }
-  },
-  "v4 cfg=0": {
-    "AMP-like  (+charge, hydrophob)": {
-      "target": {
-        "charge_raw": 4.981075411725516,
-        "gravy_raw": 0.30951960420311175,
-        "len": 20.0
-      },
-      "n": 100,
-      "mean_len": 13.19,
-      "mean_charge": 6.44,
-      "mean_gravy": -0.41505991288123634,
-      "frac_positive_charge": 1.0,
-      "samples": [
-        "AVKKVKKKKC",
-        "AVKKVKKVKKVC",
-        "AKKMKKKVKNVKKKC"
-      ]
-    },
-    "High +charge, short": {
-      "target": {
-        "charge_raw": 9.158904115324113,
-        "gravy_raw": 0.0,
-        "len": 10.0
-      },
-      "n": 100,
-      "mean_len": 16.09,
-      "mean_charge": 12.68,
-      "mean_gravy": -2.431872801852654,
-      "frac_positive_charge": 1.0,
-      "samples": [
-        "AKKKKKKKKKVKKVKKC",
-        "AKKKKKKKKKKKKKC",
-        "AKKKKKKKKKKKVVKKKKVKKC"
-      ]
-    },
-    "Very high +charge": {
-      "target": {
-        "charge_raw": 13.233262061811228,
-        "gravy_raw": 0.0,
-        "len": 20.0
-      },
-      "n": 100,
-      "mean_len": 17.84,
-      "mean_charge": 13.91,
-      "mean_gravy": -2.3485772247562187,
-      "frac_positive_charge": 1.0,
-      "samples": [
-        "AKKKKKKKKKVVKKVVKKKKC",
-        "AKVKVKKKKKKKVVKKKKC",
-        "AKKKKKKKKKKVVKKC"
-      ]
-    },
-    "Neutral, hydrophobic": {
-      "target": {
-        "charge_raw": 0.0,
-        "gravy_raw": 0.8673005276940531,
-        "len": 15.0
-      },
-      "n": 100,
-      "mean_len": 11.55,
-      "mean_charge": 0.55,
-      "mean_gravy": 1.2154808723955783,
-      "frac_positive_charge": 0.47,
-      "samples": [
-        "AIKIYIHIGEQC",
-        "APIPGPGIGIEIIC",
-        "AMPMYPLVPPFIC"
-      ]
-    },
-    "Strongly hydrophobic": {
-      "target": {
-        "charge_raw": 0.0,
-        "gravy_raw": 1.4722194895832204,
-        "len": 15.0
-      },
-      "n": 100,
-      "mean_len": 12.72,
-      "mean_charge": 0.65,
-      "mean_gravy": 2.0251361194447104,
-      "frac_positive_charge": 0.48,
-      "samples": [
-        "AMIIIKIKIIC",
-        "AIPEYPVPC",
-        "AMIMFIMKIIPKIIIIIC"
-      ]
-    },
-    "Anionic (\u2212charge)": {
-      "target": {
-        "charge_raw": -4.981075411725516,
-        "gravy_raw": 0.0,
-        "len": 15.0
-      },
-      "n": 100,
-      "mean_len": 18.25,
-      "mean_charge": -7.68,
-      "mean_gravy": -0.54937900485782,
-      "frac_positive_charge": 0.0,
-      "samples": [
-        "AIEGEEEGEIC",
-        "AEHIEIIHGGIEEPGIEIEC",
-        "AEEIEEGIGHMGLGEGIPHLC"
-      ]
-    },
-    "Strong anionic": {
-      "target": {
-        "charge_raw": -9.158904115324113,
-        "gravy_raw": 0.0,
-        "len": 20.0
-      },
-      "n": 100,
-      "mean_len": 18.28,
-      "mean_charge": -9.16,
-      "mean_gravy": -0.9136359511559392,
-      "frac_positive_charge": 0.0,
-      "samples": [
-        "AEEEEEEEEHEIC",
-        "AEEEGEIHEEIEIIGGIEGEEEIIGC",
-        "AEEEEIIEEIGGIIMMEEEEC"
-      ]
-    },
-    "Long, neutral, hydrophilic": {
-      "target": {
-        "charge_raw": 0.0,
-        "gravy_raw": -0.6931471805599453,
-        "len": 30.0
-      },
-      "n": 100,
-      "mean_len": 16.03,
-      "mean_charge": 0.01,
-      "mean_gravy": -0.8103074499030382,
-      "frac_positive_charge": 0.37,
-      "samples": [
-        "ASSGYHEWSYSVSYWC",
-        "ALHGPGYITEEELSLHC",
-        "AEKSGGSRIYKSWWC"
-      ]
-    },
-    "Cationic + hydrophobic (AMP)": {
-      "target": {
-        "charge_raw": 4.981075411725516,
-        "gravy_raw": 0.6931471805599453,
-        "len": 15.0
-      },
-      "n": 100,
-      "mean_len": 13.21,
-      "mean_charge": 7.5,
-      "mean_gravy": -0.8073294463835096,
-      "frac_positive_charge": 1.0,
-      "samples": [
-        "AKIKVKVKKC",
-        "AKKMVVVVVC",
-        "AIKIKKKIKIKKC"
-      ]
-    },
-    "Anionic + hydrophilic": {
-      "target": {
-        "charge_raw": -3.4657359027997265,
-        "gravy_raw": -0.6931471805599453,
-        "len": 20.0
-      },
-      "n": 100,
-      "mean_len": 15.97,
-      "mean_charge": -5.04,
-      "mean_gravy": -1.0102635242119122,
-      "frac_positive_charge": 0.0,
-      "samples": [
-        "AHEEGEEEEIEEEEEKC",
-        "AEEEEGILEHLGLEGETEC",
-        "ALHEGGMMTHEGEMTHNETVC"
-      ]
-    }
-  },
-  "v4 cfg=5": {
-    "AMP-like  (+charge, hydrophob)": {
-      "target": {
-        "charge_raw": 4.981075411725516,
-        "gravy_raw": 0.30951960420311175,
-        "len": 20.0
-      },
-      "n": 100,
-      "mean_len": 9.77,
-      "mean_charge": 1.23,
-      "mean_gravy": 1.876247066822067,
-      "frac_positive_charge": 0.52,
-      "samples": [
-        "AVKVMVMKKC",
-        "APVKVPVVVC",
-        "APVIVIVIIC"
-      ]
-    },
-    "High +charge, short": {
-      "target": {
-        "charge_raw": 9.158904115324113,
-        "gravy_raw": 0.0,
-        "len": 10.0
-      },
-      "n": 100,
-      "mean_len": 10.14,
-      "mean_charge": 6.85,
-      "mean_gravy": -1.6399999742087972,
-      "frac_positive_charge": 1.0,
-      "samples": [
-        "AKKKKKKKKKKKKKKKC",
-        "AKKKKVKKVKC",
-        "AKKKKKKKC"
-      ]
-    },
-    "Very high +charge": {
-      "target": {
-        "charge_raw": 13.233262061811228,
-        "gravy_raw": 0.0,
-        "len": 20.0
-      },
-      "n": 100,
-      "mean_len": 13.56,
-      "mean_charge": 9.0,
-      "mean_gravy": -1.55331290351805,
-      "frac_positive_charge": 0.99,
-      "samples": [
-        "AKKKKKKKVKNC",
-        "AKKKKKKKVKVKC",
-        "AKKKKKKKKVKKC"
-      ]
-    },
-    "Neutral, hydrophobic": {
-      "target": {
-        "charge_raw": 0.0,
-        "gravy_raw": 0.8673005276940531,
-        "len": 15.0
-      },
-      "n": 100,
-      "mean_len": 9.09,
-      "mean_charge": -1.77,
-      "mean_gravy": -0.43772779581529586,
-      "frac_positive_charge": 0.0,
-      "samples": [
-        "AHPPWPPC",
-        "AHPEIEIEIC",
-        "AHPHEPEC"
-      ]
-    },
-    "Strongly hydrophobic": {
-      "target": {
-        "charge_raw": 0.0,
-        "gravy_raw": 1.4722194895832204,
-        "len": 15.0
-      },
-      "n": 100,
-      "mean_len": 9.62,
-      "mean_charge": -0.76,
-      "mean_gravy": 0.6666212339237916,
-      "frac_positive_charge": 0.0,
-      "samples": [
-        "AAAAAAAAAAAAAC",
-        "APPPEC",
-        "AHIPIPPPPPPPPPC"
-      ]
-    },
-    "Anionic (\u2212charge)": {
-      "target": {
-        "charge_raw": -4.981075411725516,
-        "gravy_raw": 0.0,
-        "len": 15.0
-      },
-      "n": 100,
-      "mean_len": 25.06,
-      "mean_charge": -3.41,
-      "mean_gravy": -1.999777495290286,
-      "frac_positive_charge": 0.0,
-      "samples": [
-        "AEEEHEHEHEHIHGEHEHIHHIHC",
-        "AGEGEGEHGGHGHC",
-        "AGHGHEGHGHHHHHHHHHHHHHHHHHGHHHHHHHHHHHHHHHHHHHHHHHH"
-      ]
-    },
-    "Strong anionic": {
-      "target": {
-        "charge_raw": -9.158904115324113,
-        "gravy_raw": 0.0,
-        "len": 20.0
-      },
-      "n": 100,
-      "mean_len": 30.13,
-      "mean_charge": -3.63,
-      "mean_gravy": -1.997300613396332,
-      "frac_positive_charge": 0.0,
-      "samples": [
-        "AHEHEHGHHGHHGHGHHGHGHHGHGHHGHHHGHHHHGHHGHHHHGHHGHGH",
-        "AGEHEHEHGHC",
-        "AEGEGEHGEGGEGGGHGHHHHHGHHGHGHGHGHGHHGHGHHGH"
-      ]
-    },
-    "Long, neutral, hydrophilic": {
-      "target": {
-        "charge_raw": 0.0,
-        "gravy_raw": -0.6931471805599453,
-        "len": 30.0
-      },
-      "n": 100,
-      "mean_len": 15.73,
-      "mean_charge": -1.4,
-      "mean_gravy": -1.7033373753697283,
-      "frac_positive_charge": 0.04,
-      "samples": [
-        "AGHGHHHQPQIENC",
-        "AHHEHHHNEHNVNNVC",
-        "AHHHHQHQHHQRVQVNC"
-      ]
-    },
-    "Cationic + hydrophobic (AMP)": {
-      "target": {
-        "charge_raw": 4.981075411725516,
-        "gravy_raw": 0.6931471805599453,
-        "len": 15.0
-      },
-      "n": 100,
-      "mean_len": 8.93,
-      "mean_charge": 2.35,
-      "mean_gravy": 1.5093793650793652,
-      "frac_positive_charge": 0.68,
-      "samples": [
-        "AVVIVVC",
-        "AKMKVKVKVC",
-        "AKMVKVC"
-      ]
-    },
-    "Anionic + hydrophilic": {
-      "target": {
-        "charge_raw": -3.4657359027997265,
-        "gravy_raw": -0.6931471805599453,
-        "len": 20.0
-      },
-      "n": 100,
-      "mean_len": 25.19,
-      "mean_charge": -1.86,
-      "mean_gravy": -2.3007823292886,
-      "frac_positive_charge": 0.0,
-      "samples": [
-        "AEGEGHWGHGHGHHHHHHHHHHHHHHGHHHHHHHHHHHHHHHHHHHHHHHH",
-        "AHGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH",
-        "AHEHHEHHHHHC"
+        "APIPIPISIGLHC",
+        "AFIPIPFPSHC",
+        "AIPIPIGLGNGC"
       ]
     }
   }

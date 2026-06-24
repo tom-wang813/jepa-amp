@@ -1,0 +1,226 @@
+{
+  "AMP_01_orig": {
+    "sequence": "ACYCRIPACIAGERRYGTCIYQGRLWAFCC",
+    "cancer_ic50_uM_mean": 58.15,
+    "hc50_uM": 51.62,
+    "selectivity_index": 0.888,
+    "cancer_ic50_per_type_uM": {
+      "breast": 61.84,
+      "cervix": 62.51,
+      "colon": 44.55,
+      "lung": 61.82,
+      "prostate": 61.1,
+      "skin": 59.43
+    }
+  },
+  "AMP_02_orig": {
+    "sequence": "LPVFSTLPFAYCNIHQVCH",
+    "cancer_ic50_uM_mean": 24.02,
+    "hc50_uM": 41.74,
+    "selectivity_index": 1.737,
+    "cancer_ic50_per_type_uM": {
+      "breast": 25.71,
+      "cervix": 25.73,
+      "colon": 17.86,
+      "lung": 25.56,
+      "prostate": 25.42,
+      "skin": 25.04
+    }
+  },
+  "AMP_02_opt": {
+    "sequence": "LRVFSTLPRAYCNIHQVCK",
+    "cancer_ic50_uM_mean": 26.81,
+    "hc50_uM": 90.53,
+    "selectivity_index": 3.377,
+    "cancer_ic50_per_type_uM": {
+      "breast": 28.47,
+      "cervix": 28.83,
+      "colon": 19.9,
+      "lung": 28.5,
+      "prostate": 28.45,
+      "skin": 28.06
+    }
+  },
+  "AMP_03_orig": {
+    "sequence": "DCYCRIPACIAGERRYGTCIYQGRLWAFCC",
+    "cancer_ic50_uM_mean": 84.53,
+    "hc50_uM": 43.34,
+    "selectivity_index": 0.513,
+    "cancer_ic50_per_type_uM": {
+      "breast": 92.15,
+      "cervix": 92.97,
+      "colon": 58.35,
+      "lung": 91.78,
+      "prostate": 90.86,
+      "skin": 87.51
+    }
+  },
+  "AMP_04_orig": {
+    "sequence": "GIINTLQKYYCRVRGGRCAVLSCLPKEEQIGKCSTRGRKCCRRKK",
+    "cancer_ic50_uM_mean": 47.54,
+    "hc50_uM": 94.43,
+    "selectivity_index": 1.987,
+    "cancer_ic50_per_type_uM": {
+      "breast": 49.37,
+      "cervix": 49.47,
+      "colon": 40.4,
+      "lung": 49.03,
+      "prostate": 49.0,
+      "skin": 48.68
+    }
+  },
+  "AMP_05_orig": {
+    "sequence": "LLGDFFRKSKEKIGKEFKRIVQRIKDFLRNLVPRTES",
+    "cancer_ic50_uM_mean": 27.16,
+    "hc50_uM": 17.34,
+    "selectivity_index": 0.638,
+    "cancer_ic50_per_type_uM": {
+      "breast": 28.91,
+      "cervix": 28.99,
+      "colon": 20.67,
+      "lung": 27.71,
+      "prostate": 29.7,
+      "skin": 28.16
+    }
+  },
+  "AMP_05_opt": {
+    "sequence": "LLGDFFRKSKEKIGKAFKRIVQRIKDFLRCCVPRTES",
+    "cancer_ic50_uM_mean": 31.75,
+    "hc50_uM": 23.75,
+    "selectivity_index": 0.748,
+    "cancer_ic50_per_type_uM": {
+      "breast": 34.1,
+      "cervix": 33.84,
+      "colon": 23.75,
+      "lung": 32.88,
+      "prostate": 34.22,
+      "skin": 33.24
+    }
+  },
+  "AMP_06_orig": {
+    "sequence": "DHYNCVSSGGQCLYSACPIFTKIQGTCYRGKAKCCK",
+    "cancer_ic50_uM_mean": 114.31,
+    "hc50_uM": 126.61,
+    "selectivity_index": 1.108,
+    "cancer_ic50_per_type_uM": {
+      "breast": 127.93,
+      "cervix": 127.47,
+      "colon": 69.2,
+      "lung": 126.76,
+      "prostate": 127.22,
+      "skin": 122.58
+    }
+  },
+  "AMP_06_opt": {
+    "sequence": "DFYNCVSSGGQCLKSACPIFTKIWGTCYRGKAKCCK",
+    "cancer_ic50_uM_mean": 139.34,
+    "hc50_uM": 188.72,
+    "selectivity_index": 1.354,
+    "cancer_ic50_per_type_uM": {
+      "breast": 152.08,
+      "cervix": 151.39,
+      "colon": 94.81,
+      "lung": 151.11,
+      "prostate": 151.18,
+      "skin": 146.8
+    }
+  },
+  "AMP_07_orig": {
+    "sequence": "QPWSQCSATCGDGVRERRR",
+    "cancer_ic50_uM_mean": 40.62,
+    "hc50_uM": 43.79,
+    "selectivity_index": 1.078,
+    "cancer_ic50_per_type_uM": {
+      "breast": 42.91,
+      "cervix": 42.6,
+      "colon": 32.57,
+      "lung": 42.69,
+      "prostate": 41.98,
+      "skin": 42.09
+    }
+  },
+  "AMP_08_orig": {
+    "sequence": "LRRFSTMPFMFCNINNVCNF",
+    "cancer_ic50_uM_mean": 28.31,
+    "hc50_uM": 76.05,
+    "selectivity_index": 2.687,
+    "cancer_ic50_per_type_uM": {
+      "breast": 30.37,
+      "cervix": 30.65,
+      "colon": 19.84,
+      "lung": 30.48,
+      "prostate": 30.54,
+      "skin": 29.93
+    }
+  },
+  "AMP_08_opt": {
+    "sequence": "LRRFCTMPSMFCNINNVCNR",
+    "cancer_ic50_uM_mean": 24.39,
+    "hc50_uM": 45.48,
+    "selectivity_index": 1.865,
+    "cancer_ic50_per_type_uM": {
+      "breast": 26.3,
+      "cervix": 26.58,
+      "colon": 16.19,
+      "lung": 26.42,
+      "prostate": 26.6,
+      "skin": 26.44
+    }
+  },
+  "AMP_09_orig (CKS1)": {
+    "sequence": "NGRKACLNPASPIVKKIIEKMLNS",
+    "cancer_ic50_uM_mean": 64.54,
+    "hc50_uM": 32.38,
+    "selectivity_index": 0.502,
+    "cancer_ic50_per_type_uM": {
+      "breast": 72.91,
+      "cervix": 72.24,
+      "colon": 40.15,
+      "lung": 69.71,
+      "prostate": 71.86,
+      "skin": 68.23
+    }
+  },
+  "AMP_09_opt  (CKS1)": {
+    "sequence": "RGRKACLRPASPIVKKIIEKILNS",
+    "cancer_ic50_uM_mean": 59.18,
+    "hc50_uM": 28.92,
+    "selectivity_index": 0.489,
+    "cancer_ic50_per_type_uM": {
+      "breast": 65.1,
+      "cervix": 64.77,
+      "colon": 38.07,
+      "lung": 64.26,
+      "prostate": 64.75,
+      "skin": 64.28
+    }
+  },
+  "AMP_10_orig (CKS3)": {
+    "sequence": "NGKKACLNPASPMVQKIIEKIL",
+    "cancer_ic50_uM_mean": 44.2,
+    "hc50_uM": 39.29,
+    "selectivity_index": 0.889,
+    "cancer_ic50_per_type_uM": {
+      "breast": 48.23,
+      "cervix": 47.93,
+      "colon": 31.06,
+      "lung": 46.95,
+      "prostate": 47.76,
+      "skin": 46.3
+    }
+  },
+  "AMP_10_opt  (CKS3)": {
+    "sequence": "RGKKACLNPASKMVQKIIKKIL",
+    "cancer_ic50_uM_mean": 33.36,
+    "hc50_uM": 58.06,
+    "selectivity_index": 1.74,
+    "cancer_ic50_per_type_uM": {
+      "breast": 35.82,
+      "cervix": 35.56,
+      "colon": 23.71,
+      "lung": 35.92,
+      "prostate": 35.65,
+      "skin": 35.64
+    }
+  }
+}

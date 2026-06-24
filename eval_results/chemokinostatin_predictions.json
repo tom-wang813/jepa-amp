@@ -1,0 +1,146 @@
+{
+  "AMP05 (Chemokinostatin-1 original)": {
+    "sequence": "NGRKACLNPASPIVKKIIEKMLNS",
+    "physicochemical": {
+      "length": 24,
+      "charge": 4,
+      "GRAVY": -0.25
+    },
+    "amp_score_jepa": 0.767,
+    "amp_score_esm2": 0.989,
+    "mic_predictions": {
+      "E. coli": {
+        "jepa_log2mic": 1.384,
+        "mlm_log2mic": 0.998,
+        "esm2_log2mic": 1.101,
+        "jepa_mic_ugml": 2.6,
+        "mlm_mic_ugml": 2.0,
+        "esm2_mic_ugml": 2.1
+      },
+      "S. aureus": {
+        "jepa_log2mic": 1.374,
+        "mlm_log2mic": 0.991,
+        "esm2_log2mic": 1.191,
+        "jepa_mic_ugml": 2.6,
+        "mlm_mic_ugml": 2.0,
+        "esm2_mic_ugml": 2.3
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 1.549,
+        "mlm_log2mic": 1.045,
+        "esm2_log2mic": 0.749,
+        "jepa_mic_ugml": 2.9,
+        "mlm_mic_ugml": 2.1,
+        "esm2_mic_ugml": 1.7
+      }
+    }
+  },
+  "AMP06 (Chemokinostatin-1 optimized)": {
+    "sequence": "RGRKACLRPASPIVKKIIEKILNS",
+    "physicochemical": {
+      "length": 24,
+      "charge": 6,
+      "GRAVY": -0.225
+    },
+    "amp_score_jepa": 0.8941,
+    "amp_score_esm2": 0.9622,
+    "mic_predictions": {
+      "E. coli": {
+        "jepa_log2mic": 1.211,
+        "mlm_log2mic": 1.12,
+        "esm2_log2mic": 1.551,
+        "jepa_mic_ugml": 2.3,
+        "mlm_mic_ugml": 2.2,
+        "esm2_mic_ugml": 2.9
+      },
+      "S. aureus": {
+        "jepa_log2mic": 1.299,
+        "mlm_log2mic": 1.133,
+        "esm2_log2mic": 1.128,
+        "jepa_mic_ugml": 2.5,
+        "mlm_mic_ugml": 2.2,
+        "esm2_mic_ugml": 2.2
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 1.375,
+        "mlm_log2mic": 1.245,
+        "esm2_log2mic": 0.974,
+        "jepa_mic_ugml": 2.6,
+        "mlm_mic_ugml": 2.4,
+        "esm2_mic_ugml": 2.0
+      }
+    }
+  },
+  "AMP07 (Chemokinostatin-3 original)": {
+    "sequence": "NGKKACLNPASPMVQKIIEKIL",
+    "physicochemical": {
+      "length": 22,
+      "charge": 3,
+      "GRAVY": -0.032
+    },
+    "amp_score_jepa": 0.528,
+    "amp_score_esm2": 0.9641,
+    "mic_predictions": {
+      "E. coli": {
+        "jepa_log2mic": 1.556,
+        "mlm_log2mic": 0.916,
+        "esm2_log2mic": 1.16,
+        "jepa_mic_ugml": 2.9,
+        "mlm_mic_ugml": 1.9,
+        "esm2_mic_ugml": 2.2
+      },
+      "S. aureus": {
+        "jepa_log2mic": 1.617,
+        "mlm_log2mic": 0.908,
+        "esm2_log2mic": 1.051,
+        "jepa_mic_ugml": 3.1,
+        "mlm_mic_ugml": 1.9,
+        "esm2_mic_ugml": 2.1
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 1.716,
+        "mlm_log2mic": 0.955,
+        "esm2_log2mic": 0.767,
+        "jepa_mic_ugml": 3.3,
+        "mlm_mic_ugml": 1.9,
+        "esm2_mic_ugml": 1.7
+      }
+    }
+  },
+  "AMP08 (Chemokinostatin-3 optimized)": {
+    "sequence": "RGKKACLNPASKMVQKIIKKIL",
+    "physicochemical": {
+      "length": 22,
+      "charge": 7,
+      "GRAVY": -0.2
+    },
+    "amp_score_jepa": 0.9376,
+    "amp_score_esm2": 0.9078,
+    "mic_predictions": {
+      "E. coli": {
+        "jepa_log2mic": 1.228,
+        "mlm_log2mic": 1.106,
+        "esm2_log2mic": 0.84,
+        "jepa_mic_ugml": 2.3,
+        "mlm_mic_ugml": 2.2,
+        "esm2_mic_ugml": 1.8
+      },
+      "S. aureus": {
+        "jepa_log2mic": 1.32,
+        "mlm_log2mic": 1.126,
+        "esm2_log2mic": 1.259,
+        "jepa_mic_ugml": 2.5,
+        "mlm_mic_ugml": 2.2,
+        "esm2_mic_ugml": 2.4
+      },
+      "P. aeruginosa": {
+        "jepa_log2mic": 1.346,
+        "mlm_log2mic": 1.208,
+        "esm2_log2mic": 0.424,
+        "jepa_mic_ugml": 2.5,
+        "mlm_mic_ugml": 2.3,
+        "esm2_mic_ugml": 1.3
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+/home/ziwei/jepa-amp/.venv/lib/python3.11/site-packages/torch/nn/modules/transformer.py:306: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(f"enable_nested_tensor is True, but self.use_nested_tensor is False because {why_not_sparsity_fast_path}")
+/home/ziwei/jepa-amp/.venv/lib/python3.11/site-packages/sklearn/linear_model/_ridge.py:228: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 9.125556488243092e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+Device: cuda:1
+Loaded mic map: 868724
+Loaded generated sequences: 60
+Loaded JEPA encoder (epoch 100, val_loss=0.2442)
+Embedding mic sequences (this may take a while)
+Embedding generated sequences
+Regressor val RMSE=0.2487 Spearman=0.8981
+Saved regressor to eval_results/mic_regressor.joblib
+Wrote results to eval_results/mic_regressor_results.json
