@@ -2,6 +2,47 @@
 _Append-only. Most recent entry first._
 
 ---
+## Session 7 — 2026-06-25
+**Phase**: Paper data compilation
+
+### Decisions made
+- Compiled all MIC-related results (in-domain, cross-species, blind-2026, MIC-conditioned generation, interpretability) into `paper/MIC_DATA_SUMMARY.md` as a single paper-facing reference.
+- Confirmed overnight runs from 2026-06-24 are complete: interpretability probing, fewshot warmstart cross-species, and fewshot bacteria embedding eval.
+
+### What changed
+- `paper/MIC_DATA_SUMMARY.md` — NEW: single-file reference for all MIC numbers, source paths, and status. Sections 1–9 cover regression, MC Dropout, cross-species zero-shot and few-shot, blind-2026, MIC-conditioned generation, and new interpretability results.
+
+### Key numbers (verified against artifacts)
+| Result | Value | Source |
+|---|---|---|
+| JEPA Transformer MIC Pearson | 0.640 | `checkpoints/formal_mic_868k_transformer/test_metrics.json` |
+| ESM-2 35M MIC Pearson | 0.554 | `checkpoints/formal_esm2_mic/test_metrics.json` |
+| Cross-species zero-shot mean | JEPA 0.523 vs ESM-2 35M 0.423 | `cross_species_transfer/metrics.json` |
+| Blind-2026 temporal | JEPA 0.552 vs ESM-2 650M 0.596±0.017 | `external_elife2025_supp2_mic.json` |
+| MIC broad-spectrum Δ | JEPA −0.250, ESM-2 −0.291 (both agree) | `mic_conditioned_generation_formal/metrics.json` |
+| MIC inactive Δ | JEPA +0.515, ESM-2 +0.443 (both agree) | same |
+| MIC species selectivity | No separation (negative result) | same |
+| JEPA MIC linear probe R² (E.coli) | 0.162 ± 0.079 | `interpretability/jepa/mic_linear_r2.json` |
+| ESM-2 35M MIC linear probe R² (E.coli) | 0.037 ± 0.122 | `interpretability/esm2/mic_linear_r2.json` |
+| Fewshot warmstart 100-shot mean (JEPA) | 0.505 | `fewshot_cross_species_warmstart/metrics.json` |
+
+### Overnight results (2026-06-24) confirmed
+- `eval_results/interpretability/` — MIC linear probing R² + species decodability (3 models)
+- `eval_results/fewshot_cross_species_warmstart/` — few-shot adaptation with warm-start (JEPA, ESM2, ESM2-650M, MLM)
+- `eval_results/fewshot_bact_emb_jepa/` and `fewshot_bact_emb_esm2_650m/` — bacteria-specific embedding evaluation
+- `eval_results/fewshot_v2/` — updated fewshot v2 for all 4 models
+
+### Next session starts with
+Identify which sections of `paper/main.tex` or `paper/sections/*.tex` still need the new numbers from this session, and fill them in. Priority: interpretability results (Section 9 of MIC_DATA_SUMMARY) have not yet been integrated into any paper section.
+
+### Agent handoff
+Current tool: Claude (FleetView)
+Source of truth: `paper/MIC_DATA_SUMMARY.md` (new), `note/RESEARCH_STATE.md`
+Safe next command: `ls paper/sections/`
+Do not do: rerun any MIC training or evaluation experiments; all MIC evidence is locked
+Open decision: how to present ESM-2 650M blind-2026 result given protocol mismatch with JEPA (frozen+head vs fine-tuned)
+
+---
 ## Session 6 — 2026-06-22
 **Phase**: Baseline extension
 
